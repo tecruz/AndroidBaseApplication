@@ -1,6 +1,8 @@
 # AndroidBaseApplication
 Base reference for new Android projects
 
+[![Build Status](https://travis-ci.org/tecruz/AndroidBaseApplication.svg?branch=master)](https://travis-ci.org/tecruz/AndroidBaseApplication)
+
 ![Alt text](screen.png?raw=true)
 
 Libraries and tools included:
