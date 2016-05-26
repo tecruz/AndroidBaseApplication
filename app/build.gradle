@@ -27,6 +27,8 @@ android {
 
     lintOptions {
         warning 'InvalidPackage'
+        //for Travis
+        abortOnError false
     }
 }
 
