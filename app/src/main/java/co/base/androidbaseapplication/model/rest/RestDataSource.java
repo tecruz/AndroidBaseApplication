@@ -11,7 +11,7 @@ import javax.inject.Singleton;
 import co.base.androidbaseapplication.events.EventPosterHelper;
 import co.base.androidbaseapplication.events.Events;
 import co.base.androidbaseapplication.model.entities.Country;
-import co.base.androidbaseapplication.model.entities.mapper.CountryItemMapper;
+import co.base.androidbaseapplication.mapper.CountryItemMapper;
 import co.base.androidbaseapplication.model.entities.rest.CountryItemResponse;
 import co.base.androidbaseapplication.model.local.CountryDataStore;
 import co.base.androidbaseapplication.model.repository.CountryRepository;

@@ -1,4 +1,4 @@
-package co.base.androidbaseapplication.model.entities.mapper;
+package co.base.androidbaseapplication.mapper;
 
 import java.util.ArrayList;
 import java.util.Collection;
