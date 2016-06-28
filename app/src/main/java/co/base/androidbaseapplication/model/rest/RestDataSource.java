@@ -1,5 +1,7 @@
 package co.base.androidbaseapplication.model.rest;
 
+import android.content.Context;
+
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 
@@ -10,15 +12,15 @@ import javax.inject.Singleton;
 
 import co.base.androidbaseapplication.events.EventPosterHelper;
 import co.base.androidbaseapplication.events.Events;
-import co.base.androidbaseapplication.model.entities.Country;
+import co.base.androidbaseapplication.injection.ApplicationContext;
 import co.base.androidbaseapplication.mapper.CountryItemMapper;
+import co.base.androidbaseapplication.model.entities.Country;
 import co.base.androidbaseapplication.model.entities.rest.CountryItemResponse;
 import co.base.androidbaseapplication.model.local.CountryDataStore;
 import co.base.androidbaseapplication.model.repository.CountryRepository;
-import co.base.androidbaseapplication.model.rest.exceptions.ServerErrorException;
-import co.base.androidbaseapplication.model.rest.exceptions.UnknownErrorException;
+import co.base.androidbaseapplication.model.rest.exceptions.RxErrorHandlingCallAdapterFactory;
+import okhttp3.OkHttpClient;
 import retrofit2.Retrofit;
-import retrofit2.adapter.rxjava.RxJavaCallAdapterFactory;
 import retrofit2.converter.gson.GsonConverterFactory;
 import rx.Observable;
 import rx.functions.Action0;
@@ -34,7 +36,8 @@ public class RestDataSource implements CountryRepository {
     private final EventPosterHelper mEventPosterHelper;
 
     @Inject
-    public RestDataSource(CountryDataStore countryDataStore, EventPosterHelper eventPosterHelper) {
+    public RestDataSource(CountryDataStore countryDataStore, EventPosterHelper eventPosterHelper,
+                          @ApplicationContext Context context) {
 
         //TODO Custom HttpClient Interceptor
 
@@ -45,17 +48,18 @@ public class RestDataSource implements CountryRepository {
                         "AUTH_TOKEN");
 
         HttpLoggingInterceptor loggingInterceptor = new HttpLoggingInterceptor();
-        loggingInterceptor.setLevel(HttpLoggingInterceptor.Level.BODY);
+        loggingInterceptor.setLevel(HttpLoggingInterceptor.Level.BODY);*/
 
-        client.interceptors().add(countryInterceptor);*/
+        OkHttpClient client = new OkHttpClient.Builder()
+                .addInterceptor(new CountryInterceptor(context , "")).build();
 
         Gson gson = new GsonBuilder()
                 .create();
         Retrofit retrofit = new Retrofit.Builder()
                 .baseUrl(ENDPOINT)
                 .addConverterFactory(GsonConverterFactory.create(gson))
-                .addCallAdapterFactory(RxJavaCallAdapterFactory.create())
-                //.client(client)
+                .addCallAdapterFactory(RxErrorHandlingCallAdapterFactory.create())
+                .client(client)
                 .build();
         mCountryApi = retrofit.create(CountryApi.class);
 
@@ -80,7 +84,8 @@ public class RestDataSource implements CountryRepository {
                     public void call() {
                         mEventPosterHelper.postEvent(Events.SYNC_COMPLETED);
                     }
-                }).onErrorResumeNext(new Func1<Throwable, Observable<? extends List<Country>>>() {
+                });
+                /*.onErrorResumeNext(new Func1<Throwable, Observable<? extends List<Country>>>() {
                     @Override
                     public Observable<? extends List<Country>> call(Throwable throwable) {
                         boolean serverError = throwable.getMessage()
@@ -89,6 +94,6 @@ public class RestDataSource implements CountryRepository {
                                 (serverError) ? new ServerErrorException() :
                                         new UnknownErrorException());
                     }
-                });
+                });*/
     }
 }

@@ -14,6 +14,7 @@ import javax.inject.Inject;
 import co.base.androidbaseapplication.AndroidBaseApplication;
 import co.base.androidbaseapplication.domain.SyncCountriesUsecase;
 import co.base.androidbaseapplication.model.entities.Country;
+import co.base.androidbaseapplication.model.rest.exceptions.RetrofitException;
 import co.base.androidbaseapplication.util.NetworkUtil;
 import co.base.androidbaseapplication.util.PreferencesUtil;
 import rx.Observer;
@@ -22,8 +23,10 @@ import timber.log.Timber;
 
 public class SyncService extends Service {
 
-    @Inject SyncCountriesUsecase mSyncCountriesUsecase;
-    @Inject PreferencesUtil mPreferencesUtil;
+    @Inject
+    SyncCountriesUsecase mSyncCountriesUsecase;
+    @Inject
+    PreferencesUtil mPreferencesUtil;
     private Subscription mSubscription;
 
     public static Intent getStartIntent(Context context) {
@@ -40,12 +43,6 @@ public class SyncService extends Service {
     public int onStartCommand(Intent intent, int flags, final int startId) {
         Timber.i("Starting sync...");
 
-        if (!NetworkUtil.isNetworkConnected(this)) {
-            Timber.i("Sync canceled, connection not available");
-            stopSelf(startId);
-            return START_NOT_STICKY;
-        }
-
         if (mSubscription != null && !mSubscription.isUnsubscribed())
             mSubscription.unsubscribe();
 
@@ -61,7 +58,18 @@ public class SyncService extends Service {
 
                     @Override
                     public void onError(Throwable e) {
-                        Timber.w(e, "Error syncing.");
+                        /*try {
+                            error.getErrorBodyAs(ErrorResponse.class);
+                        } catch (IOException e1) {
+                            e1.printStackTrace();
+                        }*/
+                        RetrofitException error = (RetrofitException) e;
+                        if (error.getKind() == RetrofitException.Kind.NO_INTERNET_CONNECTION) {
+                            Timber.i("Sync canceled, connection not available");
+                        } else {
+                            Timber.w(e, "Error syncing.");
+                        }
+
                         stopSelf(startId);
 
                     }
