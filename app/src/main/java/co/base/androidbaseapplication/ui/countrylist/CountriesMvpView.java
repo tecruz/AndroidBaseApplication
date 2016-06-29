@@ -14,4 +14,13 @@ public interface CountriesMvpView extends MvpView {
     void showError();
 
     void countryItemClicked(Country country);
+
+    void showRetry();
+
+    void hideRetry();
+
+    void showLoading();
+
+    void hideLoading();
+
 }

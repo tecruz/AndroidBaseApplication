@@ -1,10 +1,18 @@
 package co.base.androidbaseapplication.ui.countrylist;
 
+import android.content.BroadcastReceiver;
+import android.content.Context;
+import android.content.Intent;
+import android.content.IntentFilter;
+import android.support.v4.content.LocalBroadcastManager;
+
 import java.util.List;
 
 import javax.inject.Inject;
 
 import co.base.androidbaseapplication.domain.GetCountriesUsecase;
+import co.base.androidbaseapplication.events.Events;
+import co.base.androidbaseapplication.injection.ApplicationContext;
 import co.base.androidbaseapplication.model.entities.Country;
 import co.base.androidbaseapplication.ui.base.BasePresenter;
 import rx.Subscriber;
@@ -15,10 +23,13 @@ public class CountriesPresenter extends BasePresenter<CountriesMvpView> {
 
     private final GetCountriesUsecase mCountriesUsecase;
     private Subscription mSubscription;
+    private Context mContext;
 
     @Inject
-    public CountriesPresenter(GetCountriesUsecase countriesUsecase) {
+    public CountriesPresenter(GetCountriesUsecase countriesUsecase,
+                              @ApplicationContext Context context) {
         mCountriesUsecase = countriesUsecase;
+        mContext = context;
     }
 
     @Override
@@ -32,12 +43,31 @@ public class CountriesPresenter extends BasePresenter<CountriesMvpView> {
         if (mSubscription != null) mSubscription.unsubscribe();
     }
 
+    @Override
+    public void pause() {
+        super.pause();
+        LocalBroadcastManager.getInstance(mContext).unregisterReceiver(mMessageReceiver);
+    }
+
+    @Override
+    public void resume() {
+        super.resume();
+        IntentFilter filterEvents = new IntentFilter();
+        filterEvents.addAction(Events.SYNC_COMPLETED.toString());
+        filterEvents.addAction(Events.SYNC_ERROR.toString());
+        filterEvents.addAction(Events.SYNC_STARTED.toString());
+        LocalBroadcastManager.getInstance(mContext)
+                .registerReceiver(mMessageReceiver, filterEvents);
+    }
+
     public void loadCountries() {
         checkViewAttached();
+        getMvpView().hideRetry();
         mSubscription = mCountriesUsecase.execute()
                 .subscribe(new Subscriber<List<Country>>() {
                     @Override
                     public void onCompleted() {
+                        getMvpView().hideLoading();
                     }
 
                     @Override
@@ -48,9 +78,7 @@ public class CountriesPresenter extends BasePresenter<CountriesMvpView> {
 
                     @Override
                     public void onNext(List<Country> countries) {
-                        if (countries.isEmpty()) {
-                            getMvpView().showCountriesEmpty();
-                        } else {
+                        if (!countries.isEmpty()) {
                             getMvpView().showCountries(countries);
                         }
                     }
@@ -60,5 +88,22 @@ public class CountriesPresenter extends BasePresenter<CountriesMvpView> {
     public void onCountryClicked(Country country) {
         getMvpView().countryItemClicked(country);
     }
+
+    private BroadcastReceiver mMessageReceiver = new BroadcastReceiver() {
+        @Override
+        public void onReceive(Context context, Intent intent) {
+            if (intent.getAction().equals(Events.SYNC_COMPLETED.toString())) {
+                loadCountries();
+            } else if (intent.getAction().equals(Events.SYNC_ERROR.toString())) {
+                getMvpView().hideLoading();
+                getMvpView().showRetry();
+                getMvpView().showError();
+            } else {
+                getMvpView().hideRetry();
+                getMvpView().showLoading();
+            }
+
+        }
+    };
 
 }

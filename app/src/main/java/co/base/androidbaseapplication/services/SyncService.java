@@ -13,6 +13,8 @@ import javax.inject.Inject;
 
 import co.base.androidbaseapplication.AndroidBaseApplication;
 import co.base.androidbaseapplication.domain.SyncCountriesUsecase;
+import co.base.androidbaseapplication.events.EventPosterHelper;
+import co.base.androidbaseapplication.events.Events;
 import co.base.androidbaseapplication.model.entities.Country;
 import co.base.androidbaseapplication.model.rest.exceptions.RetrofitException;
 import co.base.androidbaseapplication.util.NetworkUtil;
@@ -27,6 +29,8 @@ public class SyncService extends Service {
     SyncCountriesUsecase mSyncCountriesUsecase;
     @Inject
     PreferencesUtil mPreferencesUtil;
+    @Inject
+    EventPosterHelper mEventPostHelper;
     private Subscription mSubscription;
 
     public static Intent getStartIntent(Context context) {
@@ -69,7 +73,7 @@ public class SyncService extends Service {
                         } else {
                             Timber.w(e, "Error syncing.");
                         }
-
+                        mEventPostHelper.postEvent(Events.SYNC_ERROR);
                         stopSelf(startId);
 
                     }
@@ -79,6 +83,7 @@ public class SyncService extends Service {
                     }
                 });
 
+        mEventPostHelper.postEvent(Events.SYNC_STARTED);
 
         return START_STICKY;
     }

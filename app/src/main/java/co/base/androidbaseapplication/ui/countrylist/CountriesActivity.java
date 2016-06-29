@@ -1,13 +1,13 @@
 package co.base.androidbaseapplication.ui.countrylist;
 
-import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
-import android.content.IntentFilter;
 import android.os.Bundle;
-import android.support.v4.content.LocalBroadcastManager;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.view.View;
+import android.widget.Button;
+import android.widget.RelativeLayout;
 import android.widget.Toast;
 
 import java.util.Collections;
@@ -16,9 +16,9 @@ import java.util.List;
 import javax.inject.Inject;
 
 import butterknife.Bind;
+import butterknife.OnClick;
 import co.base.androidbaseapplication.Config;
 import co.base.androidbaseapplication.R;
-import co.base.androidbaseapplication.events.Events;
 import co.base.androidbaseapplication.services.SyncService;
 import co.base.androidbaseapplication.model.entities.Country;
 import co.base.androidbaseapplication.ui.base.BaseActivity;
@@ -31,13 +31,18 @@ public class CountriesActivity extends BaseActivity implements CountriesMvpView 
     private static final String EXTRA_TRIGGER_SYNC_FLAG =
             "co.base.androidbaseapplication.ui.main.CountriesActivity.EXTRA_TRIGGER_SYNC_FLAG";
 
-    @Inject
-    CountriesPresenter mCountriesPresenter;
+    @Inject CountriesPresenter mCountriesPresenter;
     @Inject CountriesAdapter mCountriesAdapter;
     @Inject PreferencesUtil mPreferencesUtil;
 
     @Bind(R.id.countries_recycler_view)
     RecyclerView mRecyclerView;
+    @Bind(R.id.rl_retry)
+    RelativeLayout mRetryView;
+    @Bind(R.id.bt_retry)
+    Button mRetryBtn;
+    @Bind(R.id.rl_progress)
+    RelativeLayout mProgressView;
 
 
     /**
@@ -66,15 +71,14 @@ public class CountriesActivity extends BaseActivity implements CountriesMvpView 
         mCountriesPresenter.attachView(this);
         mCountriesPresenter.loadCountries();
 
-        LocalBroadcastManager.getInstance(this).registerReceiver(mMessageReceiver,
-                new IntentFilter(Events.SYNC_COMPLETED.toString()));
-
         long currentTime = System.currentTimeMillis();
         long lastUpdateTime = mPreferencesUtil.getLastSyncTimestamp();
 
         boolean expired = ((currentTime - lastUpdateTime) > Config.EXPIRATION_TIME);
 
         if (expired) {
+            hideRetry();
+            showLoading();
             startService(SyncService.getStartIntent(this));
         }
     }
@@ -82,18 +86,20 @@ public class CountriesActivity extends BaseActivity implements CountriesMvpView 
     @Override
     protected void onResume() {
         super.onResume();
+        mCountriesPresenter.resume();
     }
 
     @Override
     protected void onPause() {
         super.onPause();
+        mCountriesPresenter.pause();
     }
 
     @Override
     protected void onDestroy() {
         super.onDestroy();
         mCountriesPresenter.detachView();
-        LocalBroadcastManager.getInstance(this).unregisterReceiver(mMessageReceiver);
+
     }
 
     /*****
@@ -125,12 +131,25 @@ public class CountriesActivity extends BaseActivity implements CountriesMvpView 
         Toast.makeText(this, R.string.empty_countries, Toast.LENGTH_LONG).show();
     }
 
-    private BroadcastReceiver mMessageReceiver = new BroadcastReceiver() {
-        @Override
-        public void onReceive(Context context, Intent intent) {
-            mCountriesPresenter.loadCountries();
-        }
-    };
+    @Override
+    public void showRetry() {
+        mRetryView.setVisibility(View.VISIBLE);
+    }
+
+    @Override
+    public void hideRetry() {
+        mRetryView.setVisibility(View.GONE);
+    }
+
+    @Override
+    public void showLoading() {
+        mProgressView.setVisibility(View.VISIBLE);
+    }
+
+    @Override
+    public void hideLoading() {
+        mProgressView.setVisibility(View.GONE);
+    }
 
     private CountriesAdapter.OnItemClickListener mOnItemClickListener =
             new CountriesAdapter.OnItemClickListener() {
@@ -141,4 +160,8 @@ public class CountriesActivity extends BaseActivity implements CountriesMvpView 
                     }
                 }
             };
+
+    @OnClick(R.id.bt_retry) void onButtonRetryClick() {
+        startService(SyncService.getStartIntent(this));
+    }
 }
