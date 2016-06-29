@@ -69,7 +69,6 @@ public class CountriesActivity extends BaseActivity implements CountriesMvpView 
         mRecyclerView.setLayoutManager(new LinearLayoutManager(this));
 
         mCountriesPresenter.attachView(this);
-        mCountriesPresenter.loadCountries();
 
         long currentTime = System.currentTimeMillis();
         long lastUpdateTime = mPreferencesUtil.getLastSyncTimestamp();
@@ -80,6 +79,8 @@ public class CountriesActivity extends BaseActivity implements CountriesMvpView 
             hideRetry();
             showLoading();
             startService(SyncService.getStartIntent(this));
+        } else {
+            mCountriesPresenter.loadCountries();
         }
     }
 
