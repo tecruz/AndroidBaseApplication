@@ -15,7 +15,15 @@ android {
         testInstrumentationRunner 'android.support.test.runner.AndroidJUnitRunner'
     }
     buildTypes {
+
+        debug {
+            resValue  "string", "API_BASE_URL", "https://restcountries.eu/rest/v1/"
+            resValue  "string", "IMAGE_BASE_URL", "http://www.geognos.com/api/en/countries/flag/"
+        }
+
         release {
+            resValue  "string", "API_BASE_URL", "https://restcountries.eu/rest/v1/"
+            resValue  "string", "IMAGE_BASE_URL", "http://www.geognos.com/api/en/countries/flag/"
             minifyEnabled true
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
         }
@@ -70,7 +78,7 @@ dependencies {
     compile 'com.jakewharton:butterknife:7.0.1'
     compile 'io.realm:realm-android:0.87.5'
     compile 'com.google.android.gms:play-services-maps:8.4.0'
-    compile 'com.github.bumptech.glide:glide:3.7.0'
+    compile 'com.facebook.fresco:fresco:0.11.0'
 
     //Testing
     testCompile 'junit:junit:4.12'

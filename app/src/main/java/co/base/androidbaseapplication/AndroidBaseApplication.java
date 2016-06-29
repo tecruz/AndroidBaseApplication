@@ -3,6 +3,7 @@ package co.base.androidbaseapplication;
 import android.app.Application;
 import android.content.Context;
 
+import com.facebook.drawee.backends.pipeline.Fresco;
 import com.squareup.leakcanary.LeakCanary;
 
 import co.base.androidbaseapplication.injection.component.ApplicationComponent;
@@ -22,6 +23,8 @@ public class AndroidBaseApplication extends Application {
             Timber.plant(new Timber.DebugTree());
             LeakCanary.install(this);
         }
+
+        Fresco.initialize(this);
     }
 
     public static AndroidBaseApplication get(Context context) {

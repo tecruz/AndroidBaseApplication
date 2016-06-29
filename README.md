@@ -15,7 +15,7 @@ Libraries and tools included:
 - [Realm](https://realm.io/)
 - [Butterknife](https://github.com/JakeWharton/butterknife)
 - [Timber](https://github.com/JakeWharton/timber)
-- [Glide](https://github.com/bumptech/glide)
+- [Fresco](http://frescolib.org/)
 - [LeakCanary](https://github.com/square/leakcanary)
 - [Checkstyle](http://checkstyle.sourceforge.net/), [PMD](https://pmd.github.io/) and [Findbugs](http://findbugs.sourceforge.net/) for code analysis
 

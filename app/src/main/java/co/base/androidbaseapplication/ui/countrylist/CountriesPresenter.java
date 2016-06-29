@@ -24,6 +24,7 @@ public class CountriesPresenter extends BasePresenter<CountriesMvpView> {
     private final GetCountriesUsecase mCountriesUsecase;
     private Subscription mSubscription;
     private Context mContext;
+    private boolean mHasCountries;
 
     @Inject
     public CountriesPresenter(GetCountriesUsecase countriesUsecase,
@@ -79,6 +80,7 @@ public class CountriesPresenter extends BasePresenter<CountriesMvpView> {
                     @Override
                     public void onNext(List<Country> countries) {
                         if (!countries.isEmpty()) {
+                            mHasCountries = true;
                             getMvpView().showCountries(countries);
                         }
                     }
@@ -96,8 +98,10 @@ public class CountriesPresenter extends BasePresenter<CountriesMvpView> {
                 loadCountries();
             } else if (intent.getAction().equals(Events.SYNC_ERROR.toString())) {
                 getMvpView().hideLoading();
-                getMvpView().showRetry();
-                getMvpView().showError();
+                if (!mHasCountries) {
+                    getMvpView().showRetry();
+                    getMvpView().showError();
+                }
             } else {
                 getMvpView().hideRetry();
                 getMvpView().showLoading();

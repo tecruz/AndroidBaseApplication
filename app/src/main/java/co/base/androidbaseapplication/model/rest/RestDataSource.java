@@ -10,6 +10,7 @@ import java.util.List;
 import javax.inject.Inject;
 import javax.inject.Singleton;
 
+import co.base.androidbaseapplication.R;
 import co.base.androidbaseapplication.events.EventPosterHelper;
 import co.base.androidbaseapplication.events.Events;
 import co.base.androidbaseapplication.injection.ApplicationContext;
@@ -28,8 +29,6 @@ import rx.functions.Func1;
 
 @Singleton
 public class RestDataSource implements CountryRepository {
-
-    final String ENDPOINT = "https://restcountries.eu/rest/v1/";
 
     private final CountryApi mCountryApi;
     private final CountryDataStore mCountryDataStore;
@@ -56,7 +55,7 @@ public class RestDataSource implements CountryRepository {
         Gson gson = new GsonBuilder()
                 .create();
         Retrofit retrofit = new Retrofit.Builder()
-                .baseUrl(ENDPOINT)
+                .baseUrl(context.getString(R.string.API_BASE_URL))
                 .addConverterFactory(GsonConverterFactory.create(gson))
                 .addCallAdapterFactory(RxErrorHandlingCallAdapterFactory.create())
                 .client(client)
