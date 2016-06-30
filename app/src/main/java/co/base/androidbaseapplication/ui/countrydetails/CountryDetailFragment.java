@@ -12,8 +12,9 @@ import android.widget.ProgressBar;
 
 import javax.inject.Inject;
 
-import butterknife.Bind;
+import butterknife.BindView;
 import butterknife.ButterKnife;
+import butterknife.Unbinder;
 import co.base.androidbaseapplication.R;
 import co.base.androidbaseapplication.ui.base.BaseActivity;
 
@@ -24,10 +25,11 @@ public class CountryDetailFragment extends Fragment implements CountryDetailMvpV
 
     private String mCountryCode;
 
-    @Bind(R.id.webView)
+    @BindView(R.id.webView)
     WebView mCountryDetailsView;
-    @Bind(R.id.progressBar)
+    @BindView(R.id.progressBar)
     ProgressBar mProgressBar;
+    private Unbinder mUnbinder;
 
     @Inject
     CountryDetailPresenter mCountryDetailPresenter;
@@ -51,7 +53,7 @@ public class CountryDetailFragment extends Fragment implements CountryDetailMvpV
         final View fragmentView =
                 inflater.inflate(R.layout.fragment_country_detail, container, false);
         ((BaseActivity) getActivity()).getActivityComponent().inject(this);
-        ButterKnife.bind(this, fragmentView);
+        mUnbinder = ButterKnife.bind(this, fragmentView);
         return fragmentView;
     }
 
@@ -84,7 +86,7 @@ public class CountryDetailFragment extends Fragment implements CountryDetailMvpV
     @Override
     public void onDestroyView() {
         super.onDestroyView();
-        ButterKnife.unbind(this);
+        mUnbinder.unbind();
         mCountryDetailPresenter.detachView();
     }
 

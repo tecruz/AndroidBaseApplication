@@ -12,7 +12,7 @@ import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
 
-import butterknife.Bind;
+import butterknife.BindView;
 import butterknife.ButterKnife;
 import co.base.androidbaseapplication.AndroidBaseApplication;
 import co.base.androidbaseapplication.R;
@@ -26,11 +26,11 @@ public class BaseActivity extends AppCompatActivity {
     private ActivityComponent mActivityComponent;
     private NavigationDrawerFragment mNavigationDrawerFragment;
 
-    @Bind(R.id.my_toolbar)
+    @BindView(R.id.my_toolbar)
     protected Toolbar mToolbar;
 
     @Nullable
-    @Bind(R.id.drawer_layout)
+    @BindView(R.id.drawer_layout)
     protected DrawerLayout mDrawer;
 
     @Override

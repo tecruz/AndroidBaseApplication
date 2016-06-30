@@ -17,7 +17,7 @@ import java.util.List;
 
 import javax.inject.Inject;
 
-import butterknife.Bind;
+import butterknife.BindView;
 import butterknife.ButterKnife;
 import co.base.androidbaseapplication.R;
 import co.base.androidbaseapplication.injection.ApplicationContext;
@@ -99,8 +99,8 @@ public class CountriesAdapter extends RecyclerView.Adapter<CountriesAdapter.Coun
 
     class CountryViewHolder extends RecyclerView.ViewHolder {
 
-        @Bind(R.id.view_flag) SimpleDraweeView flagView;
-        @Bind(R.id.text_name) TextView nameTextView;
+        @BindView(R.id.view_flag) SimpleDraweeView flagView;
+        @BindView(R.id.text_name) TextView nameTextView;
 
         public CountryViewHolder(View itemView) {
             super(itemView);

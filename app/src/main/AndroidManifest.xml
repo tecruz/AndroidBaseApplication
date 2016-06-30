@@ -12,7 +12,8 @@
         android:label="@string/app_name"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".ui.countrylist.CountriesActivity">
+        <activity android:name=".ui.countrylist.CountriesActivity"
+            android:theme="@style/AppThemeTranslucentStatusBar">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 

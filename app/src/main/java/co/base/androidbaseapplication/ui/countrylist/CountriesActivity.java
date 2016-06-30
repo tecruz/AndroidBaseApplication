@@ -15,7 +15,7 @@ import java.util.List;
 
 import javax.inject.Inject;
 
-import butterknife.Bind;
+import butterknife.BindView;
 import butterknife.OnClick;
 import co.base.androidbaseapplication.Config;
 import co.base.androidbaseapplication.R;
@@ -35,13 +35,13 @@ public class CountriesActivity extends BaseActivity implements CountriesMvpView 
     @Inject CountriesAdapter mCountriesAdapter;
     @Inject PreferencesUtil mPreferencesUtil;
 
-    @Bind(R.id.countries_recycler_view)
+    @BindView(R.id.countries_recycler_view)
     RecyclerView mRecyclerView;
-    @Bind(R.id.rl_retry)
+    @BindView(R.id.rl_retry)
     RelativeLayout mRetryView;
-    @Bind(R.id.bt_retry)
+    @BindView(R.id.bt_retry)
     Button mRetryBtn;
-    @Bind(R.id.rl_progress)
+    @BindView(R.id.rl_progress)
     RelativeLayout mProgressView;
 
 
