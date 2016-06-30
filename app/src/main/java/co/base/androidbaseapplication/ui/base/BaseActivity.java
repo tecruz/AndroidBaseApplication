@@ -1,10 +1,16 @@
 package co.base.androidbaseapplication.ui.base;
 
 import android.os.Bundle;
+import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
+import android.support.v4.view.GravityCompat;
+import android.support.v4.widget.DrawerLayout;
+import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.view.Menu;
+import android.view.MenuItem;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
@@ -13,18 +19,62 @@ import co.base.androidbaseapplication.R;
 import co.base.androidbaseapplication.injection.component.ActivityComponent;
 import co.base.androidbaseapplication.injection.component.DaggerActivityComponent;
 import co.base.androidbaseapplication.injection.module.ActivityModule;
+import co.base.androidbaseapplication.ui.custom.NavigationDrawerFragment;
 
 public class BaseActivity extends AppCompatActivity {
 
     private ActivityComponent mActivityComponent;
+    private NavigationDrawerFragment mNavigationDrawerFragment;
 
     @Bind(R.id.my_toolbar)
     protected Toolbar mToolbar;
+
+    @Nullable
+    @Bind(R.id.drawer_layout)
+    protected DrawerLayout mDrawer;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
     }
+
+    @Override
+    public void setContentView(int layoutResID) {
+        super.setContentView(layoutResID);
+        ButterKnife.bind(this);
+    }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        // Inflate the menu; this adds items to the action bar if it is present.
+        //getMenuInflater().inflate(R.menu.main, menu);
+        return true;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        // Handle action bar item clicks here. The action bar will
+        // automatically handle clicks on the Home/Up button, so long
+        // as you specify a parent activity in AndroidManifest.xml.
+        int id = item.getItemId();
+
+        //noinspection SimplifiableIfStatement
+        /*if (id == R.id.action_settings) {
+            return true;
+        }*/
+
+        return super.onOptionsItemSelected(item);
+    }
+
+    @Override
+    public void onBackPressed() {
+        if (mDrawer != null && mDrawer.isDrawerOpen(GravityCompat.START)) {
+            mDrawer.closeDrawer(GravityCompat.START);
+        } else {
+            super.onBackPressed();
+        }
+    }
+
 
     public ActivityComponent getActivityComponent() {
         if (mActivityComponent == null) {
@@ -52,8 +102,21 @@ public class BaseActivity extends AppCompatActivity {
     }
 
     protected void setupToolBar() {
-        ButterKnife.bind(this);
         mToolbar.setTitle(R.string.app_name);
         setSupportActionBar(mToolbar);
+    }
+
+    protected void setupDrawer() {
+        mNavigationDrawerFragment = (NavigationDrawerFragment)
+                getSupportFragmentManager().findFragmentById(R.id.navigation_drawer);
+
+        mNavigationDrawerFragment.setUp(R.id.navigation_drawer,
+                (DrawerLayout) findViewById(R.id.drawer_layout));
+
+        ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
+                this, (DrawerLayout) findViewById(R.id.drawer_layout),
+                mToolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
+        mDrawer.addDrawerListener(toggle);
+        toggle.syncState();
     }
 }

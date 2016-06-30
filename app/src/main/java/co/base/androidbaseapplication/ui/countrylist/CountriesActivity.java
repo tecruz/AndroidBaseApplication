@@ -62,6 +62,7 @@ public class CountriesActivity extends BaseActivity implements CountriesMvpView 
         getActivityComponent().inject(this);
         setContentView(R.layout.activity_main);
         setupToolBar();
+        setupDrawer();
 
         mCountriesAdapter.setOnItemClickListener(mOnItemClickListener);
 
