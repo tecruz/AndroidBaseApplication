@@ -5,19 +5,14 @@ android:
   components:
     - tools
     - platform-tools
-    - build-tools-23.0.3
-    - android-23
+    - build-tools-25.0.1
+    - android-25
     - extra-android-m2repository
     - extra-android-support
-    - sys-img-armeabi-v7a-android-23
-    - extra-google-google_play_services
-licenses:
-    - android-sdk-preview-license-52d11cd2
-    - android-sdk-license-c81a61d9
-    - android-sdk-license-.+
-    - google-gdk-license-.+
+
 before_cache:
   - rm -f $HOME/.gradle/caches/modules-2/modules-2.lock
+
 cache:
   directories:
     - $HOME/.gradle/caches/
