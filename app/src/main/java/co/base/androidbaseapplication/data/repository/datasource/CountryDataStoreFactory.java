@@ -33,16 +33,20 @@ public class CountryDataStoreFactory {
     /**
      * Create {@link CountryDataStore}.
      */
-    public CountryDataStore create() {
+    public CountryDataStore create(boolean isSync) {
         CountryDataStore countryDataStore;
 
-        if (!NetworkUtil.isNetworkConnected(mContext)) {
-            countryDataStore = createDatabaseDataStore();
+        if (isSync) {
+            countryDataStore = createCloudDataStore();
         } else {
-            if (!mCountryCache.isExpired() && mCountryCache.isCached()) {
+            if (!NetworkUtil.isNetworkConnected(mContext)) {
                 countryDataStore = createDatabaseDataStore();
             } else {
-                countryDataStore = createCloudDataStore();
+                if (!mCountryCache.isExpired() && mCountryCache.isCached()) {
+                    countryDataStore = createDatabaseDataStore();
+                } else {
+                    countryDataStore = createCloudDataStore();
+                }
             }
         }
 
@@ -52,14 +56,14 @@ public class CountryDataStoreFactory {
     /**
      * Create {@link CountryDataStore} to retrieve data from the Cloud.
      */
-    public CountryDataStore createCloudDataStore() {
+    private CountryDataStore createCloudDataStore() {
         return new CloudCountryDataStore(mRestApi, mCountryCache);
     }
 
     /**
      * Create {@link CountryDataStore} to retrieve data from the database.
      */
-    public CountryDataStore createDatabaseDataStore() {
+    private CountryDataStore createDatabaseDataStore() {
         return new DatabaseCountryDataStore(mCountryCache);
     }
 }

@@ -37,11 +37,7 @@ public class CountryDataRepository implements CountryRepository {
 
         final CountryDataStore countryDataStore;
 
-        if (isSync) {
-            countryDataStore = mCountryDataStoreFactory.createCloudDataStore();
-        } else {
-            countryDataStore = mCountryDataStoreFactory.create();
-        }
+        countryDataStore = mCountryDataStoreFactory.create(isSync);
 
         return countryDataStore.countryEntityList().concatMap(new Func1<List<CountryEntity>,
                 Observable<List<Country>>>() {
