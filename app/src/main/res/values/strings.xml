@@ -9,6 +9,8 @@
 
     <string name="empty_countries">There aren\'t any countries</string>
     <string name="error_loading_countries">There was a problem loading the countries</string>
+    <string name="exception_message_no_connection">No Internet connection</string>
+    <string name="unexpected_error">Unexpected error</string>
 
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>

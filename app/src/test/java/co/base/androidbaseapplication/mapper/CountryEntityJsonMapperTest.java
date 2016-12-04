@@ -1,19 +1,30 @@
 package co.base.androidbaseapplication.mapper;
 
+import com.google.gson.ExclusionStrategy;
+import com.google.gson.FieldAttributes;
 import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
+import com.google.gson.TypeAdapter;
 import com.google.gson.reflect.TypeToken;
+import com.google.gson.stream.JsonReader;
+import com.google.gson.stream.JsonWriter;
 
 import org.junit.Before;
 import org.junit.Rule;
 import org.junit.Test;
 import org.junit.rules.ExpectedException;
 
+import java.io.IOException;
+import java.lang.reflect.Type;
 import java.util.Collection;
 import java.util.List;
 
 import co.base.androidbaseapplication.ApplicationTestCase;
-import co.base.androidbaseapplication.model.entities.Country;
-import co.base.androidbaseapplication.model.entities.rest.CountryItemResponse;
+import co.base.androidbaseapplication.data.entity.CountryEntity;
+import co.base.androidbaseapplication.data.realm.RealmDouble;
+import co.base.androidbaseapplication.ui.entity.Country;
+import io.realm.RealmList;
+import io.realm.RealmObject;
 
 import static org.hamcrest.CoreMatchers.is;
 import static org.hamcrest.MatcherAssert.assertThat;
@@ -164,19 +175,51 @@ public class CountryEntityJsonMapperTest extends ApplicationTestCase {
             "\t]\n" +
             "}]";
 
-    private CountryItemResponse mCountryItemResponse;
-    private List<CountryItemResponse> mCountryItemResponseList;
+    private CountryEntity mCountryItemResponse;
+    private List<CountryEntity> mCountryItemResponseList;
 
     @Rule
     public ExpectedException expectedException = ExpectedException.none();
 
     @Before
     public void setUp() {
-        Gson gson = new Gson();
+        Type token = new TypeToken<RealmList<RealmDouble>>() { }.getType();
+        Gson gson = new GsonBuilder()
+                .setExclusionStrategies(new ExclusionStrategy() {
+                    @Override
+                    public boolean shouldSkipField(FieldAttributes f) {
+                        return f.getDeclaringClass().equals(RealmObject.class);
+                    }
+
+                    @Override
+                    public boolean shouldSkipClass(Class<?> clazz) {
+                        return false;
+                    }
+                })
+                .registerTypeAdapter(token, new TypeAdapter<RealmList<RealmDouble>>() {
+
+                    @Override
+                    public void write(JsonWriter out, RealmList<RealmDouble> value)
+                            throws IOException {
+                        // Ignore
+                    }
+
+                    @Override
+                    public RealmList<RealmDouble> read(JsonReader in) throws IOException {
+                        RealmList<RealmDouble> list = new RealmList<>();
+                        in.beginArray();
+                        while (in.hasNext()) {
+                            list.add(new RealmDouble(in.nextDouble()));
+                        }
+                        in.endArray();
+                        return list;
+                    }
+                })
+                .create();
         mCountryItemResponse = gson.fromJson(JSON_RESPONSE_COUNTRY,
-                new TypeToken<CountryItemResponse>() { }.getType());
+                new TypeToken<CountryEntity>() { }.getType());
         mCountryItemResponseList = gson.fromJson(JSON_RESPONSE_COUNTRIES_COLLECTION,
-                new TypeToken<List<CountryItemResponse>>() { }.getType());
+                new TypeToken<List<CountryEntity>>() { }.getType());
     }
 
     @Test
@@ -184,18 +227,18 @@ public class CountryEntityJsonMapperTest extends ApplicationTestCase {
 
         Country countryEntity = CountryItemMapper.transform(mCountryItemResponse);
 
-        assertThat(countryEntity.getmCountryCode(), is("AX"));
-        assertThat(countryEntity.getmCountryName(), is(equalTo("Åland Islands")));
+        assertThat(countryEntity.getCountryCode(), is("AX"));
+        assertThat(countryEntity.getCountryName(), is(equalTo("Åland Islands")));
     }
 
     @Test
     public void testTransformCountryEntityCollectionHappyCase() {
         Collection<Country> countryEntityCollection =
-                CountryItemMapper.transform(
-                        mCountryItemResponseList);
+                CountryItemMapper.transform(mCountryItemResponseList);
 
-        assertThat(((Country) countryEntityCollection.toArray()[0]).getmCountryCode(), is("AX"));
-        assertThat(((Country) countryEntityCollection.toArray()[1]).getmCountryCode(), is("AL"));
+        assertThat(((Country) countryEntityCollection.toArray()[0]).getCountryCode(), is("AX"));
+        assertThat(((Country) countryEntityCollection.toArray()[1]).getCountryCode(), is("AL"));
         assertThat(countryEntityCollection.size(), is(2));
     }
+
 }

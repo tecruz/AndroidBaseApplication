@@ -3,11 +3,12 @@ package co.base.androidbaseapplication.injection.component;
 import android.app.Application;
 import android.content.Context;
 
-import javax.inject.Named;
 import javax.inject.Singleton;
 
-import co.base.androidbaseapplication.model.repository.CountryRepository;
+import co.base.androidbaseapplication.domain.repository.CountryRepository;
+import co.base.androidbaseapplication.events.EventEmitter;
 import co.base.androidbaseapplication.services.SyncService;
+import co.base.androidbaseapplication.ui.navigation.Navigator;
 import co.base.androidbaseapplication.util.PreferencesUtil;
 import co.base.androidbaseapplication.injection.ApplicationContext;
 import co.base.androidbaseapplication.injection.module.ApplicationModule;
@@ -21,7 +22,8 @@ public interface ApplicationComponent {
 
     @ApplicationContext Context context();
     Application application();
-    @Named("remote_repository") CountryRepository restDataRepository();
-    @Named("local_repository") CountryRepository localDataRepository();
+    CountryRepository countryRepository();
+    Navigator navigator();
     PreferencesUtil preferencesHelper();
+    EventEmitter eventEmitterHelper();
 }

@@ -13,7 +13,7 @@ import javax.inject.Inject;
 import co.base.androidbaseapplication.domain.GetCountriesUsecase;
 import co.base.androidbaseapplication.events.Events;
 import co.base.androidbaseapplication.injection.ApplicationContext;
-import co.base.androidbaseapplication.model.entities.Country;
+import co.base.androidbaseapplication.ui.entity.Country;
 import co.base.androidbaseapplication.ui.base.BasePresenter;
 import rx.Subscriber;
 import rx.Subscription;
@@ -64,7 +64,7 @@ public class CountriesPresenter extends BasePresenter<CountriesMvpView> {
     public void loadCountries() {
         checkViewAttached();
         getMvpView().hideRetry();
-        mSubscription = mCountriesUsecase.execute()
+        mSubscription = mCountriesUsecase.setIsSync(false).execute()
                 .subscribe(new Subscriber<List<Country>>() {
                     @Override
                     public void onCompleted() {
@@ -75,6 +75,8 @@ public class CountriesPresenter extends BasePresenter<CountriesMvpView> {
                     public void onError(Throwable e) {
                         Timber.e(e, "There was an error loading the countries.");
                         getMvpView().showError();
+                        getMvpView().showRetry();
+                        getMvpView().hideLoading();
                     }
 
                     @Override

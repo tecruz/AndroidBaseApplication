@@ -2,6 +2,7 @@ package co.base.androidbaseapplication.injection.component;
 
 import co.base.androidbaseapplication.injection.PerActivity;
 import co.base.androidbaseapplication.injection.module.ActivityModule;
+import co.base.androidbaseapplication.ui.countrydetails.CountryDetailActivity;
 import co.base.androidbaseapplication.ui.countrydetails.CountryDetailFragment;
 import co.base.androidbaseapplication.ui.countrylist.CountriesActivity;
 import dagger.Component;
@@ -14,5 +15,6 @@ import dagger.Component;
 public interface ActivityComponent {
 
     void inject(CountriesActivity countriesActivity);
+    void inject(CountryDetailActivity countryDetailActivity);
     void inject(CountryDetailFragment countryDetailFragment);
 }

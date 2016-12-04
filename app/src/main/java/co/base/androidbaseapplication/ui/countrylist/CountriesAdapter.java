@@ -2,15 +2,15 @@ package co.base.androidbaseapplication.ui.countrylist;
 
 import android.content.Context;
 import android.net.Uri;
-import android.support.v4.content.ContextCompat;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.TextView;
 
-import com.facebook.drawee.generic.RoundingParams;
-import com.facebook.drawee.view.SimpleDraweeView;
+import com.bumptech.glide.Glide;
+import com.bumptech.glide.load.engine.DiskCacheStrategy;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -21,15 +21,13 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 import co.base.androidbaseapplication.R;
 import co.base.androidbaseapplication.injection.ApplicationContext;
-import co.base.androidbaseapplication.model.entities.Country;
-import co.base.androidbaseapplication.ui.custom.ImageLoadProgressBar;
+import co.base.androidbaseapplication.ui.entity.Country;
 
 public class CountriesAdapter extends RecyclerView.Adapter<CountriesAdapter.CountryViewHolder> {
 
     Context mApplicationContext;
 
     private List<Country> mCountries;
-    private int mThemeColor;
 
     public interface OnItemClickListener {
         void onCountryItemClicked(Country country);
@@ -41,7 +39,6 @@ public class CountriesAdapter extends RecyclerView.Adapter<CountriesAdapter.Coun
     public CountriesAdapter(@ApplicationContext Context applicationContext) {
         mCountries = new ArrayList<>();
         mApplicationContext = applicationContext;
-        mThemeColor = ContextCompat.getColor(mApplicationContext, R.color.colorPrimary);
     }
 
     public void setCountries(List<Country> countries) {
@@ -70,16 +67,15 @@ public class CountriesAdapter extends RecyclerView.Adapter<CountriesAdapter.Coun
     @Override
     public void onBindViewHolder(final CountryViewHolder holder, int position) {
         final Country country = mCountries.get(position);
-        holder.nameTextView.setText(country.getmCountryName());
-        Uri uri = Uri.parse(mApplicationContext.getString(R.string.IMAGE_BASE_URL)
-                + country.getmCountryCode() + ".png");
-        RoundingParams roundingParams = RoundingParams.fromCornersRadius(5f);
-        roundingParams.setRoundAsCircle(true);
-        roundingParams.setBorder(mThemeColor, 10.0f);
-        holder.flagView.getHierarchy().setRoundingParams(roundingParams);
-        holder.flagView.getHierarchy()
-                .setProgressBarImage(new ImageLoadProgressBar(mApplicationContext));
-        holder.flagView.setImageURI(uri);
+        holder.nameTextView.setText(country.getCountryName());
+        Uri uri = Uri.parse(mApplicationContext.getString(R.string.IMAGE_BASE_URL,
+                country.getCountryCode()));
+
+        Glide.with(holder.itemView.getContext())
+                .load(uri)
+                .fitCenter()
+                .diskCacheStrategy(DiskCacheStrategy.ALL)
+                .into(holder.flagView);
 
         holder.itemView.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -99,8 +95,10 @@ public class CountriesAdapter extends RecyclerView.Adapter<CountriesAdapter.Coun
 
     class CountryViewHolder extends RecyclerView.ViewHolder {
 
-        @BindView(R.id.view_flag) SimpleDraweeView flagView;
-        @BindView(R.id.text_name) TextView nameTextView;
+        @BindView(R.id.view_flag)
+        ImageView flagView;
+        @BindView(R.id.text_name)
+        TextView nameTextView;
 
         public CountryViewHolder(View itemView) {
             super(itemView);

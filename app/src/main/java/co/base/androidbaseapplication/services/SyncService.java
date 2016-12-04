@@ -12,11 +12,12 @@ import java.util.List;
 import javax.inject.Inject;
 
 import co.base.androidbaseapplication.AndroidBaseApplication;
-import co.base.androidbaseapplication.domain.SyncCountriesUsecase;
-import co.base.androidbaseapplication.events.EventPosterHelper;
+import co.base.androidbaseapplication.data.exception.RetrofitException;
+import co.base.androidbaseapplication.domain.GetCountriesUsecase;
+import co.base.androidbaseapplication.events.EventEmitter;
 import co.base.androidbaseapplication.events.Events;
-import co.base.androidbaseapplication.model.entities.Country;
-import co.base.androidbaseapplication.model.rest.exceptions.RetrofitException;
+import co.base.androidbaseapplication.ui.entity.Country;
+import co.base.androidbaseapplication.util.ErrorMessageFactory;
 import co.base.androidbaseapplication.util.NetworkUtil;
 import co.base.androidbaseapplication.util.PreferencesUtil;
 import rx.Observer;
@@ -26,11 +27,11 @@ import timber.log.Timber;
 public class SyncService extends Service {
 
     @Inject
-    SyncCountriesUsecase mSyncCountriesUsecase;
+    GetCountriesUsecase mGetCountriesUsecase;
     @Inject
     PreferencesUtil mPreferencesUtil;
     @Inject
-    EventPosterHelper mEventPostHelper;
+    EventEmitter mEventPostHelper;
     private Subscription mSubscription;
 
     public static Intent getStartIntent(Context context) {
@@ -50,13 +51,14 @@ public class SyncService extends Service {
         if (mSubscription != null && !mSubscription.isUnsubscribed())
             mSubscription.unsubscribe();
 
-        mSubscription = mSyncCountriesUsecase.execute()
+        mSubscription = mGetCountriesUsecase.setIsSync(true).execute()
                 .subscribe(new Observer<List<Country>>() {
                     @Override
                     public void onCompleted() {
                         Timber.i("Synced successfully!");
                         long syncTimeStamp = System.currentTimeMillis();
                         mPreferencesUtil.setLastSyncTimestamp(syncTimeStamp);
+                        mEventPostHelper.postEvent(Events.SYNC_COMPLETED);
                         stopSelf(startId);
                     }
 
@@ -68,11 +70,8 @@ public class SyncService extends Service {
                             e1.printStackTrace();
                         }*/
                         RetrofitException error = (RetrofitException) e;
-                        if (error.getKind() == RetrofitException.Kind.NO_INTERNET_CONNECTION) {
-                            Timber.i("Sync canceled, connection not available");
-                        } else {
-                            Timber.w(e, "Error syncing.");
-                        }
+                        Timber.i(ErrorMessageFactory.create(getApplicationContext(),
+                                error.getKind()));
                         mEventPostHelper.postEvent(Events.SYNC_ERROR);
                         stopSelf(startId);
 
