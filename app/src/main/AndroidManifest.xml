@@ -21,6 +21,8 @@
             </intent-filter>
         </activity>
 
+        <activity android:name=".ui.countrydetails.CountryDetailActivity" />
+
         <service android:name=".services.SyncService" />
 
         <receiver
@@ -31,15 +33,8 @@
             </intent-filter>
         </receiver>
 
-        <activity android:name=".ui.countrydetails.CountryDetailActivity"
-            android:parentActivityName=".ui.countrylist.CountriesActivity">
-
-            <!-- Parent activity meta-data to support 4.0 and lower -->
-            <meta-data
-                android:name="android.support.PARENT_ACTIVITY"
-                android:value=".ui.countrylist.CountriesActivity" />
-
-        </activity>
+        <meta-data android:name="co.base.androidbaseapplication.util.GlideConfiguration"
+            android:value="GlideModule"/>
 
     </application>
 

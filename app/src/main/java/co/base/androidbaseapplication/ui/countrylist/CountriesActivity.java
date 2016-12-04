@@ -2,6 +2,7 @@ package co.base.androidbaseapplication.ui.countrylist;
 
 import android.content.Context;
 import android.content.Intent;
+import android.content.res.Configuration;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -17,19 +18,18 @@ import javax.inject.Inject;
 
 import butterknife.BindView;
 import butterknife.OnClick;
-import co.base.androidbaseapplication.Config;
+
 import co.base.androidbaseapplication.R;
 import co.base.androidbaseapplication.services.SyncService;
-import co.base.androidbaseapplication.model.entities.Country;
+import co.base.androidbaseapplication.ui.countrydetails.CountryDetailFragment;
+import co.base.androidbaseapplication.ui.entity.Country;
 import co.base.androidbaseapplication.ui.base.BaseActivity;
-import co.base.androidbaseapplication.ui.countrydetails.CountryDetailActivity;
 import co.base.androidbaseapplication.util.DialogFactory;
 import co.base.androidbaseapplication.util.PreferencesUtil;
+import co.base.androidbaseapplication.util.ViewUtil;
 
-public class CountriesActivity extends BaseActivity implements CountriesMvpView {
-
-    private static final String EXTRA_TRIGGER_SYNC_FLAG =
-            "co.base.androidbaseapplication.ui.main.CountriesActivity.EXTRA_TRIGGER_SYNC_FLAG";
+public class CountriesActivity extends BaseActivity implements CountriesMvpView,
+        CountryDetailFragment.OnCountryDetailsFragmentInteractionListener {
 
     @Inject CountriesPresenter mCountriesPresenter;
     @Inject CountriesAdapter mCountriesAdapter;
@@ -37,22 +37,23 @@ public class CountriesActivity extends BaseActivity implements CountriesMvpView 
 
     @BindView(R.id.countries_recycler_view)
     RecyclerView mRecyclerView;
+
     @BindView(R.id.rl_retry)
     RelativeLayout mRetryView;
+
     @BindView(R.id.bt_retry)
     Button mRetryBtn;
+
     @BindView(R.id.rl_progress)
     RelativeLayout mProgressView;
 
 
     /**
      * Return an Intent to start this Activity.
-     * triggerDataSyncOnCreate allows disabling the background sync service onCreate. Should
-     * only be set to false during testing.
+     *
      */
-    public static Intent getStartIntent(Context context, boolean triggerDataSyncOnCreate) {
+    public static Intent getCallingIntent(Context context) {
         Intent intent = new Intent(context, CountriesActivity.class);
-        intent.putExtra(EXTRA_TRIGGER_SYNC_FLAG, triggerDataSyncOnCreate);
         return intent;
     }
 
@@ -71,18 +72,7 @@ public class CountriesActivity extends BaseActivity implements CountriesMvpView 
 
         mCountriesPresenter.attachView(this);
 
-        long currentTime = System.currentTimeMillis();
-        long lastUpdateTime = mPreferencesUtil.getLastSyncTimestamp();
-
-        boolean expired = ((currentTime - lastUpdateTime) > Config.EXPIRATION_TIME);
-
-        if (expired) {
-            hideRetry();
-            showLoading();
-            startService(SyncService.getStartIntent(this));
-        } else {
-            mCountriesPresenter.loadCountries();
-        }
+        mCountriesPresenter.loadCountries();
     }
 
     @Override
@@ -121,9 +111,13 @@ public class CountriesActivity extends BaseActivity implements CountriesMvpView 
 
     @Override
     public void countryItemClicked(Country country) {
-        Intent intentToLaunch = CountryDetailActivity.getCallingIntent(getApplicationContext(),
-                country.getmCountryCode());
-        startActivity(intentToLaunch);
+        if (getResources().getBoolean(R.bool.isTablet)
+                && ViewUtil.screenOrientation(this) == Configuration.ORIENTATION_LANDSCAPE) {
+            replaceFragment(R.id.fragmentContainer,
+                    CountryDetailFragment.newInstance(country.getCountryCode()), false);
+        } else {
+            mNavigator.navigateToCountryDetails(this, country.getCountryCode());
+        }
     }
 
     @Override

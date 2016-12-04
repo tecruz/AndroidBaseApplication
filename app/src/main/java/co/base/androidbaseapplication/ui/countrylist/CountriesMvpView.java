@@ -2,7 +2,7 @@ package co.base.androidbaseapplication.ui.countrylist;
 
 import java.util.List;
 
-import co.base.androidbaseapplication.model.entities.Country;
+import co.base.androidbaseapplication.ui.entity.Country;
 import co.base.androidbaseapplication.ui.base.MvpView;
 
 public interface CountriesMvpView extends MvpView {

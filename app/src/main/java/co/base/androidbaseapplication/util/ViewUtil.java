@@ -23,4 +23,8 @@ public final class ViewUtil {
         imm.hideSoftInputFromWindow(activity.getWindow().getDecorView().getWindowToken(), 0);
     }
 
+    public static int screenOrientation(Activity activity) {
+        return activity.getResources().getConfiguration().orientation;
+    }
+
 }

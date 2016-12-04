@@ -12,6 +12,8 @@ import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
 
+import javax.inject.Inject;
+
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import co.base.androidbaseapplication.AndroidBaseApplication;
@@ -19,6 +21,7 @@ import co.base.androidbaseapplication.R;
 import co.base.androidbaseapplication.injection.component.ActivityComponent;
 import co.base.androidbaseapplication.injection.component.DaggerActivityComponent;
 import co.base.androidbaseapplication.injection.module.ActivityModule;
+import co.base.androidbaseapplication.ui.navigation.Navigator;
 import co.base.androidbaseapplication.ui.custom.NavigationDrawerFragment;
 
 public class BaseActivity extends AppCompatActivity {
@@ -32,6 +35,9 @@ public class BaseActivity extends AppCompatActivity {
     @Nullable
     @BindView(R.id.drawer_layout)
     protected DrawerLayout mDrawer;
+
+    @Inject
+    protected Navigator mNavigator;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -58,10 +64,13 @@ public class BaseActivity extends AppCompatActivity {
         // as you specify a parent activity in AndroidManifest.xml.
         int id = item.getItemId();
 
-        //noinspection SimplifiableIfStatement
-        /*if (id == R.id.action_settings) {
-            return true;
-        }*/
+        switch (id) {
+            case android.R.id.home:
+                onBackPressed();
+                break;
+            default:
+                break;
+        }
 
         return super.onOptionsItemSelected(item);
     }
@@ -90,16 +99,17 @@ public class BaseActivity extends AppCompatActivity {
      * Adds a {@link Fragment} to this activity's layout.
      *
      * @param containerViewId The container view to where add the fragment.
-     * @param fragment The fragment to be added.
+     * @param fragment The fragment to be replaced.
      */
-    protected void addFragment(int containerViewId, Fragment fragment, boolean addToBackStack) {
+    protected void replaceFragment(int containerViewId, Fragment fragment, boolean addToBackStack) {
         FragmentTransaction fragmentTransaction =
                 this.getSupportFragmentManager().beginTransaction();
-        fragmentTransaction.add(containerViewId, fragment);
+        fragmentTransaction.replace(containerViewId, fragment);
         if (addToBackStack)
             fragmentTransaction.addToBackStack(null);
         fragmentTransaction.commit();
     }
+
 
     protected void setupToolBar() {
         mToolbar.setTitle(R.string.app_name);
