@@ -1,11 +1,10 @@
 package co.base.androidbaseapplication.services;
 
-import android.app.Service;
-import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
-import android.net.ConnectivityManager;
-import android.os.IBinder;
+
+import com.firebase.jobdispatcher.JobParameters;
+import com.firebase.jobdispatcher.JobService;
 
 import java.util.List;
 
@@ -18,13 +17,12 @@ import co.base.androidbaseapplication.events.EventEmitter;
 import co.base.androidbaseapplication.events.Events;
 import co.base.androidbaseapplication.ui.entity.Country;
 import co.base.androidbaseapplication.util.ErrorMessageFactory;
-import co.base.androidbaseapplication.util.NetworkUtil;
 import co.base.androidbaseapplication.util.PreferencesUtil;
 import rx.Observer;
 import rx.Subscription;
 import timber.log.Timber;
 
-public class SyncService extends Service {
+public class SyncService extends JobService {
 
     @Inject
     GetCountriesUsecase mGetCountriesUsecase;
@@ -45,7 +43,7 @@ public class SyncService extends Service {
     }
 
     @Override
-    public int onStartCommand(Intent intent, int flags, final int startId) {
+    public boolean onStartJob(final JobParameters job) {
         Timber.i("Starting sync...");
 
         if (mSubscription != null && !mSubscription.isUnsubscribed())
@@ -59,7 +57,7 @@ public class SyncService extends Service {
                         long syncTimeStamp = System.currentTimeMillis();
                         mPreferencesUtil.setLastSyncTimestamp(syncTimeStamp);
                         mEventPostHelper.postEvent(Events.SYNC_COMPLETED);
-                        stopSelf(startId);
+                        jobFinished(job, false);
                     }
 
                     @Override
@@ -73,8 +71,7 @@ public class SyncService extends Service {
                         Timber.i(ErrorMessageFactory.create(getApplicationContext(),
                                 error.getKind()));
                         mEventPostHelper.postEvent(Events.SYNC_ERROR);
-                        stopSelf(startId);
-
+                        jobFinished(job, false);
                     }
 
                     @Override
@@ -84,7 +81,12 @@ public class SyncService extends Service {
 
         mEventPostHelper.postEvent(Events.SYNC_STARTED);
 
-        return START_STICKY;
+        return true;
+    }
+
+    @Override
+    public boolean onStopJob(JobParameters job) {
+        return false;
     }
 
     @Override
@@ -92,22 +94,4 @@ public class SyncService extends Service {
         if (mSubscription != null) mSubscription.unsubscribe();
         super.onDestroy();
     }
-
-    @Override
-    public IBinder onBind(Intent intent) {
-        return null;
-    }
-
-    public static class SyncOnConnectionAvailable extends BroadcastReceiver {
-
-        @Override
-        public void onReceive(Context context, Intent intent) {
-            if (intent.getAction().equals(ConnectivityManager.CONNECTIVITY_ACTION)
-                    && NetworkUtil.isNetworkConnected(context)) {
-                Timber.i("Connection is now available, triggering sync...");
-                context.startService(getStartIntent(context));
-            }
-        }
-    }
-
 }

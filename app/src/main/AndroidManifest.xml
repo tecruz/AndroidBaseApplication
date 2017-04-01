@@ -23,15 +23,13 @@
 
         <activity android:name=".ui.countrydetails.CountryDetailActivity" />
 
-        <service android:name=".services.SyncService" />
-
-        <receiver
-            android:name=".services.SyncService$SyncOnConnectionAvailable"
-            android:enabled="true">
+        <service
+            android:exported="false"
+            android:name=".services.SyncService">
             <intent-filter>
-                <action android:name="android.net.conn.CONNECTIVITY_CHANGE" />
+                <action android:name="com.firebase.jobdispatcher.ACTION_EXECUTE"/>
             </intent-filter>
-        </receiver>
+        </service>
 
         <meta-data android:name="co.base.androidbaseapplication.util.GlideConfiguration"
             android:value="GlideModule"/>
