@@ -15,6 +15,10 @@ android:
 before_cache:
   - rm -f $HOME/.gradle/caches/modules-2/modules-2.lock
 
+licenses:
+  - android-sdk-license-.+
+  - '.+'
+
 cache:
   directories:
     - $HOME/.gradle/caches/
