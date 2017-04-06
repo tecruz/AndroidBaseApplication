@@ -2,6 +2,7 @@ apply plugin: 'com.android.application'
 apply plugin: 'com.neenbedankt.android-apt'
 apply from: '../config/quality/quality.gradle'
 apply plugin: 'realm-android'
+apply plugin: 'jacoco-android'
 
 android {
     compileSdkVersion 25
@@ -15,15 +16,18 @@ android {
         versionName "1.0"
         testInstrumentationRunner 'android.support.test.runner.AndroidJUnitRunner'
     }
+
     buildTypes {
 
         debug {
+            testCoverageEnabled true
             resValue "string", "API_BASE_URL", "https://restcountries.eu/rest/v1/"
             resValue "string", "IMAGE_BASE_URL", "http://www.geognos.com/api/en/countries/flag/%s.png"
             resValue "string", "COUNTRY_INFO_URL", "http://www.geognos.com/geo/en/cc/%s.html"
         }
 
         release {
+            testCoverageEnabled true
             resValue "string", "API_BASE_URL", "https://restcountries.eu/rest/v1/"
             resValue "string", "IMAGE_BASE_URL", "http://www.geognos.com/api/en/countries/flag/%s.png"
             resValue "string", "COUNTRY_INFO_URL", "http://www.geognos.com/geo/en/cc/%s.html"
