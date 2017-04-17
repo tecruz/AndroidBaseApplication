@@ -2,6 +2,7 @@
 Base reference for new Android projects
 
 [![Build Status](https://travis-ci.org/tecruz/AndroidBaseApplication.svg?branch=master)](https://travis-ci.org/tecruz/AndroidBaseApplication)
+[![codecov.io](https://codecov.io/github/tecruz/AndroidBaseApplication/branch/master/graph/badge.svg)](https://codecov.io/gh/tecruz/AndroidBaseApplication)
 
 ![Alt text](screen.png?raw=true)
 
