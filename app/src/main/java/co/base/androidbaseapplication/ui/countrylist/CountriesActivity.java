@@ -4,11 +4,12 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.res.Configuration;
 import android.os.Bundle;
+import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Button;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import java.util.Collections;
@@ -17,7 +18,6 @@ import java.util.List;
 import javax.inject.Inject;
 
 import butterknife.BindView;
-import butterknife.OnClick;
 
 import co.base.androidbaseapplication.R;
 import co.base.androidbaseapplication.services.SyncService;
@@ -25,72 +25,84 @@ import co.base.androidbaseapplication.ui.countrydetails.CountryDetailFragment;
 import co.base.androidbaseapplication.ui.entity.Country;
 import co.base.androidbaseapplication.ui.base.BaseActivity;
 import co.base.androidbaseapplication.util.DialogFactory;
+import co.base.androidbaseapplication.util.NetworkUtil;
 import co.base.androidbaseapplication.util.PreferencesUtil;
 import co.base.androidbaseapplication.util.ViewUtil;
 
 public class CountriesActivity extends BaseActivity implements CountriesMvpView,
-        CountryDetailFragment.OnCountryDetailsFragmentInteractionListener {
+        CountryDetailFragment.OnCountryDetailsFragmentInteractionListener
+{
 
-    @Inject CountriesPresenter mCountriesPresenter;
-    @Inject CountriesAdapter mCountriesAdapter;
-    @Inject PreferencesUtil mPreferencesUtil;
+    @Inject
+    CountriesPresenter countriesPresenter;
+
+    @Inject
+    CountriesAdapter countriesAdapter;
+
+    @Inject
+    PreferencesUtil preferencesUtil;
 
     @BindView(R.id.countries_recycler_view)
-    RecyclerView mRecyclerView;
-
-    @BindView(R.id.rl_retry)
-    ViewGroup mRetryView;
-
-    @BindView(R.id.bt_retry)
-    Button mRetryBtn;
+    RecyclerView recyclerView;
 
     @BindView(R.id.rl_progress)
-    ViewGroup mProgressView;
+    ViewGroup progressView;
 
+    @BindView(R.id.swipe_refresh_layout)
+    SwipeRefreshLayout swipeRefreshLayout;
+
+    @BindView(R.id.empty_countries_label)
+    TextView emptyCountriesLabel;
 
     /**
      * Return an Intent to start this Activity.
-     *
      */
-    public static Intent getCallingIntent(Context context) {
-        Intent intent = new Intent(context, CountriesActivity.class);
+    public static Intent getCallingIntent (Context context)
+    {
+        Intent intent = new Intent( context, CountriesActivity.class );
         return intent;
     }
 
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        getActivityComponent().inject(this);
-        setContentView(R.layout.activity_main);
-        setupToolBar();
-        setupDrawer();
+    protected void onCreate (Bundle savedInstanceState)
+    {
+        super.onCreate( savedInstanceState );
+        getActivityComponent( ).inject( this );
+        setContentView( R.layout.activity_main );
+        setupToolBar( );
+        setupDrawer( );
 
-        mCountriesAdapter.setOnItemClickListener(mOnItemClickListener);
+        swipeRefreshLayout.setOnRefreshListener( onRefreshListener );
 
-        mRecyclerView.setAdapter(mCountriesAdapter);
-        mRecyclerView.setLayoutManager(new LinearLayoutManager(this));
+        countriesAdapter.setOnItemClickListener( mOnItemClickListener );
 
-        mCountriesPresenter.attachView(this);
+        recyclerView.setAdapter( countriesAdapter );
+        recyclerView.setLayoutManager( new LinearLayoutManager( this ) );
 
-        mCountriesPresenter.loadCountries();
+        countriesPresenter.attachView( this );
+
+        countriesPresenter.loadCountries( );
     }
 
     @Override
-    protected void onResume() {
-        super.onResume();
-        mCountriesPresenter.resume();
+    protected void onResume ()
+    {
+        super.onResume( );
+        countriesPresenter.resume( );
     }
 
     @Override
-    protected void onPause() {
-        super.onPause();
-        mCountriesPresenter.pause();
+    protected void onPause ()
+    {
+        super.onPause( );
+        countriesPresenter.pause( );
     }
 
     @Override
-    protected void onDestroy() {
-        super.onDestroy();
-        mCountriesPresenter.detachView();
+    protected void onDestroy ()
+    {
+        super.onDestroy( );
+        countriesPresenter.detachView( );
 
     }
 
@@ -99,65 +111,93 @@ public class CountriesActivity extends BaseActivity implements CountriesMvpView,
      *****/
 
     @Override
-    public void showCountries(List<Country> countries) {
-        mCountriesAdapter.setCountries(countries);
+    public void showCountries (List<Country> countries)
+    {
+        countriesAdapter.setCountries( countries );
     }
 
     @Override
-    public void showError() {
-        DialogFactory.createGenericErrorDialog(this, getString(R.string.error_loading_countries))
-                .show();
+    public void showError ()
+    {
+        DialogFactory.createGenericErrorDialog( this, getString( R.string.error_loading_countries ) )
+                .show( );
+        swipeRefreshLayout.setRefreshing( false );
     }
 
     @Override
-    public void countryItemClicked(Country country) {
-        if (getResources().getBoolean(R.bool.isTablet)
-                && ViewUtil.screenOrientation(this) == Configuration.ORIENTATION_LANDSCAPE) {
-            replaceFragment(R.id.fragmentContainer,
-                    CountryDetailFragment.newInstance(country.getCountryCode()), false);
-        } else {
-            mNavigator.navigateToCountryDetails(this, country.getCountryCode());
+    public void countryItemClicked (Country country)
+    {
+        if ( getResources( ).getBoolean( R.bool.isTablet )
+                && ViewUtil.screenOrientation( this ) == Configuration.ORIENTATION_LANDSCAPE )
+        {
+            replaceFragment( R.id.fragmentContainer,
+                    CountryDetailFragment.newInstance( country.getCountryCode( ) ), false );
+        } else
+        {
+            navigator.navigateToCountryDetails( this, country.getCountryCode( ) );
         }
     }
 
     @Override
-    public void showCountriesEmpty() {
-        mCountriesAdapter.setCountries(Collections.<Country>emptyList());
-        mCountriesAdapter.notifyDataSetChanged();
-        Toast.makeText(this, R.string.empty_countries, Toast.LENGTH_LONG).show();
+    public void showCountriesEmpty ()
+    {
+        countriesAdapter.setCountries( Collections.<Country>emptyList( ) );
+        countriesAdapter.notifyDataSetChanged( );
+        emptyCountriesLabel.setVisibility( View.VISIBLE );
+        swipeRefreshLayout.setRefreshing( false );
     }
 
     @Override
-    public void showRetry() {
-        mRetryView.setVisibility(View.VISIBLE);
+    public void showLoading ()
+    {
+        progressView.setVisibility( View.VISIBLE );
     }
 
     @Override
-    public void hideRetry() {
-        mRetryView.setVisibility(View.GONE);
+    public void hideLoading ()
+    {
+        progressView.setVisibility( View.GONE );
     }
 
     @Override
-    public void showLoading() {
-        mProgressView.setVisibility(View.VISIBLE);
+    public void hideEmptyLabel ()
+    {
+        emptyCountriesLabel.setVisibility( View.GONE );
+        swipeRefreshLayout.setRefreshing( false );
     }
 
     @Override
-    public void hideLoading() {
-        mProgressView.setVisibility(View.GONE);
+    public void showEmptyLabel ()
+    {
+        emptyCountriesLabel.setVisibility( View.VISIBLE );
+        swipeRefreshLayout.setRefreshing( false );
     }
 
     private CountriesAdapter.OnItemClickListener mOnItemClickListener =
-            new CountriesAdapter.OnItemClickListener() {
+            new CountriesAdapter.OnItemClickListener( )
+            {
                 @Override
-                public void onCountryItemClicked(Country country) {
-                    if (CountriesActivity.this.mCountriesPresenter != null && country != null) {
-                        CountriesActivity.this.mCountriesPresenter.onCountryClicked(country);
+                public void onCountryItemClicked (Country country)
+                {
+                    if ( CountriesActivity.this.countriesPresenter != null && country != null )
+                    {
+                        CountriesActivity.this.countriesPresenter.onCountryClicked( country );
                     }
                 }
             };
 
-    @OnClick(R.id.bt_retry) void onButtonRetryClick() {
-        startService(SyncService.getStartIntent(this));
-    }
+
+    private SwipeRefreshLayout.OnRefreshListener onRefreshListener =
+            new SwipeRefreshLayout.OnRefreshListener( )
+            {
+                @Override
+                public void onRefresh ()
+                {
+                    SyncService.startService( CountriesActivity.this );
+                    if ( !NetworkUtil.isNetworkConnected( CountriesActivity.this ) )
+                    {
+                        swipeRefreshLayout.setRefreshing( false );
+                    }
+                }
+            };
 }

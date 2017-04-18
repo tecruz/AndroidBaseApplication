@@ -40,11 +40,6 @@
 
         </LinearLayout>
 
-
-        <include
-            layout="@layout/view_retry"
-            />
-
         <include layout="@layout/view_progress" />
 
     </android.support.design.widget.CoordinatorLayout>

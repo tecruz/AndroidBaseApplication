@@ -19,7 +19,8 @@ import rx.Subscriber;
 import rx.Subscription;
 import timber.log.Timber;
 
-public class CountriesPresenter extends BasePresenter<CountriesMvpView> {
+public class CountriesPresenter extends BasePresenter<CountriesMvpView>
+{
 
     private final GetCountriesUsecase mCountriesUsecase;
     private Subscription mSubscription;
@@ -27,86 +28,106 @@ public class CountriesPresenter extends BasePresenter<CountriesMvpView> {
     private boolean mHasCountries;
 
     @Inject
-    public CountriesPresenter(GetCountriesUsecase countriesUsecase,
-                              @ApplicationContext Context context) {
+    public CountriesPresenter (GetCountriesUsecase countriesUsecase,
+                               @ApplicationContext Context context)
+    {
         mCountriesUsecase = countriesUsecase;
         mContext = context;
     }
 
     @Override
-    public void attachView(CountriesMvpView mvpView) {
-        super.attachView(mvpView);
+    public void attachView (CountriesMvpView mvpView)
+    {
+        super.attachView( mvpView );
     }
 
     @Override
-    public void detachView() {
-        super.detachView();
-        if (mSubscription != null) mSubscription.unsubscribe();
+    public void detachView ()
+    {
+        super.detachView( );
+        if ( mSubscription != null ) mSubscription.unsubscribe( );
     }
 
     @Override
-    public void pause() {
-        super.pause();
-        LocalBroadcastManager.getInstance(mContext).unregisterReceiver(mMessageReceiver);
+    public void pause ()
+    {
+        super.pause( );
+        LocalBroadcastManager.getInstance( mContext ).unregisterReceiver( mMessageReceiver );
     }
 
     @Override
-    public void resume() {
-        super.resume();
-        IntentFilter filterEvents = new IntentFilter();
-        filterEvents.addAction(Events.SYNC_COMPLETED.toString());
-        filterEvents.addAction(Events.SYNC_ERROR.toString());
-        filterEvents.addAction(Events.SYNC_STARTED.toString());
-        LocalBroadcastManager.getInstance(mContext)
-                .registerReceiver(mMessageReceiver, filterEvents);
+    public void resume ()
+    {
+        super.resume( );
+        IntentFilter filterEvents = new IntentFilter( );
+        filterEvents.addAction( Events.SYNC_COMPLETED.toString( ) );
+        filterEvents.addAction( Events.SYNC_ERROR.toString( ) );
+        LocalBroadcastManager.getInstance( mContext )
+                .registerReceiver( mMessageReceiver, filterEvents );
     }
 
-    public void loadCountries() {
-        checkViewAttached();
-        getMvpView().hideRetry();
-        mSubscription = mCountriesUsecase.setIsSync(false).execute()
-                .subscribe(new Subscriber<List<Country>>() {
+    public void loadCountries ()
+    {
+        checkViewAttached( );
+        getMvpView( ).hideEmptyLabel( );
+        mSubscription = mCountriesUsecase.setIsSync( false ).execute( )
+                .subscribe( new Subscriber<List<Country>>( )
+                {
                     @Override
-                    public void onCompleted() {
-                        getMvpView().hideLoading();
+                    public void onCompleted ()
+                    {
+                        getMvpView( ).hideLoading( );
                     }
 
                     @Override
-                    public void onError(Throwable e) {
-                        Timber.e(e, "There was an error loading the countries.");
-                        getMvpView().showError();
-                        getMvpView().showRetry();
-                        getMvpView().hideLoading();
+                    public void onError (Throwable e)
+                    {
+                        Timber.e( e, "There was an error loading the countries." );
+                        getMvpView( ).showError( );
+                        getMvpView( ).showEmptyLabel( );
+                        getMvpView( ).hideLoading( );
                     }
 
                     @Override
-                    public void onNext(List<Country> countries) {
-                        if (!countries.isEmpty()) {
+                    public void onNext (List<Country> countries)
+                    {
+                        if ( !countries.isEmpty( ) )
+                        {
                             mHasCountries = true;
-                            getMvpView().showCountries(countries);
+                            getMvpView( ).showCountries( countries );
+                        } else
+                        {
+                            getMvpView( ).showCountriesEmpty( );
                         }
                     }
-                });
+                } );
     }
 
-    public void onCountryClicked(Country country) {
-        getMvpView().countryItemClicked(country);
+    public void onCountryClicked (Country country)
+    {
+        getMvpView( ).countryItemClicked( country );
     }
 
-    private BroadcastReceiver mMessageReceiver = new BroadcastReceiver() {
+    private BroadcastReceiver mMessageReceiver = new BroadcastReceiver( )
+    {
         @Override
-        public void onReceive(Context context, Intent intent) {
-            if (intent.getAction().equals(Events.SYNC_COMPLETED.toString())) {
-                loadCountries();
-            } else if (intent.getAction().equals(Events.SYNC_ERROR.toString())) {
-                getMvpView().hideLoading();
-                if (!mHasCountries) {
-                    getMvpView().showRetry();
-                    getMvpView().showError();
+        public void onReceive (Context context, Intent intent)
+        {
+            if ( intent.getAction( ).equals( Events.SYNC_COMPLETED.toString( ) ) )
+            {
+                loadCountries( );
+            } else if ( intent.getAction( ).equals( Events.SYNC_ERROR.toString( ) ) )
+            {
+                getMvpView( ).hideLoading( );
+                if ( !mHasCountries )
+                {
+                    getMvpView( ).showEmptyLabel( );
+                    getMvpView( ).showError( );
                 }
-            } else {
-                getMvpView().hideRetry();
-                getMvpView().showLoading();
+            } else
+            {
+                getMvpView( ).showLoading( );
+                getMvpView( ).hideEmptyLabel( );
             }
 
         }

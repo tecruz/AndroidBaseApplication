@@ -1,10 +1,16 @@
 package co.base.androidbaseapplication.services;
 
 import android.content.Context;
-import android.content.Intent;
 
+import com.firebase.jobdispatcher.Constraint;
+import com.firebase.jobdispatcher.FirebaseJobDispatcher;
+import com.firebase.jobdispatcher.GooglePlayDriver;
+import com.firebase.jobdispatcher.Job;
 import com.firebase.jobdispatcher.JobParameters;
 import com.firebase.jobdispatcher.JobService;
+import com.firebase.jobdispatcher.Lifetime;
+import com.firebase.jobdispatcher.RetryStrategy;
+import com.firebase.jobdispatcher.Trigger;
 
 import java.util.List;
 
@@ -22,76 +28,109 @@ import rx.Observer;
 import rx.Subscription;
 import timber.log.Timber;
 
-public class SyncService extends JobService {
+public class SyncService extends JobService
+{
 
     @Inject
-    GetCountriesUsecase mGetCountriesUsecase;
+    GetCountriesUsecase getCountriesUsecase;
     @Inject
-    PreferencesUtil mPreferencesUtil;
+    PreferencesUtil preferencesUtil;
     @Inject
-    EventEmitter mEventPostHelper;
-    private Subscription mSubscription;
+    EventEmitter eventEmitter;
+    private Subscription subscription;
 
-    public static Intent getStartIntent(Context context) {
-        return new Intent(context, SyncService.class);
+    public static void startService (Context context)
+    {
+        FirebaseJobDispatcher dispatcher =
+                new FirebaseJobDispatcher( new GooglePlayDriver( context ) );
+
+        Job myJob = dispatcher.newJobBuilder( )
+                // the JobService that will be called
+                .setService( SyncService.class )
+                // uniquely identifies the job
+                .setTag( "sync-service-tag" )
+                // one-off job
+                .setRecurring( false )
+                // persist past a device reboot
+                .setLifetime( Lifetime.FOREVER )
+                // don't overwrite an existing job with the same tag
+                .setReplaceCurrent( true )
+                // retry with exponential backoff
+                .setRetryStrategy( RetryStrategy.DEFAULT_EXPONENTIAL )
+                // constraints that need to be satisfied for the job to run
+                .setConstraints(
+                        Constraint.ON_ANY_NETWORK
+                )
+                //start job immediately
+                .setTrigger( Trigger.executionWindow( 0, 0 ) )
+                .build( );
+
+        dispatcher.mustSchedule( myJob );
     }
 
     @Override
-    public void onCreate() {
-        super.onCreate();
-        AndroidBaseApplication.get(this).getComponent().inject(this);
+    public void onCreate ()
+    {
+        super.onCreate( );
+        AndroidBaseApplication.get( this ).getComponent( ).inject( this );
     }
 
     @Override
-    public boolean onStartJob(final JobParameters job) {
-        Timber.i("Starting sync...");
+    public boolean onStartJob (final JobParameters job)
+    {
+        Timber.i( "Starting sync..." );
 
-        if (mSubscription != null && !mSubscription.isUnsubscribed())
-            mSubscription.unsubscribe();
+        if ( subscription != null && !subscription.isUnsubscribed( ) )
+            subscription.unsubscribe( );
 
-        mSubscription = mGetCountriesUsecase.setIsSync(true).execute()
-                .subscribe(new Observer<List<Country>>() {
+        subscription = getCountriesUsecase.setIsSync( true ).execute( )
+                .subscribe( new Observer<List<Country>>( )
+                {
                     @Override
-                    public void onCompleted() {
-                        Timber.i("Synced successfully!");
-                        long syncTimeStamp = System.currentTimeMillis();
-                        mPreferencesUtil.setLastSyncTimestamp(syncTimeStamp);
-                        mEventPostHelper.postEvent(Events.SYNC_COMPLETED);
-                        jobFinished(job, false);
+                    public void onCompleted ()
+                    {
+                        Timber.i( "Synced successfully!" );
+                        long syncTimeStamp = System.currentTimeMillis( );
+                        preferencesUtil.setLastSyncTimestamp( syncTimeStamp );
+                        eventEmitter.postEvent( Events.SYNC_COMPLETED );
+                        jobFinished( job, false );
                     }
 
                     @Override
-                    public void onError(Throwable e) {
+                    public void onError (Throwable e)
+                    {
                         /*try {
                             error.getErrorBodyAs(ErrorResponse.class);
                         } catch (IOException e1) {
                             e1.printStackTrace();
                         }*/
-                        RetrofitException error = (RetrofitException) e;
-                        Timber.i(ErrorMessageFactory.create(getApplicationContext(),
-                                error.getKind()));
-                        mEventPostHelper.postEvent(Events.SYNC_ERROR);
-                        jobFinished(job, false);
+                        RetrofitException error = ( RetrofitException ) e;
+                        Timber.i( ErrorMessageFactory.create( getApplicationContext( ),
+                                error.getKind( ) ) );
+                        eventEmitter.postEvent( Events.SYNC_ERROR );
+                        jobFinished( job, false );
                     }
 
                     @Override
-                    public void onNext(List<Country> countries) {
+                    public void onNext (List<Country> countries)
+                    {
                     }
-                });
+                } );
 
-        mEventPostHelper.postEvent(Events.SYNC_STARTED);
 
         return true;
     }
 
     @Override
-    public boolean onStopJob(JobParameters job) {
+    public boolean onStopJob (JobParameters job)
+    {
         return false;
     }
 
     @Override
-    public void onDestroy() {
-        if (mSubscription != null) mSubscription.unsubscribe();
-        super.onDestroy();
+    public void onDestroy ()
+    {
+        if ( subscription != null ) subscription.unsubscribe( );
+        super.onDestroy( );
     }
 }

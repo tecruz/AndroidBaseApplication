@@ -19,7 +19,6 @@ import java.lang.reflect.Type;
 import java.util.Collection;
 import java.util.List;
 
-import co.base.androidbaseapplication.ApplicationTestCase;
 import co.base.androidbaseapplication.data.entity.CountryEntity;
 import co.base.androidbaseapplication.data.realm.RealmDouble;
 import co.base.androidbaseapplication.ui.entity.Country;
@@ -30,7 +29,8 @@ import static org.hamcrest.CoreMatchers.is;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.core.IsEqual.equalTo;
 
-public class CountryEntityJsonMapperTest extends ApplicationTestCase {
+public class CountryEntityJsonMapperTest
+{
 
     private static final String JSON_RESPONSE_COUNTRY = "{\n" +
             "\t\"name\": \"Åland Islands\",\n" +
@@ -179,66 +179,82 @@ public class CountryEntityJsonMapperTest extends ApplicationTestCase {
     private List<CountryEntity> mCountryItemResponseList;
 
     @Rule
-    public ExpectedException expectedException = ExpectedException.none();
+    public ExpectedException expectedException = ExpectedException.none( );
 
     @Before
-    public void setUp() {
-        Type token = new TypeToken<RealmList<RealmDouble>>() { }.getType();
-        Gson gson = new GsonBuilder()
-                .setExclusionStrategies(new ExclusionStrategy() {
+    public void setUp ()
+    {
+        Type token = new TypeToken<RealmList<RealmDouble>>( )
+        {
+        }.getType( );
+        Gson gson = new GsonBuilder( )
+                .setExclusionStrategies( new ExclusionStrategy( )
+                {
                     @Override
-                    public boolean shouldSkipField(FieldAttributes f) {
-                        return f.getDeclaringClass().equals(RealmObject.class);
+                    public boolean shouldSkipField (FieldAttributes f)
+                    {
+                        return f.getDeclaringClass( ).equals( RealmObject.class );
                     }
 
                     @Override
-                    public boolean shouldSkipClass(Class<?> clazz) {
+                    public boolean shouldSkipClass (Class<?> clazz)
+                    {
                         return false;
                     }
-                })
-                .registerTypeAdapter(token, new TypeAdapter<RealmList<RealmDouble>>() {
+                } )
+                .registerTypeAdapter( token, new TypeAdapter<RealmList<RealmDouble>>( )
+                {
 
                     @Override
-                    public void write(JsonWriter out, RealmList<RealmDouble> value)
-                            throws IOException {
+                    public void write (JsonWriter out, RealmList<RealmDouble> value)
+                            throws IOException
+                    {
                         // Ignore
                     }
 
                     @Override
-                    public RealmList<RealmDouble> read(JsonReader in) throws IOException {
-                        RealmList<RealmDouble> list = new RealmList<>();
-                        in.beginArray();
-                        while (in.hasNext()) {
-                            list.add(new RealmDouble(in.nextDouble()));
+                    public RealmList<RealmDouble> read (JsonReader in) throws IOException
+                    {
+                        RealmList<RealmDouble> list = new RealmList<>( );
+                        in.beginArray( );
+                        while ( in.hasNext( ) )
+                        {
+                            list.add( new RealmDouble( in.nextDouble( ) ) );
                         }
-                        in.endArray();
+                        in.endArray( );
                         return list;
                     }
-                })
-                .create();
-        mCountryItemResponse = gson.fromJson(JSON_RESPONSE_COUNTRY,
-                new TypeToken<CountryEntity>() { }.getType());
-        mCountryItemResponseList = gson.fromJson(JSON_RESPONSE_COUNTRIES_COLLECTION,
-                new TypeToken<List<CountryEntity>>() { }.getType());
+                } )
+                .create( );
+        mCountryItemResponse = gson.fromJson( JSON_RESPONSE_COUNTRY,
+                new TypeToken<CountryEntity>( )
+                {
+                }.getType( ) );
+        mCountryItemResponseList = gson.fromJson( JSON_RESPONSE_COUNTRIES_COLLECTION,
+                new TypeToken<List<CountryEntity>>( )
+                {
+                }.getType( ) );
     }
 
     @Test
-    public void testTransformCountryEntityHappyCase() {
+    public void testTransformCountryEntityHappyCase ()
+    {
 
-        Country countryEntity = CountryItemMapper.transform(mCountryItemResponse);
+        Country countryEntity = CountryItemMapper.transform( mCountryItemResponse );
 
-        assertThat(countryEntity.getCountryCode(), is("AX"));
-        assertThat(countryEntity.getCountryName(), is(equalTo("Åland Islands")));
+        assertThat( countryEntity.getCountryCode( ), is( "AX" ) );
+        assertThat( countryEntity.getCountryName( ), is( equalTo( "Åland Islands" ) ) );
     }
 
     @Test
-    public void testTransformCountryEntityCollectionHappyCase() {
+    public void testTransformCountryEntityCollectionHappyCase ()
+    {
         Collection<Country> countryEntityCollection =
-                CountryItemMapper.transform(mCountryItemResponseList);
+                CountryItemMapper.transform( mCountryItemResponseList );
 
-        assertThat(((Country) countryEntityCollection.toArray()[0]).getCountryCode(), is("AX"));
-        assertThat(((Country) countryEntityCollection.toArray()[1]).getCountryCode(), is("AL"));
-        assertThat(countryEntityCollection.size(), is(2));
+        assertThat( (( Country ) countryEntityCollection.toArray( )[0]).getCountryCode( ), is( "AX" ) );
+        assertThat( (( Country ) countryEntityCollection.toArray( )[1]).getCountryCode( ), is( "AL" ) );
+        assertThat( countryEntityCollection.size( ), is( 2 ) );
     }
 
 }

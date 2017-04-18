@@ -24,109 +24,122 @@ import co.base.androidbaseapplication.injection.module.ActivityModule;
 import co.base.androidbaseapplication.ui.navigation.Navigator;
 import co.base.androidbaseapplication.ui.custom.NavigationDrawerFragment;
 
-public class BaseActivity extends AppCompatActivity {
+public class BaseActivity extends AppCompatActivity
+{
 
-    private ActivityComponent mActivityComponent;
-    private NavigationDrawerFragment mNavigationDrawerFragment;
+    private ActivityComponent activityComponent;
+    private NavigationDrawerFragment navigationDrawerFragment;
 
     @BindView(R.id.my_toolbar)
-    protected Toolbar mToolbar;
+    protected Toolbar toolbar;
 
     @Nullable
     @BindView(R.id.drawer_layout)
-    protected DrawerLayout mDrawer;
+    protected DrawerLayout drawer;
 
     @Inject
-    protected Navigator mNavigator;
+    protected Navigator navigator;
 
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
+    protected void onCreate (Bundle savedInstanceState)
+    {
+        super.onCreate( savedInstanceState );
     }
 
     @Override
-    public void setContentView(int layoutResID) {
-        super.setContentView(layoutResID);
-        ButterKnife.bind(this);
+    public void setContentView (int layoutResID)
+    {
+        super.setContentView( layoutResID );
+        ButterKnife.bind( this );
     }
 
     @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
+    public boolean onCreateOptionsMenu (Menu menu)
+    {
         // Inflate the menu; this adds items to the action bar if it is present.
         //getMenuInflater().inflate(R.menu.main, menu);
         return true;
     }
 
     @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
+    public boolean onOptionsItemSelected (MenuItem item)
+    {
         // Handle action bar item clicks here. The action bar will
         // automatically handle clicks on the Home/Up button, so long
         // as you specify a parent activity in AndroidManifest.xml.
-        int id = item.getItemId();
+        int id = item.getItemId( );
 
-        switch (id) {
+        switch ( id )
+        {
             case android.R.id.home:
-                onBackPressed();
+                onBackPressed( );
                 break;
             default:
                 break;
         }
 
-        return super.onOptionsItemSelected(item);
+        return super.onOptionsItemSelected( item );
     }
 
     @Override
-    public void onBackPressed() {
-        if (mDrawer != null && mDrawer.isDrawerOpen(GravityCompat.START)) {
-            mDrawer.closeDrawer(GravityCompat.START);
-        } else {
-            super.onBackPressed();
+    public void onBackPressed ()
+    {
+        if ( drawer != null && drawer.isDrawerOpen( GravityCompat.START ) )
+        {
+            drawer.closeDrawer( GravityCompat.START );
+        } else
+        {
+            super.onBackPressed( );
         }
     }
 
 
-    public ActivityComponent getActivityComponent() {
-        if (mActivityComponent == null) {
-            mActivityComponent = DaggerActivityComponent.builder()
-                    .activityModule(new ActivityModule(this))
-                    .applicationComponent(AndroidBaseApplication.get(this).getComponent())
-                    .build();
+    public ActivityComponent getActivityComponent ()
+    {
+        if ( activityComponent == null )
+        {
+            activityComponent = DaggerActivityComponent.builder( )
+                    .applicationComponent( AndroidBaseApplication.get( this ).getComponent( ) )
+                    .build( );
         }
-        return mActivityComponent;
+        return activityComponent;
     }
 
     /**
      * Adds a {@link Fragment} to this activity's layout.
      *
      * @param containerViewId The container view to where add the fragment.
-     * @param fragment The fragment to be replaced.
+     * @param fragment        The fragment to be replaced.
      */
-    protected void replaceFragment(int containerViewId, Fragment fragment, boolean addToBackStack) {
+    protected void replaceFragment (int containerViewId, Fragment fragment, boolean addToBackStack)
+    {
         FragmentTransaction fragmentTransaction =
-                this.getSupportFragmentManager().beginTransaction();
-        fragmentTransaction.replace(containerViewId, fragment);
-        if (addToBackStack)
-            fragmentTransaction.addToBackStack(null);
-        fragmentTransaction.commit();
+                this.getSupportFragmentManager( ).beginTransaction( );
+        fragmentTransaction.replace( containerViewId, fragment );
+        if ( addToBackStack )
+            fragmentTransaction.addToBackStack( null );
+        fragmentTransaction.commit( );
     }
 
 
-    protected void setupToolBar() {
-        mToolbar.setTitle(R.string.app_name);
-        setSupportActionBar(mToolbar);
+    protected void setupToolBar ()
+    {
+        toolbar.setTitle( R.string.app_name );
+        setSupportActionBar( toolbar );
     }
 
-    protected void setupDrawer() {
-        mNavigationDrawerFragment = (NavigationDrawerFragment)
-                getSupportFragmentManager().findFragmentById(R.id.navigation_drawer);
+    protected void setupDrawer ()
+    {
+        navigationDrawerFragment = ( NavigationDrawerFragment )
+                getSupportFragmentManager( ).findFragmentById( R.id.navigation_drawer );
 
-        mNavigationDrawerFragment.setUp(R.id.navigation_drawer,
-                (DrawerLayout) findViewById(R.id.drawer_layout));
+        navigationDrawerFragment.setUp( R.id.navigation_drawer,
+                ( DrawerLayout ) findViewById( R.id.drawer_layout ) );
 
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
-                this, (DrawerLayout) findViewById(R.id.drawer_layout),
-                mToolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
-        mDrawer.addDrawerListener(toggle);
-        toggle.syncState();
+                this, ( DrawerLayout ) findViewById( R.id.drawer_layout ),
+                toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close );
+        drawer.addDrawerListener( toggle );
+        toggle.syncState( );
     }
 }

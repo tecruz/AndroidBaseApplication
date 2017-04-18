@@ -2,42 +2,63 @@ package co.base.androidbaseapplication.ui.entity;
 
 import io.realm.annotations.Required;
 
-public class Country {
+public class Country
+{
 
-    @Required private String mCountryCode;
+    @Required
+    private String mCountryCode;
     private String mCountryName;
     private Double mLat;
     private Double mLng;
+    private String flagCountryCode;
 
-    public String getCountryCode() {
+    public String getCountryCode ()
+    {
         return mCountryCode;
     }
 
-    public void setCountryCode(String countryCode) {
+    public void setCountryCode (String countryCode)
+    {
         this.mCountryCode = countryCode;
     }
 
-    public String getCountryName() {
+    public String getCountryName ()
+    {
         return mCountryName;
     }
 
-    public void setCountryName(String countryName) {
+    public void setCountryName (String countryName)
+    {
         this.mCountryName = countryName;
     }
 
-    public Double getLat() {
+    public Double getLat ()
+    {
         return mLat;
     }
 
-    public void setLat(Double lat) {
+    public void setLat (Double lat)
+    {
         this.mLat = lat;
     }
 
-    public Double getLng() {
+    public Double getLng ()
+    {
         return mLng;
     }
 
-    public void setLng(Double lng) {
+    public void setLng (Double lng)
+    {
         this.mLng = lng;
+    }
+
+    public String getFlagCountryCode ()
+    {
+        return flagCountryCode;
+    }
+
+    public void setFlagCountryCode (String flagCountryCode)
+    {
+        this.flagCountryCode = flagCountryCode;
     }
 }

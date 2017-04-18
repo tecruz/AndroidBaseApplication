@@ -6,8 +6,9 @@ import co.base.androidbaseapplication.data.entity.CountryEntity;
 import retrofit2.http.GET;
 import rx.Observable;
 
-public interface RestApi {
+public interface RestApi
+{
 
-    @GET("region/europe")
-    Observable<List<CountryEntity>> getCountries();
+    @GET("all")
+    Observable<List<CountryEntity>> getCountries ();
 }
