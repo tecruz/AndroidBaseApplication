@@ -15,7 +15,6 @@ import co.base.androidbaseapplication.events.Events;
 import co.base.androidbaseapplication.injection.ApplicationContext;
 import co.base.androidbaseapplication.ui.entity.Country;
 import co.base.androidbaseapplication.ui.base.BasePresenter;
-import rx.Subscriber;
 import rx.Subscription;
 import timber.log.Timber;
 

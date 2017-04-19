@@ -186,7 +186,8 @@ public class CountryEntityJsonMapperTest
     {
         Type token = new TypeToken<RealmList<RealmDouble>>( )
         {
-        }.getType( );
+        }
+                .getType( );
         Gson gson = new GsonBuilder( )
                 .setExclusionStrategies( new ExclusionStrategy( )
                 {
@@ -252,8 +253,10 @@ public class CountryEntityJsonMapperTest
         Collection<Country> countryEntityCollection =
                 CountryItemMapper.transform( mCountryItemResponseList );
 
-        assertThat( (( Country ) countryEntityCollection.toArray( )[0]).getCountryCode( ), is( "AX" ) );
-        assertThat( (( Country ) countryEntityCollection.toArray( )[1]).getCountryCode( ), is( "AL" ) );
+        assertThat( (( Country ) countryEntityCollection.toArray( )[0])
+                .getCountryCode( ), is( "AX" ) );
+        assertThat( (( Country ) countryEntityCollection.toArray( )[1])
+                .getCountryCode( ), is( "AL" ) );
         assertThat( countryEntityCollection.size( ), is( 2 ) );
     }
 

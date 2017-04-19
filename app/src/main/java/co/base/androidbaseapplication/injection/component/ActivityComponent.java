@@ -12,9 +12,12 @@ import dagger.Component;
  */
 @PerActivity
 @Component(dependencies = ApplicationComponent.class, modules = ActivityModule.class)
-public interface ActivityComponent {
+public interface ActivityComponent
+{
 
-    void inject(CountriesActivity countriesActivity);
-    void inject(CountryDetailActivity countryDetailActivity);
-    void inject(CountryDetailFragment countryDetailFragment);
+    void inject (CountriesActivity countriesActivity);
+
+    void inject (CountryDetailActivity countryDetailActivity);
+
+    void inject (CountryDetailFragment countryDetailFragment);
 }

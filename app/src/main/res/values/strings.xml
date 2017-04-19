@@ -1,10 +1,7 @@
 <resources>
     <string name="app_name">AndroidBaseApplication</string>
 
-    <string name="action_settings">Settings</string>
-
     <string name="dialog_action_ok">OK</string>
-    <string name="dialog_action_cancel">Cancel</string>
     <string name="dialog_error_title">Sorry</string>
 
     <string name="empty_countries">There aren\'t any countries</string>
@@ -12,10 +9,9 @@
     <string name="exception_message_no_connection">No Internet connection</string>
     <string name="unexpected_error">Unexpected error</string>
 
-    <!-- TODO: Remove or change this placeholder text -->
-    <string name="hello_blank_fragment">Hello blank fragment</string>
-    <string name="btn_text_retry">Retry</string>
-
     <string name="navigation_drawer_open">Open navigation drawer</string>
     <string name="navigation_drawer_close">Close navigation drawer</string>
+
+    <string name="github_label">Github</string>
+    <string name="header_image">Header image</string>
 </resources>

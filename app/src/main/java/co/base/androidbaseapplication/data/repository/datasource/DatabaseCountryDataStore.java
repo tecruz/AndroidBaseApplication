@@ -6,8 +6,8 @@ import co.base.androidbaseapplication.data.cache.CountryCache;
 import co.base.androidbaseapplication.data.entity.CountryEntity;
 import rx.Observable;
 
-public class DatabaseCountryDataStore implements CountryDataStore {
-
+public class DatabaseCountryDataStore implements CountryDataStore
+{
     private final CountryCache mCountryCache;
 
     /**
@@ -15,13 +15,15 @@ public class DatabaseCountryDataStore implements CountryDataStore {
      *
      * @param countryCache A {@link CountryCache} to cache data retrieved from the api.
      */
-    DatabaseCountryDataStore(CountryCache countryCache) {
+    DatabaseCountryDataStore (CountryCache countryCache)
+    {
         mCountryCache = countryCache;
     }
 
 
     @Override
-    public Observable<List<CountryEntity>> countryEntityList() {
-        return mCountryCache.getCountries();
+    public Observable<List<CountryEntity>> countryEntityList ()
+    {
+        return mCountryCache.getCountries( );
     }
 }

@@ -16,40 +16,48 @@ import java.io.IOException;
 import java.io.InputStream;
 
 
-public class SvgBitmapDecoder implements ResourceDecoder<InputStream, Bitmap> {
+public class SvgBitmapDecoder implements ResourceDecoder<InputStream, Bitmap>
+{
     private final BitmapPool bitmapPool;
 
-    public SvgBitmapDecoder(Context context) {
-        this( Glide.get(context).getBitmapPool());
+    public SvgBitmapDecoder (Context context)
+    {
+        this( Glide.get( context ).getBitmapPool( ) );
     }
 
-    public SvgBitmapDecoder(BitmapPool bitmapPool) {
+    public SvgBitmapDecoder (BitmapPool bitmapPool)
+    {
         this.bitmapPool = bitmapPool;
     }
 
-    public Resource<Bitmap> decode(InputStream source, int width, int height) throws IOException
+    public Resource<Bitmap> decode (InputStream source, int width, int height) throws IOException
     {
-        try {
-            SVG svg = SVG.getFromInputStream(source);
-            Bitmap bitmap = findBitmap(width, height);
-            Canvas canvas = new Canvas(bitmap);
-            svg.renderToCanvas(canvas);
-            return BitmapResource.obtain(bitmap, bitmapPool);
-        } catch (SVGParseException ex) {
-            throw new IOException("Cannot load SVG from stream", ex);
+        try
+        {
+            SVG svg = SVG.getFromInputStream( source );
+            Bitmap bitmap = findBitmap( width, height );
+            Canvas canvas = new Canvas( bitmap );
+            svg.renderToCanvas( canvas );
+            return BitmapResource.obtain( bitmap, bitmapPool );
+        } catch ( SVGParseException ex )
+        {
+            throw new IOException( "Cannot load SVG from stream", ex );
         }
     }
 
-    private Bitmap findBitmap(int width, int height) {
-        Bitmap bitmap = bitmapPool.get(width, height, Bitmap.Config.ARGB_8888);
-        if (bitmap == null) {
-            bitmap = Bitmap.createBitmap(width, height, Bitmap.Config.ARGB_8888);
+    private Bitmap findBitmap (int width, int height)
+    {
+        Bitmap bitmap = bitmapPool.get( width, height, Bitmap.Config.ARGB_8888 );
+        if ( bitmap == null )
+        {
+            bitmap = Bitmap.createBitmap( width, height, Bitmap.Config.ARGB_8888 );
         }
         return bitmap;
     }
 
     @Override
-    public String getId() {
+    public String getId ()
+    {
         return "";
     }
 }

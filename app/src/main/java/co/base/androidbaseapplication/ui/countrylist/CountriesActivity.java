@@ -10,7 +10,6 @@ import android.support.v7.widget.RecyclerView;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import java.util.Collections;
 import java.util.List;
@@ -119,8 +118,8 @@ public class CountriesActivity extends BaseActivity implements CountriesMvpView,
     @Override
     public void showError ()
     {
-        DialogFactory.createGenericErrorDialog( this, getString( R.string.error_loading_countries ) )
-                .show( );
+        DialogFactory.createGenericErrorDialog( this,
+                getString( R.string.error_loading_countries ) ).show( );
         swipeRefreshLayout.setRefreshing( false );
     }
 
@@ -173,8 +172,8 @@ public class CountriesActivity extends BaseActivity implements CountriesMvpView,
         swipeRefreshLayout.setRefreshing( false );
     }
 
-    private CountriesAdapter.OnItemClickListener mOnItemClickListener =
-            new CountriesAdapter.OnItemClickListener( )
+    private CountriesAdapter.OnItemClickListener mOnItemClickListener
+            = new CountriesAdapter.OnItemClickListener( )
             {
                 @Override
                 public void onCountryItemClicked (Country country)
@@ -187,8 +186,8 @@ public class CountriesActivity extends BaseActivity implements CountriesMvpView,
             };
 
 
-    private SwipeRefreshLayout.OnRefreshListener onRefreshListener =
-            new SwipeRefreshLayout.OnRefreshListener( )
+    private SwipeRefreshLayout.OnRefreshListener onRefreshListener
+            = new SwipeRefreshLayout.OnRefreshListener( )
             {
                 @Override
                 public void onRefresh ()

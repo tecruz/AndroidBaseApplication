@@ -92,7 +92,7 @@ public class SyncService extends JobService
                         Timber.i( "Synced successfully!" );
                         long syncTimeStamp = System.currentTimeMillis( );
                         preferencesUtil.setLastSyncTimestamp( syncTimeStamp );
-                        eventEmitter.postEvent( Events.SYNC_COMPLETED );
+                        eventEmitter.postEvent( new Events( Events.SYNC_COMPLETED ) );
                         jobFinished( job, false );
                     }
 
@@ -107,7 +107,7 @@ public class SyncService extends JobService
                         RetrofitException error = ( RetrofitException ) e;
                         Timber.i( ErrorMessageFactory.create( getApplicationContext( ),
                                 error.getKind( ) ) );
-                        eventEmitter.postEvent( Events.SYNC_ERROR );
+                        eventEmitter.postEvent( new Events( Events.SYNC_ERROR ) );
                         jobFinished( job, false );
                     }
 

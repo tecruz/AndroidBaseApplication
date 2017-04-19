@@ -5,6 +5,6 @@
         <item
             android:id="@+id/nav_github"
             android:icon="@android:drawable/ic_menu_share"
-            android:title="Github" />
+            android:title="@string/github_label" />
     </group>
 </menu>

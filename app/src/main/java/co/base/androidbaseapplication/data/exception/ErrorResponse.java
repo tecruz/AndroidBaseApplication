@@ -1,23 +1,27 @@
 package co.base.androidbaseapplication.data.exception;
 
-public class ErrorResponse {
-
+public class ErrorResponse
+{
     private int mStatusCode;
     private String mErrorMessage;
 
-    public int getStatusCode() {
+    public int getStatusCode ()
+    {
         return mStatusCode;
     }
 
-    public void setStatusCode(int statusCode) {
+    public void setStatusCode (int statusCode)
+    {
         this.mStatusCode = statusCode;
     }
 
-    public String getErrorMessage() {
+    public String getErrorMessage ()
+    {
         return mErrorMessage;
     }
 
-    public void setErrorMessage(String errorMessage) {
+    public void setErrorMessage (String errorMessage)
+    {
         this.mErrorMessage = errorMessage;
     }
 }

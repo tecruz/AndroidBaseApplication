@@ -16,14 +16,21 @@ import dagger.Component;
 
 @Singleton
 @Component(modules = ApplicationModule.class)
-public interface ApplicationComponent {
+public interface ApplicationComponent
+{
 
-    void inject(SyncService syncService);
+    void inject (SyncService syncService);
 
-    @ApplicationContext Context context();
-    Application application();
-    CountryRepository countryRepository();
-    Navigator navigator();
-    PreferencesUtil preferencesHelper();
-    EventEmitter eventEmitterHelper();
+    @ApplicationContext
+    Context context ();
+
+    Application application ();
+
+    CountryRepository countryRepository ();
+
+    Navigator navigator ();
+
+    PreferencesUtil preferencesHelper ();
+
+    EventEmitter eventEmitterHelper ();
 }

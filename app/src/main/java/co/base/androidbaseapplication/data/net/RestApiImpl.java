@@ -37,74 +37,89 @@ import rx.Observable;
  * {@link RestApi} implementation for retrieving data from the network.
  */
 @Singleton
-public class RestApiImpl implements RestApi {
-
+public class RestApiImpl implements RestApi
+{
     private final RestApi mRestApi;
 
     @Inject
-    public RestApiImpl(@ApplicationContext Context context) {
+    public RestApiImpl (@ApplicationContext Context context)
+    {
 
         OkHttpClient client;
 
-        if (BuildConfig.DEBUG) {
+        if ( BuildConfig.DEBUG )
+        {
 
-            HttpLoggingInterceptor loggingInterceptor = new HttpLoggingInterceptor();
-            loggingInterceptor.setLevel(HttpLoggingInterceptor.Level.BODY);
+            HttpLoggingInterceptor loggingInterceptor = new HttpLoggingInterceptor( );
+            loggingInterceptor.setLevel( HttpLoggingInterceptor.Level.BODY );
 
-            client = new OkHttpClient.Builder().addInterceptor(new NetInterceptor(context , ""))
-                    .addInterceptor(loggingInterceptor).build();
+            client = new OkHttpClient.Builder( ).addInterceptor( new NetInterceptor( context, "" ) )
+                    .addInterceptor( loggingInterceptor ).build( );
 
-        } else {
-            client = new OkHttpClient.Builder()
-                    .addInterceptor(new NetInterceptor(context , "")).build();
+        } else
+        {
+            client = new OkHttpClient.Builder( )
+                    .addInterceptor( new NetInterceptor( context, "" ) ).build( );
         }
 
-        Type token = new TypeToken<RealmList<RealmDouble>>() { }.getType();
-        Gson gson = new GsonBuilder()
-                .setExclusionStrategies(new ExclusionStrategy() {
+        Type token = new TypeToken<RealmList<RealmDouble>>( )
+        {
+        }
+                .getType( );
+
+        Gson gson = new GsonBuilder( )
+                .setExclusionStrategies( new ExclusionStrategy( )
+                {
                     @Override
-                    public boolean shouldSkipField(FieldAttributes f) {
-                        return f.getDeclaringClass().equals(RealmObject.class);
+                    public boolean shouldSkipField (FieldAttributes f)
+                    {
+                        return f.getDeclaringClass( ).equals( RealmObject.class );
                     }
 
                     @Override
-                    public boolean shouldSkipClass(Class<?> clazz) {
+                    public boolean shouldSkipClass (Class<?> clazz)
+                    {
                         return false;
                     }
-                })
-                .registerTypeAdapter(token, new TypeAdapter<RealmList<RealmDouble>>() {
+                } )
+                .registerTypeAdapter( token, new TypeAdapter<RealmList<RealmDouble>>( )
+                {
 
                     @Override
-                    public void write(JsonWriter out, RealmList<RealmDouble> value)
-                            throws IOException {
+                    public void write (JsonWriter out, RealmList<RealmDouble> value)
+                            throws IOException
+                    {
                         // Ignore
                     }
 
                     @Override
-                    public RealmList<RealmDouble> read(JsonReader in) throws IOException {
-                        RealmList<RealmDouble> list = new RealmList<>();
-                        in.beginArray();
-                        while (in.hasNext()) {
-                            list.add(new RealmDouble(in.nextDouble()));
+                    public RealmList<RealmDouble> read (JsonReader in) throws IOException
+                    {
+                        RealmList<RealmDouble> list = new RealmList<>( );
+                        in.beginArray( );
+                        while ( in.hasNext( ) )
+                        {
+                            list.add( new RealmDouble( in.nextDouble( ) ) );
                         }
-                        in.endArray();
+                        in.endArray( );
                         return list;
                     }
-                })
-                .create();
+                } )
+                .create( );
 
-        Retrofit retrofit = new Retrofit.Builder()
-                .baseUrl(context.getString(R.string.API_BASE_URL))
-                .addConverterFactory(GsonConverterFactory.create(gson))
-                .addCallAdapterFactory(RxErrorHandlingCallAdapterFactory.create())
-                .client(client)
-                .build();
+        Retrofit retrofit = new Retrofit.Builder( )
+                .baseUrl( context.getString( R.string.API_BASE_URL ) )
+                .addConverterFactory( GsonConverterFactory.create( gson ) )
+                .addCallAdapterFactory( RxErrorHandlingCallAdapterFactory.create( ) )
+                .client( client )
+                .build( );
 
-        mRestApi = retrofit.create(RestApi.class);
+        mRestApi = retrofit.create( RestApi.class );
     }
 
     @Override
-    public Observable<List<CountryEntity>> getCountries() {
-        return mRestApi.getCountries();
+    public Observable<List<CountryEntity>> getCountries ()
+    {
+        return mRestApi.getCountries( );
     }
 }

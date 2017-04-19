@@ -14,46 +14,54 @@ import android.view.ViewGroup;
 import co.base.androidbaseapplication.Config;
 import co.base.androidbaseapplication.R;
 
-public class NavigationDrawerFragment extends Fragment {
+public class NavigationDrawerFragment extends Fragment
+{
 
-    private DrawerLayout mDrawerLayout;
-    private NavigationView mNavigationViewDrawer;
+    private DrawerLayout drawerLayout;
+    private NavigationView navigationViewDrawer;
 
 
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
-                             Bundle savedInstanceState) {
-        mNavigationViewDrawer = (NavigationView) inflater.inflate(
-                R.layout.fragment_navigation_drawer, container, false);
-        return mNavigationViewDrawer;
+    public View onCreateView (LayoutInflater inflater, ViewGroup container,
+                              Bundle savedInstanceState)
+    {
+        navigationViewDrawer = ( NavigationView ) inflater.inflate(
+                R.layout.fragment_navigation_drawer, container, false );
+        return navigationViewDrawer;
     }
 
-    public void setUp(int fragmentId, DrawerLayout drawerLayout) {
+    public void setUp (int fragmentId, DrawerLayout drawerLayout)
+    {
 
-        mDrawerLayout = drawerLayout;
+        this.drawerLayout = drawerLayout;
         // Setup drawer view
-        setupDrawerContent();
+        setupDrawerContent( );
     }
 
-    private void setupDrawerContent() {
-        mNavigationViewDrawer.setNavigationItemSelectedListener(
-                new NavigationView.OnNavigationItemSelectedListener() {
+    private void setupDrawerContent ()
+    {
+        navigationViewDrawer.setNavigationItemSelectedListener(
+                new NavigationView.OnNavigationItemSelectedListener( )
+                {
                     @Override
-                    public boolean onNavigationItemSelected(MenuItem menuItem) {
-                        selectDrawerItem(menuItem);
+                    public boolean onNavigationItemSelected (MenuItem menuItem)
+                    {
+                        selectDrawerItem( menuItem );
                         return true;
                     }
-                });
+                } );
     }
 
-    public void selectDrawerItem(MenuItem menuItem) {
+    public void selectDrawerItem (MenuItem menuItem)
+    {
         // Create a new fragment and specify the fragment to show based on nav item clicked
         Fragment fragment = null;
         Class fragmentClass;
-        switch (menuItem.getItemId()) {
+        switch ( menuItem.getItemId( ) )
+        {
             case R.id.nav_github:
                 //fragmentClass = FirstFragment.class;
-                Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse(Config.GITHUB_URL));
-                startActivity(intent);
+                Intent intent = new Intent( Intent.ACTION_VIEW, Uri.parse( Config.GITHUB_URL ) );
+                startActivity( intent );
                 break;
             default:
                 break;
@@ -74,7 +82,7 @@ public class NavigationDrawerFragment extends Fragment {
         // Set action bar title
         //setTitle(menuItem.getTitle());
         // Close the navigation drawer
-        //mDrawerLayout.closeDrawer(GravityCompat.START);
+        //drawerLayout.closeDrawer(GravityCompat.START);
     }
 
 }

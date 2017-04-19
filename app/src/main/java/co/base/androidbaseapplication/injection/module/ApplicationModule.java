@@ -17,30 +17,39 @@ import dagger.Provides;
  * Provide application-level dependencies.
  */
 @Module
-public class ApplicationModule {
+public class ApplicationModule
+{
     protected final Application mApplication;
 
-    public ApplicationModule(Application application) {
+    public ApplicationModule (Application application)
+    {
         mApplication = application;
     }
 
     @Provides
-    Application provideApplication() {
+    Application provideApplication ()
+    {
         return mApplication;
     }
 
     @Provides
     @ApplicationContext
-    Context provideContext() {
+    Context provideContext ()
+    {
         return mApplication;
     }
 
-    @Provides @Singleton CountryCache provideCountryCache(CountryCacheImpl countryCache) {
+    @Provides
+    @Singleton
+    CountryCache provideCountryCache (CountryCacheImpl countryCache)
+    {
         return countryCache;
     }
 
-    @Provides @Singleton
-    CountryRepository provideCountryRepository(CountryDataRepository countryDataRepository) {
+    @Provides
+    @Singleton
+    CountryRepository provideCountryRepository (CountryDataRepository countryDataRepository)
+    {
         return countryDataRepository;
     }
 }

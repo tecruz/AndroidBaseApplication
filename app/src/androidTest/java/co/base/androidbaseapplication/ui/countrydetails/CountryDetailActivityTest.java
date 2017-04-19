@@ -18,24 +18,28 @@ import static android.support.test.espresso.matcher.ViewMatchers.isDisplayed;
 import static android.support.test.espresso.matcher.ViewMatchers.withId;
 
 @RunWith(AndroidJUnit4.class)
-public class CountryDetailActivityTest {
+public class CountryDetailActivityTest
+{
     @Rule
-    public ActivityTestRule<CountryDetailActivity> mActivityRule =
-            new ActivityTestRule<CountryDetailActivity>(CountryDetailActivity.class) {
+    public ActivityTestRule<CountryDetailActivity> mActivityRule
+            = new ActivityTestRule<CountryDetailActivity>( CountryDetailActivity.class )
+            {
                 @Override
-                protected Intent getActivityIntent() {
-                    Context targetContext = InstrumentationRegistry.getInstrumentation()
-                            .getTargetContext();
-                    Intent result = new Intent(targetContext, CountryDetailActivity.class);
-                    result.putExtra("STATE_PARAM_COUNTRY_CODE", "pt");
+                protected Intent getActivityIntent ()
+                {
+                    Context targetContext = InstrumentationRegistry.getInstrumentation( )
+                            .getTargetContext( );
+                    Intent result = new Intent( targetContext, CountryDetailActivity.class );
+                    result.putExtra( "STATE_PARAM_COUNTRY_CODE", "pt" );
                     return result;
                 }
             };
 
     @Test
-    public void testWebViewIsShown () {
-        Espresso.onView(withId(R.id.webView))
-                .check(matches(isDisplayed()));
+    public void testWebViewIsShown ()
+    {
+        Espresso.onView( withId( R.id.webView ) )
+                .check( matches( isDisplayed( ) ) );
 
     }
 }

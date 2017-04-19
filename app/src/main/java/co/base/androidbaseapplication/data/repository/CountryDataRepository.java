@@ -18,7 +18,8 @@ import rx.functions.Func1;
  * {@link CountryRepository} for retrieving user data.
  */
 @Singleton
-public class CountryDataRepository implements CountryRepository {
+public class CountryDataRepository implements CountryRepository
+{
 
     private CountryDataStoreFactory mCountryDataStoreFactory;
 
@@ -28,24 +29,28 @@ public class CountryDataRepository implements CountryRepository {
      * @param dataStoreFactory A factory to construct different data source implementations.
      */
     @Inject
-    public CountryDataRepository(CountryDataStoreFactory dataStoreFactory) {
+    public CountryDataRepository (CountryDataStoreFactory dataStoreFactory)
+    {
         mCountryDataStoreFactory = dataStoreFactory;
     }
 
     @Override
-    public Observable<List<Country>> countries(boolean isSync) {
+    public Observable<List<Country>> countries (boolean isSync)
+    {
 
         final CountryDataStore countryDataStore;
 
-        countryDataStore = mCountryDataStoreFactory.create(isSync);
+        countryDataStore = mCountryDataStoreFactory.create( isSync );
 
-        return countryDataStore.countryEntityList().concatMap(new Func1<List<CountryEntity>,
-                Observable<List<Country>>>() {
+        return countryDataStore.countryEntityList( ).concatMap( new Func1<List<CountryEntity>,
+                Observable<List<Country>>>( )
+        {
             @Override
-            public Observable<List<Country>> call(List<CountryEntity> countries) {
-                List<Country> countryList = CountryItemMapper.transform(countries);
-                return Observable.just(countryList);
+            public Observable<List<Country>> call (List<CountryEntity> countries)
+            {
+                List<Country> countryList = CountryItemMapper.transform( countries );
+                return Observable.just( countryList );
             }
-        });
+        } );
     }
 }

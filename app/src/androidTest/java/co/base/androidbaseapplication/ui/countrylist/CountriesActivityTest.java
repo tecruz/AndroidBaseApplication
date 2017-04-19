@@ -15,16 +15,18 @@ import static android.support.test.espresso.matcher.ViewMatchers.isDisplayed;
 import static android.support.test.espresso.matcher.ViewMatchers.withId;
 
 @RunWith(AndroidJUnit4.class)
-public class CountriesActivityTest {
+public class CountriesActivityTest
+{
 
     @Rule
     public ActivityTestRule<CountriesActivity> mActivityRule = new ActivityTestRule<>(
-            CountriesActivity.class);
+            CountriesActivity.class );
 
     @Test
-    public void testRecyclerViewIsShown () {
-        Espresso.onView(withId(R.id.countries_recycler_view))
-                .check(matches(isDisplayed()));
+    public void testRecyclerViewIsShown ()
+    {
+        Espresso.onView( withId( R.id.countries_recycler_view ) )
+                .check( matches( isDisplayed( ) ) );
 
     }
 }

@@ -1,12 +1,13 @@
 package co.base.androidbaseapplication.domain;
 
-import rx.Observable;
+import io.reactivex.Observable;
 
-public abstract class Usecase<T> {
+public abstract class Usecase<T>
+{
+    public abstract Observable<T> buildObservable ();
 
-    public abstract Observable<T> buildObservable();
-
-    public Observable<T> execute () {
-        return buildObservable();
+    public Observable<T> execute ()
+    {
+        return buildObservable( );
     }
 }

@@ -10,16 +10,19 @@ import javax.inject.Singleton;
 import co.base.androidbaseapplication.injection.ApplicationContext;
 
 @Singleton
-public class EventEmitter {
+public class EventEmitter
+{
 
     private LocalBroadcastManager mLocalBroadcastManager;
 
     @Inject
-    public EventEmitter(@ApplicationContext Context context) {
-        mLocalBroadcastManager = LocalBroadcastManager.getInstance(context);
+    public EventEmitter (@ApplicationContext Context context)
+    {
+        mLocalBroadcastManager = LocalBroadcastManager.getInstance( context );
     }
 
-    public void postEvent(Events event) {
-        mLocalBroadcastManager.sendBroadcast(new Intent(event.toString()));
+    public void postEvent (Events event)
+    {
+        mLocalBroadcastManager.sendBroadcast( new Intent( event.getDescription( ) ) );
     }
 }

@@ -12,7 +12,8 @@ import co.base.androidbaseapplication.R;
 import co.base.androidbaseapplication.injection.component.ActivityComponent;
 import co.base.androidbaseapplication.ui.base.BaseFragment;
 
-public class CountryDetailFragment extends BaseFragment {
+public class CountryDetailFragment extends BaseFragment
+{
 
     private static final String INSTANCE_EXTRA_PARAM_COUNTRY_CODE
             = "STATE_PARAM_COUNTRY_CODE";
@@ -24,71 +25,87 @@ public class CountryDetailFragment extends BaseFragment {
     @BindView(R.id.webView)
     WebView mCountryDetailsView;
 
-    public CountryDetailFragment() {
+    public CountryDetailFragment ()
+    {
     }
 
-    public static CountryDetailFragment newInstance(String countryCode) {
-        CountryDetailFragment countryDetailFragment = new CountryDetailFragment();
-        Bundle args = new Bundle();
-        args.putString(INSTANCE_EXTRA_PARAM_COUNTRY_CODE, countryCode);
-        countryDetailFragment.setArguments(args);
+    public static CountryDetailFragment newInstance (String countryCode)
+    {
+        CountryDetailFragment countryDetailFragment = new CountryDetailFragment( );
+        Bundle args = new Bundle( );
+        args.putString( INSTANCE_EXTRA_PARAM_COUNTRY_CODE, countryCode );
+        countryDetailFragment.setArguments( args );
         return countryDetailFragment;
     }
 
     @Override
-    protected void injectDependencies(ActivityComponent component) {
-        component.inject(this);
+    protected void injectDependencies (ActivityComponent component)
+    {
+        component.inject( this );
     }
 
     @Override
-    protected int getFragmentLayout() {
+    protected int getFragmentLayout ()
+    {
         return R.layout.fragment_country_detail;
     }
 
     @Override
-    public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
-        super.onViewCreated(view, savedInstanceState);
-        this.mCountryCode = getArguments().getString(INSTANCE_EXTRA_PARAM_COUNTRY_CODE);
-        mCountryDetailsView.getSettings().setJavaScriptEnabled(true);
+    public void onViewCreated (View view, @Nullable Bundle savedInstanceState)
+    {
+        super.onViewCreated( view, savedInstanceState );
+        this.mCountryCode = getArguments( ).getString( INSTANCE_EXTRA_PARAM_COUNTRY_CODE );
+        mCountryDetailsView.getSettings( ).setJavaScriptEnabled( true );
 
-        mCountryDetailsView.setWebChromeClient(new WebChromeClient() {
-            public void onProgressChanged(WebView view, int progress) {
+        mCountryDetailsView.setWebChromeClient( new WebChromeClient( )
+        {
+            public void onProgressChanged (WebView view, int progress)
+            {
                 // Activities and WebViews measure progress with different scales.
                 // The progress meter will automatically disappear when we reach 100%
-                if (getActivity() != null) {
-                    getActivity().setProgress(progress * 1000);
-                    if (progress == 100) {
-                        mListener.hideLoading();
+                if ( getActivity( ) != null )
+                {
+                    getActivity( ).setProgress( progress * 1000 );
+                    if ( progress == 100 )
+                    {
+                        mListener.hideLoading( );
                     }
                 }
             }
-        });
+        } );
 
-        mListener.showLoading();
+        mListener.showLoading( );
 
-        mCountryDetailsView.loadUrl(getString(R.string.COUNTRY_INFO_URL,
-                mCountryCode.toLowerCase()));
+        mCountryDetailsView.loadUrl( getString( R.string.COUNTRY_INFO_URL,
+                mCountryCode.toLowerCase( ) ) );
     }
 
     @Override
-    public void onAttach(Context context) {
-        super.onAttach(context);
-        if (context instanceof CountryDetailFragment.OnCountryDetailsFragmentInteractionListener) {
-            mListener = (CountryDetailFragment.OnCountryDetailsFragmentInteractionListener) context;
-        } else {
-            throw new RuntimeException(context.toString()
-                    + " must implement OnCountryDetailsFragmentInteractionListener");
+    public void onAttach (Context context)
+    {
+        super.onAttach( context );
+        if ( context instanceof CountryDetailFragment.OnCountryDetailsFragmentInteractionListener )
+        {
+            mListener =
+                    ( CountryDetailFragment.OnCountryDetailsFragmentInteractionListener ) context;
+        } else
+        {
+            throw new RuntimeException( context.toString( )
+                    + " must implement OnCountryDetailsFragmentInteractionListener" );
         }
     }
 
     @Override
-    public void onDetach() {
-        super.onDetach();
+    public void onDetach ()
+    {
+        super.onDetach( );
         mListener = null;
     }
 
-    public interface OnCountryDetailsFragmentInteractionListener {
-        void hideLoading();
-        void showLoading();
+    public interface OnCountryDetailsFragmentInteractionListener
+    {
+        void hideLoading ();
+
+        void showLoading ();
     }
 }
