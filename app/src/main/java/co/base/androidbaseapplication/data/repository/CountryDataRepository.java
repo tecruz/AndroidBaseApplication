@@ -11,8 +11,9 @@ import co.base.androidbaseapplication.data.repository.datasource.CountryDataStor
 import co.base.androidbaseapplication.domain.repository.CountryRepository;
 import co.base.androidbaseapplication.mapper.CountryItemMapper;
 import co.base.androidbaseapplication.ui.entity.Country;
-import rx.Observable;
-import rx.functions.Func1;
+import io.reactivex.Observable;
+import io.reactivex.annotations.NonNull;
+import io.reactivex.functions.Function;
 
 /**
  * {@link CountryRepository} for retrieving user data.
@@ -42,15 +43,17 @@ public class CountryDataRepository implements CountryRepository
 
         countryDataStore = mCountryDataStoreFactory.create( isSync );
 
-        return countryDataStore.countryEntityList( ).concatMap( new Func1<List<CountryEntity>,
+        return countryDataStore.countryEntityList( ).concatMap( new Function<List<CountryEntity>,
                 Observable<List<Country>>>( )
         {
             @Override
-            public Observable<List<Country>> call (List<CountryEntity> countries)
+            public Observable<List<Country>> apply (@NonNull List<CountryEntity> countries)
+                    throws Exception
             {
                 List<Country> countryList = CountryItemMapper.transform( countries );
                 return Observable.just( countryList );
             }
+
         } );
     }
 }

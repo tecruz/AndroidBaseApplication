@@ -43,10 +43,14 @@ android {
     configurations.all {
         resolutionStrategy.force 'com.google.code.findbugs:jsr305:3.0.1'
     }
+
+    packagingOptions {
+        exclude 'META-INF/rxjava.properties'
+    }
 }
 
 dependencies {
-    final ANDROID_SUPPORT_ANNOTATIONS_VERSION = '25.3.0'
+    final ANDROID_SUPPORT_ANNOTATIONS_VERSION = '25.3.1'
     final ANDROID_SVG_VERSION = '1.2.1'
     final BUTTER_KNIFE_VERSION = '8.5.1'
     final CIRCLE_IMAGEVIEW_VERSION = '2.1.0'
@@ -55,28 +59,24 @@ dependencies {
     final ESPRESSO_VERSION = '2.2.2'
     final FIREBASE_JOB_DISPATCHER_VERSION = '0.6.0'
     final GLIDE_VERSION = '3.7.0'
-    final JAVAX_ANNOTATION_VERSION = '10.0-b28'
     final JUNIT_VERSION = '4.12'
     final LEAK_CANARY_VERSION = '1.5'
     final OKHTTP_LOGGING_INTERCEPTOR_VERSION = '3.6.0'
     final PERMESSIONS_DISPATCHER_VERSION = '2.3.2'
+    final POWER_MOCK_VERSION = '1.6.6'
     final RETROFIT_VERSION = '2.2.0'
     final RXANDROID_VERSION = '2.0.1'
     final RXJAVA_VERSION = '2.0.8'
-    final SUPPORT_LIBRARY_VERSION = '25.3.0'
+    final SUPPORT_LIBRARY_VERSION = '25.3.1'
     final TIMBER_VERSION = '4.5.1'
 
     // Dagger dependencies
     compile "com.google.dagger:dagger:$DAGGER2_VERSION"
-    compile "com.google.dagger:dagger-android:$DAGGER2_VERSION"
-    compile "com.google.dagger:dagger-android-support:$DAGGER2_VERSION" // if you use the support libraries
-    annotationProcessor "com.google.dagger:dagger-android-processor:$DAGGER2_VERSION"
-
-    //provided "org.glassfish:javax.annotation:$JAVAX_ANNOTATION_VERSION"
+    annotationProcessor "com.google.dagger:dagger-compiler:$DAGGER2_VERSION"
 
     compile "com.squareup.retrofit2:retrofit:$RETROFIT_VERSION"
     compile "com.squareup.retrofit2:converter-gson:$RETROFIT_VERSION"
-    compile "com.squareup.retrofit2:adapter-rxjava:$RETROFIT_VERSION"
+    compile "com.squareup.retrofit2:adapter-rxjava2:$RETROFIT_VERSION"
 
     debugCompile "com.squareup.leakcanary:leakcanary-android:$LEAK_CANARY_VERSION"
     releaseCompile "com.squareup.leakcanary:leakcanary-android-no-op:$LEAK_CANARY_VERSION"
@@ -108,6 +108,10 @@ dependencies {
 
     //Testing
     testCompile "junit:junit:$JUNIT_VERSION"
+
+    testCompile "org.powermock:powermock-module-junit4:$POWER_MOCK_VERSION"
+    testCompile "org.powermock:powermock-module-junit4-rule:$POWER_MOCK_VERSION"
+    testCompile "org.powermock:powermock-api-mockito:$POWER_MOCK_VERSION"
     androidTestCompile("com.android.support.test.espresso:espresso-core:$ESPRESSO_VERSION")
     androidTestCompile "com.android.support:support-annotations:$ANDROID_SUPPORT_ANNOTATIONS_VERSION"
 }

@@ -5,8 +5,9 @@ import java.util.List;
 import co.base.androidbaseapplication.data.cache.CountryCache;
 import co.base.androidbaseapplication.data.entity.CountryEntity;
 import co.base.androidbaseapplication.data.net.RestApi;
-import rx.Observable;
-import rx.functions.Action1;
+import io.reactivex.Observable;
+import io.reactivex.annotations.NonNull;
+import io.reactivex.functions.Consumer;
 
 /**
  * {@link CountryDataStore} implementation based on connections to the api (Cloud).
@@ -32,10 +33,10 @@ public class CloudCountryDataStore implements CountryDataStore
     @Override
     public Observable<List<CountryEntity>> countryEntityList ()
     {
-        return mRestApi.getCountries( ).doOnNext( new Action1<List<CountryEntity>>( )
+        return mRestApi.getCountries( ).doOnNext( new Consumer<List<CountryEntity>>( )
         {
             @Override
-            public void call (List<CountryEntity> countryEntities)
+            public void accept (@NonNull List<CountryEntity> countryEntities) throws Exception
             {
                 mCountryCache.put( countryEntities );
             }

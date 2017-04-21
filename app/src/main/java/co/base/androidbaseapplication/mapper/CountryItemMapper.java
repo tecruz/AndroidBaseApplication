@@ -26,7 +26,7 @@ public class CountryItemMapper
         Country country = new Country( );
         country.setCountryCode( countryItem.getAlpha2Code( ) );
         country.setCountryName( countryItem.getName( ) );
-        if ( countryItem.getLatlng( ).size( ) > 0 )
+        if ( countryItem.getLatlng( ) != null && countryItem.getLatlng( ).size( ) > 0 )
         {
             country.setLat( countryItem.getLatlng( ).get( 0 ).getVal( ) );
             country.setLng( countryItem.getLatlng( ).get( 1 ).getVal( ) );

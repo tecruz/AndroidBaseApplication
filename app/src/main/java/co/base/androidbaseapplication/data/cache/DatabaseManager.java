@@ -10,9 +10,9 @@ import javax.inject.Singleton;
 
 import co.base.androidbaseapplication.data.entity.CountryEntity;
 import co.base.androidbaseapplication.injection.ApplicationContext;
+import io.reactivex.Observable;
 import io.realm.Realm;
 import io.realm.RealmConfiguration;
-import rx.Observable;
 
 /**
  * Helper class to do operations on Realm database.
@@ -27,7 +27,8 @@ public class DatabaseManager
     public DatabaseManager (@ApplicationContext Context context)
     {
         // Create a RealmConfiguration which is to locate Realm file in package's "files" directory.
-        mRealmConfiguration = new RealmConfiguration.Builder( context ).build( );
+        Realm.init( context );
+        mRealmConfiguration = new RealmConfiguration.Builder( ).build( );
     }
 
     public Observable<List<CountryEntity>> getCountries ()

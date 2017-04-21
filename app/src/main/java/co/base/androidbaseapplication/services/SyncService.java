@@ -24,8 +24,9 @@ import co.base.androidbaseapplication.events.Events;
 import co.base.androidbaseapplication.ui.entity.Country;
 import co.base.androidbaseapplication.util.ErrorMessageFactory;
 import co.base.androidbaseapplication.util.PreferencesUtil;
-import rx.Observer;
-import rx.Subscription;
+
+import io.reactivex.disposables.CompositeDisposable;
+import io.reactivex.observers.DisposableObserver;
 import timber.log.Timber;
 
 public class SyncService extends JobService
@@ -37,7 +38,7 @@ public class SyncService extends JobService
     PreferencesUtil preferencesUtil;
     @Inject
     EventEmitter eventEmitter;
-    private Subscription subscription;
+    private CompositeDisposable disposable = new CompositeDisposable(  );
 
     public static void startService (Context context)
     {
@@ -80,14 +81,14 @@ public class SyncService extends JobService
     {
         Timber.i( "Starting sync..." );
 
-        if ( subscription != null && !subscription.isUnsubscribed( ) )
-            subscription.unsubscribe( );
+        if ( disposable != null )
+            disposable.clear( );
 
-        subscription = getCountriesUsecase.setIsSync( true ).execute( )
-                .subscribe( new Observer<List<Country>>( )
+        disposable.add( getCountriesUsecase.setIsSync( true ).execute( )
+                .subscribeWith( new DisposableObserver<List<Country>>( )
                 {
                     @Override
-                    public void onCompleted ()
+                    public void onComplete ()
                     {
                         Timber.i( "Synced successfully!" );
                         long syncTimeStamp = System.currentTimeMillis( );
@@ -115,7 +116,7 @@ public class SyncService extends JobService
                     public void onNext (List<Country> countries)
                     {
                     }
-                } );
+                } ) );
 
 
         return true;
@@ -130,7 +131,7 @@ public class SyncService extends JobService
     @Override
     public void onDestroy ()
     {
-        if ( subscription != null ) subscription.unsubscribe( );
+        if ( disposable != null ) disposable.clear( );
         super.onDestroy( );
     }
 }

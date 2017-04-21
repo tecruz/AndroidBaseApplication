@@ -15,14 +15,15 @@ import co.base.androidbaseapplication.events.Events;
 import co.base.androidbaseapplication.injection.ApplicationContext;
 import co.base.androidbaseapplication.ui.entity.Country;
 import co.base.androidbaseapplication.ui.base.BasePresenter;
-import rx.Subscription;
+import io.reactivex.disposables.CompositeDisposable;
+import io.reactivex.observers.DisposableObserver;
 import timber.log.Timber;
 
 public class CountriesPresenter extends BasePresenter<CountriesMvpView>
 {
 
     private final GetCountriesUsecase mCountriesUsecase;
-    private Subscription mSubscription;
+    private final CompositeDisposable disposables;
     private Context mContext;
     private boolean mHasCountries;
 
@@ -32,6 +33,7 @@ public class CountriesPresenter extends BasePresenter<CountriesMvpView>
     {
         mCountriesUsecase = countriesUsecase;
         mContext = context;
+        disposables = new CompositeDisposable( );
     }
 
     @Override
@@ -44,7 +46,7 @@ public class CountriesPresenter extends BasePresenter<CountriesMvpView>
     public void detachView ()
     {
         super.detachView( );
-        if ( mSubscription != null ) mSubscription.unsubscribe( );
+        if ( disposables != null ) disposables.clear( );
     }
 
     @Override
@@ -69,11 +71,11 @@ public class CountriesPresenter extends BasePresenter<CountriesMvpView>
     {
         checkViewAttached( );
         getMvpView( ).hideEmptyLabel( );
-        mSubscription = mCountriesUsecase.setIsSync( false ).execute( )
-                .subscribe( new Subscriber<List<Country>>( )
+        disposables.add( mCountriesUsecase.setIsSync( false ).execute( )
+                .subscribeWith( new DisposableObserver<List<Country>>( )
                 {
                     @Override
-                    public void onCompleted ()
+                    public void onComplete ()
                     {
                         getMvpView( ).hideLoading( );
                     }
@@ -99,7 +101,7 @@ public class CountriesPresenter extends BasePresenter<CountriesMvpView>
                             getMvpView( ).showCountriesEmpty( );
                         }
                     }
-                } );
+                } ) );
     }
 
     public void onCountryClicked (Country country)

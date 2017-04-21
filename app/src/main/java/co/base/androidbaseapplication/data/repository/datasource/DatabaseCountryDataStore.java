@@ -4,7 +4,7 @@ import java.util.List;
 
 import co.base.androidbaseapplication.data.cache.CountryCache;
 import co.base.androidbaseapplication.data.entity.CountryEntity;
-import rx.Observable;
+import io.reactivex.Observable;
 
 public class DatabaseCountryDataStore implements CountryDataStore
 {

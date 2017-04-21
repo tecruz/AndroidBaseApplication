@@ -14,7 +14,7 @@
 
     <dimen name="country_circle_image_view_width">96dp</dimen>
     <dimen name="country_circle_image_view_height">96dp</dimen>
-    <dimen name="country_circle_image_view_padding">2dp</dimen>
+    <dimen name="country_circle_image_view_padding">10dp</dimen>
     <dimen name="country_circle_image_view_border">2dp</dimen>
 
 </resources>

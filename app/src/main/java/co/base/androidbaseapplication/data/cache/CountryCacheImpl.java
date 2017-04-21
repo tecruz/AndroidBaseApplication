@@ -10,7 +10,7 @@ import javax.inject.Singleton;
 import co.base.androidbaseapplication.data.entity.CountryEntity;
 import co.base.androidbaseapplication.injection.ApplicationContext;
 import co.base.androidbaseapplication.util.PreferencesUtil;
-import rx.Observable;
+import io.reactivex.Observable;
 
 import static co.base.androidbaseapplication.Config.EXPIRATION_TIME;
 

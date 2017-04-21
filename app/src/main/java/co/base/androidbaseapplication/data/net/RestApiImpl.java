@@ -25,13 +25,14 @@ import co.base.androidbaseapplication.data.exception.RxErrorHandlingCallAdapterF
 import co.base.androidbaseapplication.data.realm.RealmDouble;
 import co.base.androidbaseapplication.injection.ApplicationContext;
 
+import io.reactivex.Observable;
 import io.realm.RealmList;
 import io.realm.RealmObject;
 import okhttp3.OkHttpClient;
 import okhttp3.logging.HttpLoggingInterceptor;
 import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
-import rx.Observable;
+
 
 /**
  * {@link RestApi} implementation for retrieving data from the network.

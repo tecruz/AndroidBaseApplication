@@ -3,7 +3,7 @@ package co.base.androidbaseapplication.data.cache;
 import java.util.List;
 
 import co.base.androidbaseapplication.data.entity.CountryEntity;
-import rx.Observable;
+import io.reactivex.Observable;
 
 /**
  * An interface representing a country Cache.
