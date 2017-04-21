@@ -14,4 +14,5 @@
 
     <string name="github_label">Github</string>
     <string name="header_image">Header image</string>
+    <string name="drawer_header_title">AndroidBaseApp</string>
 </resources>
