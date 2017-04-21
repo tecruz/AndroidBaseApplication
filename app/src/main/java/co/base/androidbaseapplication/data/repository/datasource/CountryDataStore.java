@@ -12,7 +12,7 @@ import io.reactivex.Observable;
 public interface CountryDataStore
 {
     /**
-     * Get an {@link rx.Observable} which will emit a List of {@link CountryEntity}.
+     * Get an {@link Observable} which will emit a List of {@link CountryEntity}.
      */
     Observable<List<CountryEntity>> countryEntityList ();
 }

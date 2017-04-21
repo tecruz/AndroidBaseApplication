@@ -61,8 +61,8 @@ public class CountriesPresenter extends BasePresenter<CountriesMvpView>
     {
         super.resume( );
         IntentFilter filterEvents = new IntentFilter( );
-        filterEvents.addAction( Events.SYNC_COMPLETED.toString( ) );
-        filterEvents.addAction( Events.SYNC_ERROR.toString( ) );
+        filterEvents.addAction( new Events( Events.SYNC_COMPLETED ).getDescription());
+        filterEvents.addAction( new Events( Events.SYNC_ERROR ).getDescription() );
         LocalBroadcastManager.getInstance( mContext )
                 .registerReceiver( mMessageReceiver, filterEvents );
     }
@@ -114,10 +114,12 @@ public class CountriesPresenter extends BasePresenter<CountriesMvpView>
         @Override
         public void onReceive (Context context, Intent intent)
         {
-            if ( intent.getAction( ).equals( Events.SYNC_COMPLETED.toString( ) ) )
+            if ( intent.getAction( ).
+                    equals( new Events( Events.SYNC_COMPLETED ).getDescription() ) )
             {
                 loadCountries( );
-            } else if ( intent.getAction( ).equals( Events.SYNC_ERROR.toString( ) ) )
+            } else if ( intent.getAction( ).
+                    equals( new Events( Events.SYNC_ERROR ).getDescription() ) )
             {
                 getMvpView( ).hideLoading( );
                 if ( !mHasCountries )

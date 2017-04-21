@@ -11,7 +11,7 @@ import io.reactivex.Observable;
 public interface CountryRepository
 {
     /**
-     * Get an {@link rx.Observable} which will emit a List of {@link Country}.
+     * Get an {@link Observable} which will emit a List of {@link Country}.
      */
     Observable<List<Country>> countries (boolean isSync);
 }
