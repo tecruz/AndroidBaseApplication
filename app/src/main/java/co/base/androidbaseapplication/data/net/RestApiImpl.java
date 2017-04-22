@@ -42,6 +42,11 @@ public class RestApiImpl implements RestApi
 {
     private final RestApi mRestApi;
 
+    /**
+     * Constructor of the class
+     *
+     * @param context Application context
+     */
     @Inject
     public RestApiImpl (@ApplicationContext Context context)
     {
@@ -118,6 +123,11 @@ public class RestApiImpl implements RestApi
         mRestApi = retrofit.create( RestApi.class );
     }
 
+    /**
+     * Retrieve a list of countries from the network.
+     *
+     * @return The list of countries
+     */
     @Override
     public Observable<List<CountryEntity>> getCountries ()
     {

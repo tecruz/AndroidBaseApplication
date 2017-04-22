@@ -35,6 +35,12 @@ public class CountryDataRepository implements CountryRepository
         mCountryDataStoreFactory = dataStoreFactory;
     }
 
+    /**
+     * Retrieve a list of countries from the datastore (network or cache).
+     *
+     * @param isSync True to force data from network, false otherwise.
+     * @return List of countries from the correspondent {@link CountryDataStore}
+     */
     @Override
     public Observable<List<Country>> countries (boolean isSync)
     {

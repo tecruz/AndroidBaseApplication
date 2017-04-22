@@ -54,6 +54,9 @@ public class CountryCacheImpl implements CountryCache
         return databaseManager.getCountries( );
     }
 
+    /**
+     * Save a list of countries to the database
+     */
     @Override
     public void put (List<CountryEntity> countryEntityList)
     {
@@ -62,12 +65,18 @@ public class CountryCacheImpl implements CountryCache
         preferencesUtil.setLastSyncTimestamp( syncTimeStamp );
     }
 
+    /**
+     * Checks if a list of countries is cached
+     */
     @Override
     public boolean isCached ()
     {
         return databaseManager.exists( );
     }
 
+    /**
+     * Check if the country list is expired
+     */
     @Override
     public boolean isExpired ()
     {
@@ -84,6 +93,9 @@ public class CountryCacheImpl implements CountryCache
         return expired;
     }
 
+    /**
+     * Delete database
+     */
     @Override
     public void evictAll ()
     {

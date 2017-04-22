@@ -9,6 +9,9 @@ import co.base.androidbaseapplication.util.NetworkUtil;
 import okhttp3.Interceptor;
 import okhttp3.Response;
 
+/**
+ * Checks if there is network connection on all requests.
+ */
 public class NetInterceptor implements Interceptor
 {
     private final String authToken;
@@ -23,7 +26,7 @@ public class NetInterceptor implements Interceptor
     @Override
     public Response intercept (Chain chain) throws IOException
     {
-        //TO DO Custom http request with token
+        //TODO Custom http request with token
         if ( !NetworkUtil.isNetworkConnected( context ) )
         {
             throw new NoInternetConnectionException( );

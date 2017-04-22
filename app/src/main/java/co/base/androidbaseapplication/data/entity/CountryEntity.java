@@ -15,44 +15,44 @@ public class CountryEntity extends RealmObject
 
     @SerializedName("name")
     @Expose
-    private String mName;
+    private String name;
     @SerializedName("capital")
     @Expose
-    private String mCapital;
+    private String capital;
     @SerializedName("relevance")
     @Expose
-    private String mRelevance;
+    private String relevance;
     @SerializedName("region")
     @Expose
-    private String mRegion;
+    private String region;
     @SerializedName("subregion")
     @Expose
-    private String mSubregion;
+    private String subRegion;
     @SerializedName("population")
     @Expose
-    private Integer mPopulation;
+    private Integer population;
     @SerializedName("latlng")
     @Expose
-    private RealmList<RealmDouble> mLatlng = new RealmList<>( );
+    private RealmList<RealmDouble> latLng = new RealmList<>( );
     @SerializedName("demonym")
     @Expose
-    private String mDemonym;
+    private String demonym;
     @SerializedName("area")
     @Expose
-    private Double mArea;
+    private Double area;
     @SerializedName("alpha2Code")
     @Expose
-    private String mAlpha2Code;
+    private String alpha2Code;
     @SerializedName("alpha3Code")
     @Expose
-    private String mAlpha3Code;
+    private String alpha3Code;
 
     /**
      * @return The name
      */
     public String getName ()
     {
-        return mName;
+        return name;
     }
 
     /**
@@ -60,7 +60,7 @@ public class CountryEntity extends RealmObject
      */
     public void setName (String name)
     {
-        this.mName = name;
+        this.name = name;
     }
 
     /**
@@ -68,7 +68,7 @@ public class CountryEntity extends RealmObject
      */
     public String getCapital ()
     {
-        return mCapital;
+        return capital;
     }
 
     /**
@@ -76,7 +76,7 @@ public class CountryEntity extends RealmObject
      */
     public void setCapital (String capital)
     {
-        this.mCapital = capital;
+        this.capital = capital;
     }
 
     /**
@@ -84,7 +84,7 @@ public class CountryEntity extends RealmObject
      */
     public String getRelevance ()
     {
-        return mRelevance;
+        return relevance;
     }
 
     /**
@@ -92,7 +92,7 @@ public class CountryEntity extends RealmObject
      */
     public void setRelevance (String relevance)
     {
-        this.mRelevance = relevance;
+        this.relevance = relevance;
     }
 
     /**
@@ -100,7 +100,7 @@ public class CountryEntity extends RealmObject
      */
     public String getRegion ()
     {
-        return mRegion;
+        return region;
     }
 
     /**
@@ -108,7 +108,7 @@ public class CountryEntity extends RealmObject
      */
     public void setRegion (String region)
     {
-        this.mRegion = region;
+        this.region = region;
     }
 
     /**
@@ -116,7 +116,7 @@ public class CountryEntity extends RealmObject
      */
     public String getSubregion ()
     {
-        return mSubregion;
+        return subRegion;
     }
 
     /**
@@ -124,7 +124,7 @@ public class CountryEntity extends RealmObject
      */
     public void setSubregion (String subregion)
     {
-        this.mSubregion = subregion;
+        this.subRegion = subregion;
     }
 
     /**
@@ -132,7 +132,7 @@ public class CountryEntity extends RealmObject
      */
     public Integer getPopulation ()
     {
-        return mPopulation;
+        return population;
     }
 
     /**
@@ -140,7 +140,7 @@ public class CountryEntity extends RealmObject
      */
     public void setPopulation (Integer population)
     {
-        this.mPopulation = population;
+        this.population = population;
     }
 
     /**
@@ -148,7 +148,7 @@ public class CountryEntity extends RealmObject
      */
     public RealmList<RealmDouble> getLatlng ()
     {
-        return mLatlng;
+        return latLng;
     }
 
     /**
@@ -156,7 +156,7 @@ public class CountryEntity extends RealmObject
      */
     public void setLatlng (RealmList<RealmDouble> latlng)
     {
-        this.mLatlng = latlng;
+        this.latLng = latlng;
     }
 
     /**
@@ -164,7 +164,7 @@ public class CountryEntity extends RealmObject
      */
     public String getDemonym ()
     {
-        return mDemonym;
+        return demonym;
     }
 
     /**
@@ -172,7 +172,7 @@ public class CountryEntity extends RealmObject
      */
     public void setDemonym (String demonym)
     {
-        this.mDemonym = demonym;
+        this.demonym = demonym;
     }
 
     /**
@@ -180,7 +180,7 @@ public class CountryEntity extends RealmObject
      */
     public Double getArea ()
     {
-        return mArea;
+        return area;
     }
 
     /**
@@ -188,7 +188,7 @@ public class CountryEntity extends RealmObject
      */
     public void setArea (Double area)
     {
-        this.mArea = area;
+        this.area = area;
     }
 
 
@@ -197,7 +197,7 @@ public class CountryEntity extends RealmObject
      */
     public String getAlpha2Code ()
     {
-        return mAlpha2Code;
+        return alpha2Code;
     }
 
     /**
@@ -205,7 +205,7 @@ public class CountryEntity extends RealmObject
      */
     public void setAlpha2Code (String alpha2Code)
     {
-        this.mAlpha2Code = alpha2Code;
+        this.alpha2Code = alpha2Code;
     }
 
     /**
@@ -213,7 +213,7 @@ public class CountryEntity extends RealmObject
      */
     public String getAlpha3Code ()
     {
-        return mAlpha3Code;
+        return alpha3Code;
     }
 
     /**
@@ -221,7 +221,7 @@ public class CountryEntity extends RealmObject
      */
     public void setAlpha3Code (String alpha3Code)
     {
-        this.mAlpha3Code = alpha3Code;
+        this.alpha3Code = alpha3Code;
     }
 
 }
