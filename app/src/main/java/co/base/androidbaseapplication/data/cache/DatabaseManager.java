@@ -21,29 +21,44 @@ import io.realm.RealmConfiguration;
 public class DatabaseManager
 {
 
-    private final RealmConfiguration mRealmConfiguration;
+    private final RealmConfiguration realmConfiguration;
 
+    /**
+     * Constructor of the class {@link DatabaseManager}.
+     *
+     * @param context Application context
+     */
     @Inject
     public DatabaseManager (@ApplicationContext Context context)
     {
         // Create a RealmConfiguration which is to locate Realm file in package's "files" directory.
         Realm.init( context );
-        mRealmConfiguration = new RealmConfiguration.Builder( ).build( );
+        realmConfiguration = new RealmConfiguration.Builder( ).build( );
     }
 
+    /**
+     * Retrieves a list of countries from the Realm database
+     *
+     * @return A list of countries saved on the database
+     */
     public Observable<List<CountryEntity>> getCountries ()
     {
-        Realm mDb = Realm.getInstance( mRealmConfiguration );
+        Realm mDb = Realm.getInstance( realmConfiguration );
         List<CountryEntity> countryEntityList =
                 mDb.copyFromRealm( mDb.where( CountryEntity.class ).findAll( ) );
         mDb.close( );
         return Observable.just( countryEntityList );
     }
 
+    /**
+     * Save a list of countries on the Realm database
+     *
+     * @param newCountries List of countries to save
+     */
     public void setCountries (final Collection<CountryEntity> newCountries)
     {
         // Get a Realm instance for this thread
-        Realm mDb = Realm.getInstance( mRealmConfiguration );
+        Realm mDb = Realm.getInstance( realmConfiguration );
         // Persist your data easily
         mDb.beginTransaction( );
         mDb.delete( CountryEntity.class );
@@ -52,14 +67,22 @@ public class DatabaseManager
         mDb.close( );
     }
 
+    /**
+     * Check if a Realm database exists
+     *
+     * @return True if Realm database instance exits, false otherwise
+     */
     public boolean exists ()
     {
-        return !Realm.getInstance( mRealmConfiguration ).isEmpty( );
+        return !Realm.getInstance( realmConfiguration ).isEmpty( );
     }
 
+    /**
+     * Deletes the Realm database instance
+     */
     public void deleteDatabase ()
     {
-        Realm.getInstance( mRealmConfiguration ).close( );
-        Realm.deleteRealm( mRealmConfiguration );
+        Realm.getInstance( realmConfiguration ).close( );
+        Realm.deleteRealm( realmConfiguration );
     }
 }

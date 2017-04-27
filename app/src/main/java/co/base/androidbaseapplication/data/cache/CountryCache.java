@@ -11,7 +11,7 @@ import io.reactivex.Observable;
 public interface CountryCache
 {
     /**
-     * Gets an {@link rx.Observable} which will emit a collection{@link CountryEntity}.
+     * Gets an {@link Observable} which will emit a collection{@link CountryEntity}.
      */
     Observable<List<CountryEntity>> getCountries ();
 

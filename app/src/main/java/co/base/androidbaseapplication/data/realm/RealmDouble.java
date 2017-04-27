@@ -2,6 +2,9 @@ package co.base.androidbaseapplication.data.realm;
 
 import io.realm.RealmObject;
 
+/**
+ * Custom Double object for compatibility with Realm.
+ */
 public class RealmDouble extends RealmObject
 {
 
