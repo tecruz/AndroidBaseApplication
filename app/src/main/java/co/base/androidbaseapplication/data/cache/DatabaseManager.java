@@ -57,14 +57,26 @@ public class DatabaseManager
      */
     public void setCountries (final Collection<CountryEntity> newCountries)
     {
-        // Get a Realm instance for this thread
-        Realm mDb = Realm.getInstance( realmConfiguration );
-        // Persist your data easily
-        mDb.beginTransaction( );
-        mDb.delete( CountryEntity.class );
-        mDb.copyToRealm( newCountries );
-        mDb.commitTransaction( );
-        mDb.close( );
+        Realm db = null;
+        try
+        {
+            db = Realm.getInstance( realmConfiguration );
+            db.executeTransactionAsync( new Realm.Transaction( )
+            {
+                @Override
+                public void execute (Realm realm)
+                {
+                    realm.delete( CountryEntity.class );
+                    realm.copyToRealm( newCountries );
+                }
+            } );
+        } finally
+        {
+            if ( db != null )
+            {
+                db.close( );
+            }
+        }
     }
 
     /**
