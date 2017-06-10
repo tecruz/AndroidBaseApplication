@@ -41,7 +41,6 @@ public class CountriesPresenterTest
     @Test
     public void testCountriesPresenterInitialize ()
     {
-        given( countriesUsecase.setIsSync( false ) ).willReturn( countriesUsecase );
         given( countriesUsecase.execute( ) ).willReturn( Observable.<List<Country>>empty( ) );
 
         countriesListPresenter.loadCountries( );

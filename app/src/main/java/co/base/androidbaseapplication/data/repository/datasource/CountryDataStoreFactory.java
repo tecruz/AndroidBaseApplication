@@ -39,15 +39,16 @@ public class CountryDataStoreFactory
     {
         CountryDataStore countryDataStore;
 
-        switch ( policy.getPolicy() ) {
+        switch ( policy.getPolicy( ) )
+        {
             case Policies.DATABASE:
-                countryDataStore = checkExpiredDataStore();
+                countryDataStore = checkExpiredDataStore( );
                 break;
             case Policies.NETWORK:
                 countryDataStore = createCloudDataStore( );
                 break;
             default:
-                countryDataStore = checkExpiredDataStore ();
+                countryDataStore = checkExpiredDataStore( );
                 break;
         }
 
@@ -73,13 +74,14 @@ public class CountryDataStoreFactory
 
     /**
      * Create {@link CountryDataStore} to retrieve data according to the rules:
-     *
+     * <p>
      * - If network connection isn't available retrieve data from local database
-     *
+     * <p>
      * - If network connection is available and local data isn't expired retrieve data
      * from local database else retrieve data from network
      */
-    private CountryDataStore checkExpiredDataStore () {
+    private CountryDataStore checkExpiredDataStore ()
+    {
 
         CountryDataStore countryDataStore;
         if ( !NetworkUtil.isNetworkConnected( mContext ) )

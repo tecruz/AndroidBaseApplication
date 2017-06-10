@@ -31,7 +31,6 @@ public class GetCountriesUsecaseTest
     @Mock
     private CountryRepository mockCountryRepository;
 
-
     @Before
     public void setUp ()
     {
@@ -47,8 +46,10 @@ public class GetCountriesUsecaseTest
             }
         } );
 
-        when( mockCountryRepository.countries( false ) )
+        when( mockCountryRepository.countries( getCountriesList.policy ) )
                 .thenReturn( Observable.<List<Country>>empty( ) );
+
+
     }
 
     @Test
@@ -56,7 +57,7 @@ public class GetCountriesUsecaseTest
     {
         getCountriesList.execute( );
 
-        verify( mockCountryRepository ).countries( false );
+        verify( mockCountryRepository ).countries( getCountriesList.policy );
         verifyNoMoreInteractions( mockCountryRepository );
     }
 

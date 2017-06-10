@@ -14,7 +14,8 @@ public abstract class Usecase<T>
         return buildObservable( );
     }
 
-    public Usecase<T> withPolicy (Policies policy) {
+    public Usecase<T> withPolicy (Policies policy)
+    {
         this.policy = policy;
         return this;
     }

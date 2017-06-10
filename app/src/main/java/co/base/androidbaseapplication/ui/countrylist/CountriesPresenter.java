@@ -9,8 +9,7 @@ import android.support.v4.content.LocalBroadcastManager;
 import java.util.List;
 
 import javax.inject.Inject;
-
-import co.base.androidbaseapplication.data.Policies;
+;
 import co.base.androidbaseapplication.domain.GetCountriesUsecase;
 import co.base.androidbaseapplication.events.Events;
 import co.base.androidbaseapplication.injection.ApplicationContext;
@@ -121,7 +120,7 @@ public class CountriesPresenter extends BasePresenter<CountriesMvpView>
             {
                 loadCountries( );
             } else if ( intent.getAction( ).
-                    equals( new Events( Events.SYNC_ERROR ).getDescription( ) ) )
+                    equals( new Events( Events.SYNC_ERROR ).getDescription() ) )
             {
                 getMvpView( ).hideLoading( );
                 if ( !mHasCountries )
