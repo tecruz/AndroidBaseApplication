@@ -5,6 +5,7 @@ import android.content.Context;
 import javax.inject.Inject;
 import javax.inject.Singleton;
 
+import co.base.androidbaseapplication.data.Policies;
 import co.base.androidbaseapplication.data.cache.CountryCache;
 import co.base.androidbaseapplication.data.net.RestApi;
 import co.base.androidbaseapplication.data.net.RestApiImpl;
@@ -34,29 +35,22 @@ public class CountryDataStoreFactory
     /**
      * Create {@link CountryDataStore}.
      */
-    public CountryDataStore create (boolean isSync)
+    public CountryDataStore create (Policies policy)
     {
         CountryDataStore countryDataStore;
 
-        if ( isSync )
-        {
-            countryDataStore = createCloudDataStore( );
-        } else
-        {
-            if ( !NetworkUtil.isNetworkConnected( mContext ) )
-            {
-                countryDataStore = createDatabaseDataStore( );
-            } else
-            {
-                if ( !mCountryCache.isExpired( ) && mCountryCache.isCached( ) )
-                {
-                    countryDataStore = createDatabaseDataStore( );
-                } else
-                {
-                    countryDataStore = createCloudDataStore( );
-                }
-            }
+        switch ( policy.getPolicy() ) {
+            case Policies.DATABASE:
+                countryDataStore = checkExpiredDataStore();
+                break;
+            case Policies.NETWORK:
+                countryDataStore = createCloudDataStore( );
+                break;
+            default:
+                countryDataStore = checkExpiredDataStore ();
+                break;
         }
+
 
         return countryDataStore;
     }
@@ -75,5 +69,33 @@ public class CountryDataStoreFactory
     private CountryDataStore createDatabaseDataStore ()
     {
         return new DatabaseCountryDataStore( mCountryCache );
+    }
+
+    /**
+     * Create {@link CountryDataStore} to retrieve data according to the rules:
+     *
+     * - If network connection isn't available retrieve data from local database
+     *
+     * - If network connection is available and local data isn't expired retrieve data
+     * from local database else retrieve data from network
+     */
+    private CountryDataStore checkExpiredDataStore () {
+
+        CountryDataStore countryDataStore;
+        if ( !NetworkUtil.isNetworkConnected( mContext ) )
+        {
+            countryDataStore = createDatabaseDataStore( );
+        } else
+        {
+            if ( !mCountryCache.isExpired( ) && mCountryCache.isCached( ) )
+            {
+                countryDataStore = createDatabaseDataStore( );
+            } else
+            {
+                countryDataStore = createCloudDataStore( );
+            }
+        }
+
+        return countryDataStore;
     }
 }

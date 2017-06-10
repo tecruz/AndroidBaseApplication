@@ -5,6 +5,7 @@ import java.util.List;
 import javax.inject.Inject;
 import javax.inject.Singleton;
 
+import co.base.androidbaseapplication.data.Policies;
 import co.base.androidbaseapplication.data.entity.CountryEntity;
 import co.base.androidbaseapplication.data.repository.datasource.CountryDataStore;
 import co.base.androidbaseapplication.data.repository.datasource.CountryDataStoreFactory;
@@ -36,18 +37,18 @@ public class CountryDataRepository implements CountryRepository
     }
 
     /**
-     * Retrieve a list of countries from the datastore (network or cache).
+     * Retrieve a list of countries from the datastore according to the policy(network or database).
      *
-     * @param isSync True to force data from network, false otherwise.
+     * @param policy The policy from the datasource {@link Policies}.
      * @return List of countries from the correspondent {@link CountryDataStore}
      */
     @Override
-    public Observable<List<Country>> countries (boolean isSync)
+    public Observable<List<Country>> countries (Policies policy)
     {
 
         final CountryDataStore countryDataStore;
 
-        countryDataStore = mCountryDataStoreFactory.create( isSync );
+        countryDataStore = mCountryDataStoreFactory.create( policy );
 
         return countryDataStore.countryEntityList( ).concatMap( new Function<List<CountryEntity>,
                 Observable<List<Country>>>( )

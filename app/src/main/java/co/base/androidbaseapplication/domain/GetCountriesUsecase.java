@@ -13,7 +13,6 @@ import io.reactivex.schedulers.Schedulers;
 public class GetCountriesUsecase extends Usecase<List<Country>>
 {
     private final CountryRepository mRepository;
-    private boolean mIsSync;
 
     @Inject
     public GetCountriesUsecase (CountryRepository countryRepository)
@@ -24,14 +23,8 @@ public class GetCountriesUsecase extends Usecase<List<Country>>
     @Override
     public Observable<List<Country>> buildObservable ()
     {
-        return mRepository.countries( mIsSync )
+        return mRepository.countries( policy )
                 .observeOn( AndroidSchedulers.mainThread() )
                 .subscribeOn( Schedulers.io( ) );
-    }
-
-    public GetCountriesUsecase setIsSync (boolean isSync)
-    {
-        mIsSync = isSync;
-        return this;
     }
 }

@@ -10,6 +10,7 @@ import java.util.List;
 
 import javax.inject.Inject;
 
+import co.base.androidbaseapplication.data.Policies;
 import co.base.androidbaseapplication.domain.GetCountriesUsecase;
 import co.base.androidbaseapplication.events.Events;
 import co.base.androidbaseapplication.injection.ApplicationContext;
@@ -71,7 +72,7 @@ public class CountriesPresenter extends BasePresenter<CountriesMvpView>
     {
         checkViewAttached( );
         getMvpView( ).hideEmptyLabel( );
-        disposables.add( mCountriesUsecase.setIsSync( false ).execute( )
+        disposables.add( mCountriesUsecase.execute( )
                 .subscribeWith( new DisposableObserver<List<Country>>( )
                 {
                     @Override

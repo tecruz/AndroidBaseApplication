@@ -17,6 +17,7 @@ import java.util.List;
 import javax.inject.Inject;
 
 import co.base.androidbaseapplication.AndroidBaseApplication;
+import co.base.androidbaseapplication.data.Policies;
 import co.base.androidbaseapplication.data.exception.RetrofitException;
 import co.base.androidbaseapplication.domain.GetCountriesUsecase;
 import co.base.androidbaseapplication.events.EventEmitter;
@@ -84,7 +85,8 @@ public class SyncService extends JobService
         if ( disposable != null )
             disposable.clear( );
 
-        disposable.add( getCountriesUsecase.setIsSync( true ).execute( )
+        disposable.add( getCountriesUsecase
+                .withPolicy( new Policies( Policies.NETWORK ) ).execute( )
                 .subscribeWith( new DisposableObserver<List<Country>>( )
                 {
                     @Override

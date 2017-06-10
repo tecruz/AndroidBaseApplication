@@ -2,6 +2,7 @@ package co.base.androidbaseapplication.domain.repository;
 
 import java.util.List;
 
+import co.base.androidbaseapplication.data.Policies;
 import co.base.androidbaseapplication.ui.entity.Country;
 import io.reactivex.Observable;
 
@@ -11,7 +12,9 @@ import io.reactivex.Observable;
 public interface CountryRepository
 {
     /**
+     * @param policy The policy used by the repository {@link Policies}.
+     *
      * Get an {@link Observable} which will emit a List of {@link Country}.
      */
-    Observable<List<Country>> countries (boolean isSync);
+    Observable<List<Country>> countries (Policies policy);
 }
