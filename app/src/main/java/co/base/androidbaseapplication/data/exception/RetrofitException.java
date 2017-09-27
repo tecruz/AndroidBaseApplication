@@ -1,7 +1,11 @@
 package co.base.androidbaseapplication.data.exception;
 
+import android.support.annotation.IntDef;
+
 import java.io.IOException;
 import java.lang.annotation.Annotation;
+import java.lang.annotation.Retention;
+import java.lang.annotation.RetentionPolicy;
 
 import okhttp3.ResponseBody;
 import retrofit2.Converter;
@@ -16,57 +20,61 @@ public class RetrofitException extends RuntimeException
     public static RetrofitException httpError (String url, Response response, Retrofit retrofit)
     {
         String message = response.code( ) + " " + response.message( );
-        return new RetrofitException( message, url, response, Kind.HTTP, null, retrofit );
+        return new RetrofitException( message, url, response, HTTP, null, retrofit );
     }
 
     public static RetrofitException networkError (IOException exception)
     {
         return new RetrofitException( exception.getMessage( ), null, null,
-                Kind.NETWORK, exception, null );
+                NETWORK, exception, null );
     }
 
     public static RetrofitException noInternetConnection (NoInternetConnectionException exception)
     {
         return new RetrofitException( exception.getMessage( ), null, null,
-                Kind.NO_INTERNET_CONNECTION, exception, null );
+                NO_INTERNET_CONNECTION, exception, null );
     }
 
     public static RetrofitException unexpectedError (Throwable exception)
     {
         return new RetrofitException( exception.getMessage( ), null, null,
-                Kind.UNEXPECTED, exception, null );
+                UNEXPECTED, exception, null );
     }
+
+
+    /**
+     * An {@link IOException} occurred while communicating to the server.
+     */
+    public static final int NETWORK = 0;
+    /**
+     * No internet connection
+     **/
+    public static final int NO_INTERNET_CONNECTION = 1;
+    /**
+     * A non-200 HTTP status code was received from the server.
+     */
+    public static final int HTTP = 2;
+    /**
+     * An internal error occurred while attempting to execute a request. It is best practice to
+     * re-throw this exception so your application crashes.
+     */
+    public static final int UNEXPECTED = 3;
 
     /**
      * Identifies the event kind which triggered a {@link RetrofitException}.
      */
-    public enum Kind
+    @IntDef({NETWORK, NO_INTERNET_CONNECTION, HTTP, UNEXPECTED})
+    @Retention(RetentionPolicy.SOURCE)
+    public @interface Kind
     {
-        /**
-         * An {@link IOException} occurred while communicating to the server.
-         */
-        NETWORK,
-        /**
-         * No internet connection
-         **/
-        NO_INTERNET_CONNECTION,
-        /**
-         * A non-200 HTTP status code was received from the server.
-         */
-        HTTP,
-        /**
-         * An internal error occurred while attempting to execute a request. It is best practice to
-         * re-throw this exception so your application crashes.
-         */
-        UNEXPECTED
     }
 
     private final String mUrl;
     private final Response mResponse;
-    private final Kind mKind;
+    private final int mKind;
     private final Retrofit mRetrofit;
 
-    RetrofitException (String message, String url, Response response, Kind kind,
+    RetrofitException (String message, String url, Response response, @Kind int kind,
                        Throwable exception, Retrofit retrofit)
     {
         super( message, exception );
@@ -95,7 +103,8 @@ public class RetrofitException extends RuntimeException
     /**
      * The event kind which triggered this error.
      */
-    public Kind getKind ()
+    @Kind
+    public int getKind ()
     {
         return mKind;
     }

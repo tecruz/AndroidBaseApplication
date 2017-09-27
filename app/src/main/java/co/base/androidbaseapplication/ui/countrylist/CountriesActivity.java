@@ -130,10 +130,10 @@ public class CountriesActivity extends BaseActivity implements CountriesMvpView,
                 && ViewUtil.screenOrientation( this ) == Configuration.ORIENTATION_LANDSCAPE )
         {
             replaceFragment( R.id.fragmentContainer,
-                    CountryDetailFragment.newInstance( country.getCountryCode( ) ), false );
+                    CountryDetailFragment.newInstance( country.getCountryName( ) ), false );
         } else
         {
-            navigator.navigateToCountryDetails( this, country.getCountryCode( ) );
+            navigator.navigateToCountryDetails( this, country.getCountryName( ) );
         }
     }
 
@@ -172,31 +172,31 @@ public class CountriesActivity extends BaseActivity implements CountriesMvpView,
         swipeRefreshLayout.setRefreshing( false );
     }
 
-    private CountriesAdapter.OnItemClickListener mOnItemClickListener
-            = new CountriesAdapter.OnItemClickListener( )
+    private CountriesAdapter.OnItemClickListener mOnItemClickListener = new CountriesAdapter
+            .OnItemClickListener( )
+    {
+        @Override
+        public void onCountryItemClicked (Country country)
+        {
+            if ( CountriesActivity.this.countriesPresenter != null && country != null )
             {
-                @Override
-                public void onCountryItemClicked (Country country)
-                {
-                    if ( CountriesActivity.this.countriesPresenter != null && country != null )
-                    {
-                        CountriesActivity.this.countriesPresenter.onCountryClicked( country );
-                    }
-                }
-            };
+                CountriesActivity.this.countriesPresenter.onCountryClicked( country );
+            }
+        }
+    };
 
 
-    private SwipeRefreshLayout.OnRefreshListener onRefreshListener
-            = new SwipeRefreshLayout.OnRefreshListener( )
+    private SwipeRefreshLayout.OnRefreshListener onRefreshListener = new SwipeRefreshLayout
+            .OnRefreshListener( )
+    {
+        @Override
+        public void onRefresh ()
+        {
+            SyncService.startService( CountriesActivity.this );
+            if ( !NetworkUtil.isNetworkConnected( CountriesActivity.this ) )
             {
-                @Override
-                public void onRefresh ()
-                {
-                    SyncService.startService( CountriesActivity.this );
-                    if ( !NetworkUtil.isNetworkConnected( CountriesActivity.this ) )
-                    {
-                        swipeRefreshLayout.setRefreshing( false );
-                    }
-                }
-            };
+                swipeRefreshLayout.setRefreshing( false );
+            }
+        }
+    };
 }
