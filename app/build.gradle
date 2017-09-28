@@ -22,14 +22,14 @@ android {
             testCoverageEnabled true
             resValue "string", "API_BASE_URL", "https://restcountries.eu/rest/v2/"
             resValue "string", "IMAGE_BASE_URL", "https://restcountries.eu/data/%s.svg"
-            resValue "string", "COUNTRY_INFO_URL", "http://www.geognos.com/geo/en/cc/%s.html"
+            resValue "string", "COUNTRY_INFO_URL", "http://country.io/%s"
         }
 
         release {
             testCoverageEnabled true
             resValue "string", "API_BASE_URL", "https://restcountries.eu/rest/v2/"
             resValue "string", "IMAGE_BASE_URL", "https://restcountries.eu/data/%s.svg"
-            resValue "string", "COUNTRY_INFO_URL", "http://www.geognos.com/geo/en/cc/%s.html"
+            resValue "string", "COUNTRY_INFO_URL", "http://country.io/%s"
 
             minifyEnabled true
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'

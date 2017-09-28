@@ -6,6 +6,7 @@ import android.support.annotation.Nullable;
 import android.view.View;
 import android.webkit.WebChromeClient;
 import android.webkit.WebView;
+import android.webkit.WebViewClient;
 
 import butterknife.BindView;
 import co.base.androidbaseapplication.R;
@@ -15,10 +16,10 @@ import co.base.androidbaseapplication.ui.base.BaseFragment;
 public class CountryDetailFragment extends BaseFragment
 {
 
-    private static final String INSTANCE_EXTRA_PARAM_COUNTRY_CODE
-            = "STATE_PARAM_COUNTRY_CODE";
+    private static final String INSTANCE_EXTRA_PARAM_COUNTRY_NAME
+            = "STATE_PARAM_COUNTRY_NAME";
 
-    private String mCountryCode;
+    private String mCountryName;
 
     private OnCountryDetailsFragmentInteractionListener mListener;
 
@@ -29,11 +30,11 @@ public class CountryDetailFragment extends BaseFragment
     {
     }
 
-    public static CountryDetailFragment newInstance (String countryCode)
+    public static CountryDetailFragment newInstance (String countryName)
     {
         CountryDetailFragment countryDetailFragment = new CountryDetailFragment( );
         Bundle args = new Bundle( );
-        args.putString( INSTANCE_EXTRA_PARAM_COUNTRY_CODE, countryCode );
+        args.putString( INSTANCE_EXTRA_PARAM_COUNTRY_NAME, countryName );
         countryDetailFragment.setArguments( args );
         return countryDetailFragment;
     }
@@ -54,8 +55,10 @@ public class CountryDetailFragment extends BaseFragment
     public void onViewCreated (View view, @Nullable Bundle savedInstanceState)
     {
         super.onViewCreated( view, savedInstanceState );
-        this.mCountryCode = getArguments( ).getString( INSTANCE_EXTRA_PARAM_COUNTRY_CODE );
+        this.mCountryName = getArguments( ).getString( INSTANCE_EXTRA_PARAM_COUNTRY_NAME );
+        mCountryDetailsView.setWebViewClient( new WebViewClient( ) );
         mCountryDetailsView.getSettings( ).setJavaScriptEnabled( true );
+
 
         mCountryDetailsView.setWebChromeClient( new WebChromeClient( )
         {
@@ -77,7 +80,7 @@ public class CountryDetailFragment extends BaseFragment
         mListener.showLoading( );
 
         mCountryDetailsView.loadUrl( getString( R.string.COUNTRY_INFO_URL,
-                mCountryCode.toLowerCase( ) ) );
+                mCountryName.toLowerCase( ).replace( " ", "-" ) ) );
     }
 
     @Override

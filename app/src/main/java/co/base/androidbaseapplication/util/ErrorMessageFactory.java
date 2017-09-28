@@ -5,6 +5,8 @@ import android.content.Context;
 import co.base.androidbaseapplication.R;
 import co.base.androidbaseapplication.data.exception.RetrofitException;
 
+import static co.base.androidbaseapplication.data.exception.RetrofitException.NO_INTERNET_CONNECTION;
+
 /**
  * Factory used to create error messages from an Exception as a condition.
  */
@@ -24,11 +26,11 @@ public class ErrorMessageFactory
      *
      * @return {@link String} an error message.
      */
-    public static String create (Context context, RetrofitException.Kind exceptionKind)
+    public static String create (Context context, @RetrofitException.Kind int exceptionKind)
     {
         String message = context.getString( R.string.dialog_error_title );
 
-        if ( exceptionKind == RetrofitException.Kind.NO_INTERNET_CONNECTION )
+        if ( exceptionKind == NO_INTERNET_CONNECTION )
         {
             message = context.getString( R.string.exception_message_no_connection );
         } else
