@@ -1,29 +1,30 @@
 package co.base.androidbaseapplication.ui.countrylist;
 
-import android.content.Context;
-
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
+import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.powermock.modules.junit4.PowerMockRunner;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import co.base.androidbaseapplication.domain.GetCountriesUsecase;
 import co.base.androidbaseapplication.ui.entity.Country;
 import io.reactivex.Observable;
+import io.reactivex.ObservableEmitter;
+import io.reactivex.ObservableOnSubscribe;
+import io.reactivex.annotations.NonNull;
 
-import static org.mockito.BDDMockito.given;
 import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.when;
 
 @RunWith(PowerMockRunner.class)
 public class CountriesPresenterTest
 {
+    @InjectMocks
     private CountriesPresenter countriesListPresenter;
-
-    @Mock
-    private Context context;
 
     @Mock
     private CountriesMvpView countriesView;
@@ -34,19 +35,88 @@ public class CountriesPresenterTest
     @Before
     public void setUp ()
     {
-        countriesListPresenter = new CountriesPresenter( countriesUsecase, context );
         countriesListPresenter.attachView( countriesView );
     }
 
     @Test
-    public void testCountriesPresenterInitialize ()
+    public void testLoadCountriesEmpty ()
     {
-        given( countriesUsecase.execute( ) ).willReturn( Observable.<List<Country>>empty( ) );
+        when( countriesUsecase.execute( ) ).thenReturn( Observable.create(
+                new ObservableOnSubscribe<List<Country>>( )
+                {
+                    @Override
+                    public void subscribe (@NonNull ObservableEmitter<List<Country>> subscriber)
+                            throws Exception
+                    {
+                        subscriber.onNext( new ArrayList<Country>( ) );
+                        subscriber.onComplete( );
+                    }
+                } ) );
 
         countriesListPresenter.loadCountries( );
 
         verify( countriesView ).hideEmptyLabel( );
         verify( countriesView ).showLoading( );
         verify( countriesUsecase ).execute( );
+
+        verify( countriesView ).showCountriesEmpty( );
+        verify( countriesView ).hideLoading( );
+    }
+
+    @Test
+    public void testLoadCountriesWithCountries ()
+    {
+        Country testCountry = new Country( );
+        testCountry.setCountryCode( "tt" );
+        testCountry.setCountryName( "test" );
+
+        final ArrayList<Country> testCountriesList = new ArrayList<>( );
+        testCountriesList.add( testCountry );
+
+        when( countriesUsecase.execute( ) ).thenReturn( Observable.create(
+                new ObservableOnSubscribe<List<Country>>( )
+                {
+                    @Override
+                    public void subscribe (@NonNull ObservableEmitter<List<Country>> subscriber)
+                            throws Exception
+                    {
+                        subscriber.onNext( testCountriesList );
+                        subscriber.onComplete( );
+                    }
+                } ) );
+
+        countriesListPresenter.loadCountries( );
+
+        verify( countriesView ).hideEmptyLabel( );
+        verify( countriesView ).showLoading( );
+        verify( countriesUsecase ).execute( );
+
+        verify( countriesView ).showCountries( testCountriesList );
+        verify( countriesView ).hideLoading( );
+    }
+
+    @Test
+    public void testLoadCountriesError ()
+    {
+        when( countriesUsecase.execute( ) ).thenReturn( Observable.create(
+                new ObservableOnSubscribe<List<Country>>( )
+                {
+                    @Override
+                    public void subscribe (@NonNull ObservableEmitter<List<Country>> subscriber)
+                            throws Exception
+                    {
+                        subscriber.onError( new Throwable( ) );
+                    }
+                } ) );
+
+        countriesListPresenter.loadCountries( );
+
+        verify( countriesView ).hideEmptyLabel( );
+        verify( countriesView ).showLoading( );
+        verify( countriesUsecase ).execute( );
+
+        verify( countriesView ).showError( );
+        verify( countriesView ).showEmptyLabel( );
+        verify( countriesView ).hideLoading( );
     }
 }

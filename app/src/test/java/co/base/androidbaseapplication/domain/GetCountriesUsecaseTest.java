@@ -4,6 +4,7 @@ import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
+import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.powermock.modules.junit4.PowerMockRunner;
 
@@ -26,6 +27,7 @@ import static org.mockito.Mockito.when;
 @RunWith(PowerMockRunner.class)
 public class GetCountriesUsecaseTest
 {
+    @InjectMocks
     private GetCountriesUsecase getCountriesList;
 
     @Mock
@@ -34,7 +36,6 @@ public class GetCountriesUsecaseTest
     @Before
     public void setUp ()
     {
-        getCountriesList = new GetCountriesUsecase( mockCountryRepository );
 
         RxAndroidPlugins.setInitMainThreadSchedulerHandler( new Function<Callable<Scheduler>,
                 Scheduler>( )
@@ -48,7 +49,6 @@ public class GetCountriesUsecaseTest
 
         when( mockCountryRepository.countries( getCountriesList.policy ) )
                 .thenReturn( Observable.<List<Country>>empty( ) );
-
 
     }
 
