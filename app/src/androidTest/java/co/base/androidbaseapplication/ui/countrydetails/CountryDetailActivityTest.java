@@ -48,7 +48,7 @@ public class CountryDetailActivityTest
         Espresso.onView( withId( R.id.webView ) )
                 .check( matches( isDisplayed( ) ) );
 
-        onWebView( withId( R.id.webView ) ).withTimeout( 1, TimeUnit.MINUTES )
+        onWebView( withId( R.id.webView ) ).withTimeout( 2, TimeUnit.MINUTES )
                 .check( webMatches( getCurrentUrl( ), containsString( "country.io/portugal" ) ) );
 
     }
