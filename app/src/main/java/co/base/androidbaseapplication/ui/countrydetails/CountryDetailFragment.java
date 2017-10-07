@@ -4,7 +4,6 @@ import android.content.Context;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.view.View;
-import android.webkit.WebChromeClient;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
 
@@ -58,29 +57,12 @@ public class CountryDetailFragment extends BaseFragment
         this.mCountryName = getArguments( ).getString( INSTANCE_EXTRA_PARAM_COUNTRY_NAME );
         mCountryDetailsView.setWebViewClient( new WebViewClient( ) );
         mCountryDetailsView.getSettings( ).setJavaScriptEnabled( true );
-
-
-        mCountryDetailsView.setWebChromeClient( new WebChromeClient( )
-        {
-            public void onProgressChanged (WebView view, int progress)
-            {
-                // Activities and WebViews measure progress with different scales.
-                // The progress meter will automatically disappear when we reach 100%
-                if ( getActivity( ) != null )
-                {
-                    getActivity( ).setProgress( progress * 1000 );
-                    if ( progress == 100 )
-                    {
-                        mListener.hideLoading( );
-                    }
-                }
-            }
-        } );
-
         mListener.showLoading( );
 
         mCountryDetailsView.loadUrl( getString( R.string.COUNTRY_INFO_URL,
                 mCountryName.toLowerCase( ).replace( " ", "-" ) ) );
+
+        mListener.hideLoading( );
     }
 
     @Override
