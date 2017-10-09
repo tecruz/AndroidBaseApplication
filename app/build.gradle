@@ -112,7 +112,7 @@ dependencies {
     testCompile "org.powermock:powermock-module-junit4:$POWER_MOCK_VERSION"
     testCompile "org.powermock:powermock-module-junit4-rule:$POWER_MOCK_VERSION"
     testCompile "org.powermock:powermock-api-mockito:$POWER_MOCK_VERSION"
+
     androidTestCompile "com.android.support.test.espresso:espresso-core:$ESPRESSO_VERSION"
-    androidTestCompile "com.android.support.test.espresso:espresso-web:$ESPRESSO_VERSION"
     androidTestCompile "com.android.support:support-annotations:$ANDROID_SUPPORT_ANNOTATIONS_VERSION"
 }
