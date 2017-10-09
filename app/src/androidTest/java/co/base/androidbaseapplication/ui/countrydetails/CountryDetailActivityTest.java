@@ -18,9 +18,6 @@ import co.base.androidbaseapplication.R;
 import static android.support.test.espresso.assertion.ViewAssertions.matches;
 import static android.support.test.espresso.matcher.ViewMatchers.isDisplayed;
 import static android.support.test.espresso.matcher.ViewMatchers.withId;
-import static android.support.test.espresso.web.assertion.WebViewAssertions.webMatches;
-import static android.support.test.espresso.web.model.Atoms.getCurrentUrl;
-import static android.support.test.espresso.web.sugar.Web.onWebView;
 import static org.hamcrest.Matchers.containsString;
 
 @RunWith(AndroidJUnit4.class)
@@ -47,9 +44,6 @@ public class CountryDetailActivityTest
     {
         Espresso.onView( withId( R.id.webView ) )
                 .check( matches( isDisplayed( ) ) );
-
-        onWebView( withId( R.id.webView ) ).withTimeout( 2, TimeUnit.MINUTES )
-                .check( webMatches( getCurrentUrl( ), containsString( "country.io/portugal" ) ) );
 
     }
 }
