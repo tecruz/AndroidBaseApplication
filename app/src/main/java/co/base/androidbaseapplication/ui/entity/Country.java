@@ -6,50 +6,50 @@ public class Country
 {
 
     @Required
-    private String mCountryCode;
-    private String mCountryName;
-    private Double mLat;
-    private Double mLng;
+    private String countryCode;
+    private String countryName;
+    private Double lat;
+    private Double lng;
     private String flagCountryCode;
 
     public String getCountryCode ()
     {
-        return mCountryCode;
+        return countryCode;
     }
 
     public void setCountryCode (String countryCode)
     {
-        this.mCountryCode = countryCode;
+        this.countryCode = countryCode;
     }
 
     public String getCountryName ()
     {
-        return mCountryName;
+        return countryName;
     }
 
     public void setCountryName (String countryName)
     {
-        this.mCountryName = countryName;
+        this.countryName = countryName;
     }
 
     public Double getLat ()
     {
-        return mLat;
+        return lat;
     }
 
     public void setLat (Double lat)
     {
-        this.mLat = lat;
+        this.lat = lat;
     }
 
     public Double getLng ()
     {
-        return mLng;
+        return lng;
     }
 
     public void setLng (Double lng)
     {
-        this.mLng = lng;
+        this.lng = lng;
     }
 
     public String getFlagCountryCode ()

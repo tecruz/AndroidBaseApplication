@@ -15,8 +15,8 @@ import io.reactivex.functions.Consumer;
 public class CloudCountryDataStore implements CountryDataStore
 {
 
-    private final RestApi mRestApi;
-    private final CountryCache mCountryCache;
+    private final RestApi restApi;
+    private final CountryCache countryCache;
 
     /**
      * Construct a {@link CountryDataStore} based on connections to the api (Cloud).
@@ -26,19 +26,19 @@ public class CloudCountryDataStore implements CountryDataStore
      */
     CloudCountryDataStore (RestApi restApi, CountryCache countryCache)
     {
-        mRestApi = restApi;
-        mCountryCache = countryCache;
+        this.restApi = restApi;
+        this.countryCache = countryCache;
     }
 
     @Override
     public Observable<List<CountryEntity>> countryEntityList ()
     {
-        return mRestApi.getCountries( ).doOnNext( new Consumer<List<CountryEntity>>( )
+        return restApi.getCountries( ).doOnNext( new Consumer<List<CountryEntity>>( )
         {
             @Override
             public void accept (@NonNull List<CountryEntity> countryEntities) throws Exception
             {
-                mCountryCache.put( countryEntities );
+                countryCache.put( countryEntities );
             }
         } );
     }

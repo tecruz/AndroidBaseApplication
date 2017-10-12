@@ -40,7 +40,7 @@ import retrofit2.converter.gson.GsonConverterFactory;
 @Singleton
 public class RestApiImpl implements RestApi
 {
-    private final RestApi mRestApi;
+    private final RestApi restApi;
 
     /**
      * Constructor of the class
@@ -120,7 +120,7 @@ public class RestApiImpl implements RestApi
                 .client( client )
                 .build( );
 
-        mRestApi = retrofit.create( RestApi.class );
+        restApi = retrofit.create( RestApi.class );
     }
 
     /**
@@ -131,6 +131,6 @@ public class RestApiImpl implements RestApi
     @Override
     public Observable<List<CountryEntity>> getCountries ()
     {
-        return mRestApi.getCountries( );
+        return restApi.getCountries( );
     }
 }

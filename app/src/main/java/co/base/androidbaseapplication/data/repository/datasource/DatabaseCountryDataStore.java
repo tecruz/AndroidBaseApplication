@@ -8,7 +8,7 @@ import io.reactivex.Observable;
 
 public class DatabaseCountryDataStore implements CountryDataStore
 {
-    private final CountryCache mCountryCache;
+    private final CountryCache countryCache;
 
     /**
      * Construct a {@link CountryDataStore} based on Realm database.
@@ -17,13 +17,13 @@ public class DatabaseCountryDataStore implements CountryDataStore
      */
     DatabaseCountryDataStore (CountryCache countryCache)
     {
-        mCountryCache = countryCache;
+        this.countryCache = countryCache;
     }
 
 
     @Override
     public Observable<List<CountryEntity>> countryEntityList ()
     {
-        return mCountryCache.getCountries( );
+        return countryCache.getCountries( );
     }
 }

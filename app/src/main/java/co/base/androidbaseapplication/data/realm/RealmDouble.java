@@ -8,7 +8,7 @@ import io.realm.RealmObject;
 public class RealmDouble extends RealmObject
 {
 
-    private Double mVal;
+    private Double val;
 
     public RealmDouble ()
     {
@@ -16,18 +16,18 @@ public class RealmDouble extends RealmObject
 
     public RealmDouble (Double val)
     {
-        this.mVal = val;
+        this.val = val;
     }
 
     // Getters and setters
 
     public Double getVal ()
     {
-        return mVal;
+        return val;
     }
 
     public void setVal (Double val)
     {
-        this.mVal = val;
+        this.val = val;
     }
 }

@@ -18,12 +18,12 @@ public class CountryDetailFragment extends BaseFragment
     private static final String INSTANCE_EXTRA_PARAM_COUNTRY_NAME
             = "STATE_PARAM_COUNTRY_NAME";
 
-    private String mCountryName;
+    private String countryName;
 
-    private OnCountryDetailsFragmentInteractionListener mListener;
+    private OnCountryDetailsFragmentInteractionListener listener;
 
     @BindView(R.id.webView)
-    WebView mCountryDetailsView;
+    WebView countryDetailsView;
 
     public CountryDetailFragment ()
     {
@@ -54,15 +54,15 @@ public class CountryDetailFragment extends BaseFragment
     public void onViewCreated (View view, @Nullable Bundle savedInstanceState)
     {
         super.onViewCreated( view, savedInstanceState );
-        this.mCountryName = getArguments( ).getString( INSTANCE_EXTRA_PARAM_COUNTRY_NAME );
-        mCountryDetailsView.setWebViewClient( new WebViewClient( ) );
-        mCountryDetailsView.getSettings( ).setJavaScriptEnabled( true );
-        mListener.showLoading( );
+        this.countryName = getArguments( ).getString( INSTANCE_EXTRA_PARAM_COUNTRY_NAME );
+        countryDetailsView.setWebViewClient( new WebViewClient( ) );
+        countryDetailsView.getSettings( ).setJavaScriptEnabled( true );
+        listener.showLoading( );
 
-        mCountryDetailsView.loadUrl( getString( R.string.COUNTRY_INFO_URL,
-                mCountryName.toLowerCase( ).replace( " ", "-" ) ) );
+        countryDetailsView.loadUrl( getString( R.string.COUNTRY_INFO_URL,
+                countryName.toLowerCase( ).replace( " ", "-" ) ) );
 
-        mListener.hideLoading( );
+        listener.hideLoading( );
     }
 
     @Override
@@ -71,7 +71,7 @@ public class CountryDetailFragment extends BaseFragment
         super.onAttach( context );
         if ( context instanceof CountryDetailFragment.OnCountryDetailsFragmentInteractionListener )
         {
-            mListener =
+            listener =
                     ( CountryDetailFragment.OnCountryDetailsFragmentInteractionListener ) context;
         } else
         {
@@ -84,7 +84,7 @@ public class CountryDetailFragment extends BaseFragment
     public void onDetach ()
     {
         super.onDetach( );
-        mListener = null;
+        listener = null;
     }
 
     public interface OnCountryDetailsFragmentInteractionListener

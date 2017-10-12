@@ -69,19 +69,19 @@ public class RetrofitException extends RuntimeException
     {
     }
 
-    private final String mUrl;
-    private final Response mResponse;
-    private final int mKind;
-    private final Retrofit mRetrofit;
+    private final String url;
+    private final Response response;
+    private final int kind;
+    private final Retrofit retrofit;
 
     RetrofitException (String message, String url, Response response, @Kind int kind,
                        Throwable exception, Retrofit retrofit)
     {
         super( message, exception );
-        this.mUrl = url;
-        this.mResponse = response;
-        this.mKind = kind;
-        this.mRetrofit = retrofit;
+        this.url = url;
+        this.response = response;
+        this.kind = kind;
+        this.retrofit = retrofit;
     }
 
     /**
@@ -89,7 +89,7 @@ public class RetrofitException extends RuntimeException
      */
     public String getUrl ()
     {
-        return mUrl;
+        return url;
     }
 
     /**
@@ -97,7 +97,7 @@ public class RetrofitException extends RuntimeException
      */
     public Response getResponse ()
     {
-        return mResponse;
+        return response;
     }
 
     /**
@@ -106,7 +106,7 @@ public class RetrofitException extends RuntimeException
     @Kind
     public int getKind ()
     {
-        return mKind;
+        return kind;
     }
 
     /**
@@ -114,7 +114,7 @@ public class RetrofitException extends RuntimeException
      */
     public Retrofit getRetrofit ()
     {
-        return mRetrofit;
+        return retrofit;
     }
 
     /**
@@ -125,12 +125,12 @@ public class RetrofitException extends RuntimeException
      */
     public <T> T getErrorBodyAs (Class<T> type) throws IOException
     {
-        if ( mResponse == null || mResponse.errorBody( ) == null )
+        if ( response == null || response.errorBody( ) == null )
         {
             return null;
         }
-        Converter<ResponseBody, T> converter = mRetrofit.responseBodyConverter( type,
+        Converter<ResponseBody, T> converter = retrofit.responseBodyConverter( type,
                 new Annotation[0] );
-        return converter.convert( mResponse.errorBody( ) );
+        return converter.convert( response.errorBody( ) );
     }
 }

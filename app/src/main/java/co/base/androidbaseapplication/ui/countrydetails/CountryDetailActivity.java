@@ -28,10 +28,10 @@ public class CountryDetailActivity extends BaseActivity implements CountryDetail
     }
 
     @BindView(R.id.progressBar)
-    ProgressBar mProgressBar;
+    ProgressBar progressBar;
 
     @Inject
-    CountryDetailPresenter mCountryDetailPresenter;
+    CountryDetailPresenter countryDetailPresenter;
 
     @Override
     protected void onCreate (Bundle savedInstanceState)
@@ -52,28 +52,28 @@ public class CountryDetailActivity extends BaseActivity implements CountryDetail
                 CountryDetailFragment.newInstance( getIntent( )
                         .getStringExtra( INSTANCE_EXTRA_PARAM_COUNTRY_CODE ) ), false );
 
-        mCountryDetailPresenter.attachView( this );
+        countryDetailPresenter.attachView( this );
     }
 
     @Override
     protected void onResume ()
     {
         super.onResume( );
-        mCountryDetailPresenter.resume( );
+        countryDetailPresenter.resume( );
     }
 
     @Override
     protected void onPause ()
     {
         super.onPause( );
-        mCountryDetailPresenter.pause( );
+        countryDetailPresenter.pause( );
     }
 
     @Override
     protected void onDestroy ()
     {
         super.onDestroy( );
-        mCountryDetailPresenter.detachView( );
+        countryDetailPresenter.detachView( );
 
     }
 
@@ -84,13 +84,13 @@ public class CountryDetailActivity extends BaseActivity implements CountryDetail
     @Override
     public void showLoadingView ()
     {
-        mProgressBar.setVisibility( View.VISIBLE );
+        progressBar.setVisibility( View.VISIBLE );
     }
 
     @Override
     public void hideLoadingView ()
     {
-        mProgressBar.setVisibility( View.GONE );
+        progressBar.setVisibility( View.GONE );
     }
 
     @Override

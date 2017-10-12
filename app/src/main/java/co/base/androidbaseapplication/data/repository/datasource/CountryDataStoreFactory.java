@@ -18,18 +18,18 @@ import co.base.androidbaseapplication.util.NetworkUtil;
 @Singleton
 public class CountryDataStoreFactory
 {
-    private final Context mContext;
-    private final CountryCache mCountryCache;
-    private final RestApi mRestApi;
+    private final Context context;
+    private final CountryCache countryCache;
+    private final RestApi restApi;
 
     @Inject
     public CountryDataStoreFactory (@ApplicationContext Context context,
                                     CountryCache countryCache, RestApiImpl restApi)
     {
 
-        mContext = context;
-        mCountryCache = countryCache;
-        mRestApi = restApi;
+        this.context = context;
+        this.countryCache = countryCache;
+        this.restApi = restApi;
     }
 
     /**
@@ -61,7 +61,7 @@ public class CountryDataStoreFactory
      */
     private CountryDataStore createCloudDataStore ()
     {
-        return new CloudCountryDataStore( mRestApi, mCountryCache );
+        return new CloudCountryDataStore( restApi, countryCache );
     }
 
     /**
@@ -69,7 +69,7 @@ public class CountryDataStoreFactory
      */
     private CountryDataStore createDatabaseDataStore ()
     {
-        return new DatabaseCountryDataStore( mCountryCache );
+        return new DatabaseCountryDataStore( countryCache );
     }
 
     /**
@@ -84,12 +84,12 @@ public class CountryDataStoreFactory
     {
 
         CountryDataStore countryDataStore;
-        if ( !NetworkUtil.isNetworkConnected( mContext ) )
+        if ( !NetworkUtil.isNetworkConnected( context ) )
         {
             countryDataStore = createDatabaseDataStore( );
         } else
         {
-            if ( !mCountryCache.isExpired( ) && mCountryCache.isCached( ) )
+            if ( !countryCache.isExpired( ) && countryCache.isCached( ) )
             {
                 countryDataStore = createDatabaseDataStore( );
             } else

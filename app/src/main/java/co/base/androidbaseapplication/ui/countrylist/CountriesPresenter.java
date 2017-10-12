@@ -22,17 +22,17 @@ import timber.log.Timber;
 public class CountriesPresenter extends BasePresenter<CountriesMvpView>
 {
 
-    private final GetCountriesUsecase mCountriesUsecase;
+    private final GetCountriesUsecase countriesUsecase;
     private final CompositeDisposable disposables;
-    private Context mContext;
-    private boolean mHasCountries;
+    private Context context;
+    private boolean hasCountries;
 
     @Inject
     public CountriesPresenter (GetCountriesUsecase countriesUsecase,
                                @ApplicationContext Context context)
     {
-        mCountriesUsecase = countriesUsecase;
-        mContext = context;
+        this.countriesUsecase = countriesUsecase;
+        this.context = context;
         disposables = new CompositeDisposable( );
     }
 
@@ -53,7 +53,7 @@ public class CountriesPresenter extends BasePresenter<CountriesMvpView>
     public void pause ()
     {
         super.pause( );
-        LocalBroadcastManager.getInstance( mContext ).unregisterReceiver( mMessageReceiver );
+        LocalBroadcastManager.getInstance( context ).unregisterReceiver( mMessageReceiver );
     }
 
     @Override
@@ -63,7 +63,7 @@ public class CountriesPresenter extends BasePresenter<CountriesMvpView>
         IntentFilter filterEvents = new IntentFilter( );
         filterEvents.addAction( new Events( Events.SYNC_COMPLETED ).getDescription( ) );
         filterEvents.addAction( new Events( Events.SYNC_ERROR ).getDescription( ) );
-        LocalBroadcastManager.getInstance( mContext )
+        LocalBroadcastManager.getInstance( context )
                 .registerReceiver( mMessageReceiver, filterEvents );
     }
 
@@ -72,7 +72,7 @@ public class CountriesPresenter extends BasePresenter<CountriesMvpView>
         checkViewAttached( );
         getMvpView( ).hideEmptyLabel( );
         getMvpView( ).showLoading( );
-        disposables.add( mCountriesUsecase.execute( )
+        disposables.add( countriesUsecase.execute( )
                 .subscribeWith( new DisposableObserver<List<Country>>( )
                 {
                     @Override
@@ -95,7 +95,7 @@ public class CountriesPresenter extends BasePresenter<CountriesMvpView>
                     {
                         if ( !countries.isEmpty( ) )
                         {
-                            mHasCountries = true;
+                            hasCountries = true;
                             getMvpView( ).showCountries( countries );
                         } else
                         {
@@ -123,7 +123,7 @@ public class CountriesPresenter extends BasePresenter<CountriesMvpView>
                     equals( new Events( Events.SYNC_ERROR ).getDescription() ) )
             {
                 getMvpView( ).hideLoading( );
-                if ( !mHasCountries )
+                if ( !hasCountries )
                 {
                     getMvpView( ).showEmptyLabel( );
                     getMvpView( ).showError( );

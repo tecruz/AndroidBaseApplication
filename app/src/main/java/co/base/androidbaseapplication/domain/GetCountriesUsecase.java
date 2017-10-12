@@ -12,18 +12,18 @@ import io.reactivex.schedulers.Schedulers;
 
 public class GetCountriesUsecase extends Usecase<List<Country>>
 {
-    private final CountryRepository mRepository;
+    private final CountryRepository countryRepository;
 
     @Inject
     public GetCountriesUsecase (CountryRepository countryRepository)
     {
-        mRepository = countryRepository;
+        this.countryRepository = countryRepository;
     }
 
     @Override
     public Observable<List<Country>> buildObservable ()
     {
-        return mRepository.countries( policy )
+        return countryRepository.countries( policy )
                 .observeOn( AndroidSchedulers.mainThread() )
                 .subscribeOn( Schedulers.io( ) );
     }

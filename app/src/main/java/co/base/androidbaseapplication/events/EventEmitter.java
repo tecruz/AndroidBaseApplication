@@ -13,16 +13,16 @@ import co.base.androidbaseapplication.injection.ApplicationContext;
 public class EventEmitter
 {
 
-    private LocalBroadcastManager mLocalBroadcastManager;
+    private LocalBroadcastManager localBroadcastManager;
 
     @Inject
     public EventEmitter (@ApplicationContext Context context)
     {
-        mLocalBroadcastManager = LocalBroadcastManager.getInstance( context );
+        localBroadcastManager = LocalBroadcastManager.getInstance( context );
     }
 
     public void postEvent (Events event)
     {
-        mLocalBroadcastManager.sendBroadcast( new Intent( event.getDescription( ) ) );
+        localBroadcastManager.sendBroadcast( new Intent( event.getDescription( ) ) );
     }
 }

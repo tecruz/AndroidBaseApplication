@@ -14,7 +14,7 @@ import co.base.androidbaseapplication.injection.component.ActivityComponent;
 public abstract class BaseFragment extends Fragment
 {
 
-    private Unbinder mUnbinder;
+    private Unbinder unbinder;
 
     protected abstract void injectDependencies (ActivityComponent component);
 
@@ -33,7 +33,7 @@ public abstract class BaseFragment extends Fragment
     public void onViewCreated (View view, @Nullable Bundle savedInstanceState)
     {
         super.onViewCreated( view, savedInstanceState );
-        mUnbinder = ButterKnife.bind( this, view );
+        unbinder = ButterKnife.bind( this, view );
     }
 
 
@@ -41,6 +41,6 @@ public abstract class BaseFragment extends Fragment
     public void onDestroyView ()
     {
         super.onDestroyView( );
-        mUnbinder.unbind( );
+        unbinder.unbind( );
     }
 }

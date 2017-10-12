@@ -23,7 +23,7 @@ import io.reactivex.functions.Function;
 public class CountryDataRepository implements CountryRepository
 {
 
-    private CountryDataStoreFactory mCountryDataStoreFactory;
+    private CountryDataStoreFactory countryDataStoreFactory;
 
     /**
      * Constructs a {@link CountryRepository}.
@@ -33,7 +33,7 @@ public class CountryDataRepository implements CountryRepository
     @Inject
     public CountryDataRepository (CountryDataStoreFactory dataStoreFactory)
     {
-        mCountryDataStoreFactory = dataStoreFactory;
+        countryDataStoreFactory = dataStoreFactory;
     }
 
     /**
@@ -48,7 +48,7 @@ public class CountryDataRepository implements CountryRepository
 
         final CountryDataStore countryDataStore;
 
-        countryDataStore = mCountryDataStoreFactory.create( policy );
+        countryDataStore = countryDataStoreFactory.create( policy );
 
         return countryDataStore.countryEntityList( ).concatMap( new Function<List<CountryEntity>,
                 Observable<List<Country>>>( )
