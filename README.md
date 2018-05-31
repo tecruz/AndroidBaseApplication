@@ -1,9 +1,9 @@
 # AndroidBaseApplication
 Base reference for new Android projects
 
-[![Codacy Badge](https://api.codacy.com/project/badge/Grade/18a544ceef5948debcd7356b2f267af7)](https://app.codacy.com/app/tecruz/AndroidBaseApplication?utm_source=github.com&utm_medium=referral&utm_content=tecruz/AndroidBaseApplication&utm_campaign=badger)
 [![Build Status](https://travis-ci.org/tecruz/AndroidBaseApplication.svg?branch=master)](https://travis-ci.org/tecruz/AndroidBaseApplication)
 [![codecov.io](https://codecov.io/github/tecruz/AndroidBaseApplication/branch/master/graph/badge.svg)](https://codecov.io/gh/tecruz/AndroidBaseApplication)
+[![Codacy Badge](https://api.codacy.com/project/badge/Grade/18a544ceef5948debcd7356b2f267af7)](https://app.codacy.com/app/tecruz/AndroidBaseApplication?utm_source=github.com&utm_medium=referral&utm_content=tecruz/AndroidBaseApplication&utm_campaign=badger)
 
 ![Alt text](screen.png?raw=true)
 
