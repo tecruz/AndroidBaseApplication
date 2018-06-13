@@ -1,0 +1,44 @@
+apply plugin: 'com.android.library'
+apply plugin: 'realm-android'
+apply plugin: 'jacoco-android'
+
+android {
+    compileSdkVersion rootProject.ext.targetSdkVersion
+
+    defaultConfig {
+        minSdkVersion rootProject.ext.minSdkVersion
+        targetSdkVersion rootProject.ext.targetSdkVersion
+        versionCode 1
+        versionName "1.0"
+        testInstrumentationRunner rootProject.ext.testInstrumentationRunner
+    }
+
+    buildTypes {
+        debug {
+            testCoverageEnabled true
+
+            resValue "string", "API_BASE_URL", "https://restcountries.eu/rest/v2/"
+        }
+
+        release {
+            testCoverageEnabled true
+            resValue "string", "API_BASE_URL", "https://restcountries.eu/rest/v2/"
+            minifyEnabled false
+            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+        }
+    }
+
+}
+
+dependencies {
+    implementation rootProject.ext.dagger2
+    annotationProcessor rootProject.ext.dagger2Compiler
+    implementation rootProject.ext.rxJava
+    implementation rootProject.ext.retrofit
+    implementation rootProject.ext.retrofitConverter
+    implementation rootProject.ext.okHttpLoggingInterceptor
+    implementation rootProject.ext.retrofitAdapter
+    implementation rootProject.ext.supportAnnotations
+
+    implementation project(':domain')
+}

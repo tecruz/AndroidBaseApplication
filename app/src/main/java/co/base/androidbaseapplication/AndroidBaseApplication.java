@@ -5,9 +5,9 @@ import android.content.Context;
 
 import com.squareup.leakcanary.LeakCanary;
 
-import co.base.androidbaseapplication.injection.component.ApplicationComponent;
-import co.base.androidbaseapplication.injection.component.DaggerApplicationComponent;
-import co.base.androidbaseapplication.injection.module.ApplicationModule;
+import co.base.androidbaseapplication.di.component.ApplicationComponent;
+import co.base.androidbaseapplication.di.component.DaggerApplicationComponent;
+import co.base.androidbaseapplication.di.module.ApplicationModule;
 import timber.log.Timber;
 
 public class AndroidBaseApplication extends Application

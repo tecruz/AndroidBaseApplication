@@ -18,8 +18,8 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 import co.base.androidbaseapplication.AndroidBaseApplication;
 import co.base.androidbaseapplication.R;
-import co.base.androidbaseapplication.injection.component.ActivityComponent;
-import co.base.androidbaseapplication.injection.component.DaggerActivityComponent;
+import co.base.androidbaseapplication.di.component.ActivityComponent;
+import co.base.androidbaseapplication.di.component.DaggerActivityComponent;
 import co.base.androidbaseapplication.ui.navigation.Navigator;
 import co.base.androidbaseapplication.ui.custom.NavigationDrawerFragment;
 

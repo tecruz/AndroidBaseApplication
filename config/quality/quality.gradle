@@ -21,7 +21,8 @@ dependencies {
 def qualityConfigDir = "$project.rootDir/config/quality";
 def reportsDir = "$project.buildDir/reports"
 
-check.dependsOn 'checkstyle', 'findbugs', 'pmd', 'test', 'connectedAndroidTest', 'jacocoTestReport', 'connectedCheck'
+println("QualityDir: " + "$qualityConfigDir");
+println("ReportsDir: " + "$reportsDir");
 
 task checkstyle(type: Checkstyle, group: 'Verification', description: 'Runs code style checks') {
     configFile file("$qualityConfigDir/checkstyle/checkstyle-config.xml")
@@ -35,19 +36,22 @@ task checkstyle(type: Checkstyle, group: 'Verification', description: 'Runs code
         }
     }
 
-    classpath = files( )
+    classpath = files()
 }
+
 
 task findbugs(type: FindBugs,
         group: 'Verification',
         description: 'Inspect java bytecode for bugs',
-        dependsOn: ['compileDebugSources','compileReleaseSources']) {
+        dependsOn: file("$project.buildDir/build/intermediates/classes").exists() ? "assembleDebug" : "assemble") {
 
     ignoreFailures = false
     effort = "max"
     reportLevel = "high"
     excludeFilter = new File("$qualityConfigDir/findbugs/android-exclude-filter.xml")
-    classes = files("$project.rootDir/app/build/intermediates/classes")
+    classes = (file("$project.buildDir/intermediates/classes/debug").exists()
+            ? fileTree(dir: "$project.buildDir/intermediates/classes/debug")
+            : fileTree(dir: "$project.buildDir/classes"))
 
     source 'src'
     include '**/*.java'
@@ -56,15 +60,20 @@ task findbugs(type: FindBugs,
     reports {
         xml.enabled = false
         html.enabled = true
-        xml {
-            destination file("$reportsDir/findbugs/findbugs.xml")
-        }
         html {
             destination file("$reportsDir/findbugs/findbugs.html")
         }
     }
 
     classpath = files()
+}
+
+tasks.withType(FindBugs) {
+    reportLevel = "high"
+    reports {
+        xml.enabled = false
+        html.enabled = true
+    }
 }
 
 
@@ -86,5 +95,13 @@ task pmd(type: Pmd, group: 'Verification', description: 'Inspect sourcecode for 
         html {
             destination file("$reportsDir/pmd/pmd.html")
         }
+    }
+}
+
+afterEvaluate { Project project ->
+    if (project.name == "domain") {
+        check.dependsOn 'checkstyle', 'pmd', 'findbugs', 'test', 'jacocoTestReport'
+    } else {
+        check.dependsOn 'checkstyle', 'pmd', 'findbugs', 'test', 'connectedAndroidTest', 'jacocoTestReport', 'connectedCheck'
     }
 }

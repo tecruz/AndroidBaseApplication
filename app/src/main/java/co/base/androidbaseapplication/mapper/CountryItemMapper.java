@@ -4,16 +4,15 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 
-import co.base.androidbaseapplication.data.entity.CountryEntity;
 import co.base.androidbaseapplication.ui.entity.Country;
 
 public class CountryItemMapper
 {
 
-    public static List<Country> transform (Collection<CountryEntity> countries)
+    public static List<Country> transform (Collection<co.base.domain.Country> countries)
     {
         List<Country> countriesList = new ArrayList<>( );
-        for ( CountryEntity country : countries )
+        for ( co.base.domain.Country country : countries )
         {
             Country countryItem = transform( country );
             countriesList.add( countryItem );
@@ -21,17 +20,17 @@ public class CountryItemMapper
         return countriesList;
     }
 
-    public static Country transform (CountryEntity countryItem)
+    public static Country transform (co.base.domain.Country countryItem)
     {
         Country country = new Country( );
-        country.setCountryCode( countryItem.getAlpha2Code( ) );
-        country.setCountryName( countryItem.getName( ) );
-        if ( countryItem.getLatlng( ) != null && countryItem.getLatlng( ).size( ) > 0 )
+        country.setCountryCode( countryItem.getCountryCode( ) );
+        country.setCountryName( countryItem.getCountryName( ) );
+        if ( countryItem.getLat( ) != null && countryItem.getLng( ) != null )
         {
-            country.setLat( countryItem.getLatlng( ).get( 0 ).getVal( ) );
-            country.setLng( countryItem.getLatlng( ).get( 1 ).getVal( ) );
+            country.setLat( countryItem.getLat( ) );
+            country.setLng( countryItem.getLng( ) );
         }
-        country.setFlagCountryCode( countryItem.getAlpha3Code( ) );
+        country.setFlagCountryCode( countryItem.getFlagCountryCode( ) );
         return country;
     }
 }

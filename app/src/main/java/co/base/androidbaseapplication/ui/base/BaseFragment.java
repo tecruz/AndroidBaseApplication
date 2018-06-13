@@ -9,7 +9,7 @@ import android.view.ViewGroup;
 
 import butterknife.ButterKnife;
 import butterknife.Unbinder;
-import co.base.androidbaseapplication.injection.component.ActivityComponent;
+import co.base.androidbaseapplication.di.component.ActivityComponent;
 
 public abstract class BaseFragment extends Fragment
 {

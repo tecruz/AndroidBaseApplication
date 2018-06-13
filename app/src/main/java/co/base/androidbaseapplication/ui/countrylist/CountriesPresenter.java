@@ -9,12 +9,13 @@ import android.support.v4.content.LocalBroadcastManager;
 import java.util.List;
 
 import javax.inject.Inject;
-;
-import co.base.androidbaseapplication.domain.GetCountriesUsecase;
+
 import co.base.androidbaseapplication.events.Events;
-import co.base.androidbaseapplication.injection.ApplicationContext;
-import co.base.androidbaseapplication.ui.entity.Country;
+import co.base.androidbaseapplication.di.ApplicationContext;
+import co.base.androidbaseapplication.mapper.CountryItemMapper;
 import co.base.androidbaseapplication.ui.base.BasePresenter;
+import co.base.domain.Country;
+import co.base.domain.GetCountriesUsecase;
 import io.reactivex.disposables.CompositeDisposable;
 import io.reactivex.observers.DisposableObserver;
 import timber.log.Timber;
@@ -96,7 +97,7 @@ public class CountriesPresenter extends BasePresenter<CountriesMvpView>
                         if ( !countries.isEmpty( ) )
                         {
                             hasCountries = true;
-                            getMvpView( ).showCountries( countries );
+                            getMvpView( ).showCountries( CountryItemMapper.transform( countries ) );
                         } else
                         {
                             getMvpView( ).showCountriesEmpty( );
@@ -105,7 +106,7 @@ public class CountriesPresenter extends BasePresenter<CountriesMvpView>
                 } ) );
     }
 
-    public void onCountryClicked (Country country)
+    public void onCountryClicked (co.base.androidbaseapplication.ui.entity.Country country)
     {
         getMvpView( ).countryItemClicked( country );
     }
@@ -120,7 +121,7 @@ public class CountriesPresenter extends BasePresenter<CountriesMvpView>
             {
                 loadCountries( );
             } else if ( intent.getAction( ).
-                    equals( new Events( Events.SYNC_ERROR ).getDescription() ) )
+                    equals( new Events( Events.SYNC_ERROR ).getDescription( ) ) )
             {
                 getMvpView( ).hideLoading( );
                 if ( !hasCountries )

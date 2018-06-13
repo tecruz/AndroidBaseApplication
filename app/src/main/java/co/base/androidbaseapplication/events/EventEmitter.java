@@ -7,7 +7,7 @@ import android.support.v4.content.LocalBroadcastManager;
 import javax.inject.Inject;
 import javax.inject.Singleton;
 
-import co.base.androidbaseapplication.injection.ApplicationContext;
+import co.base.androidbaseapplication.di.ApplicationContext;
 
 @Singleton
 public class EventEmitter

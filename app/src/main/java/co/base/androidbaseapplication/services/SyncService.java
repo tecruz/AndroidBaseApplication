@@ -17,29 +17,30 @@ import java.util.List;
 import javax.inject.Inject;
 
 import co.base.androidbaseapplication.AndroidBaseApplication;
-import co.base.androidbaseapplication.data.Policies;
-import co.base.androidbaseapplication.data.exception.RetrofitException;
-import co.base.androidbaseapplication.domain.GetCountriesUsecase;
 import co.base.androidbaseapplication.events.EventEmitter;
 import co.base.androidbaseapplication.events.Events;
-import co.base.androidbaseapplication.ui.entity.Country;
 import co.base.androidbaseapplication.util.ErrorMessageFactory;
 import co.base.androidbaseapplication.util.PreferencesUtil;
 
+import co.base.data.exception.RetrofitException;
+import co.base.domain.Country;
+import co.base.domain.GetCountriesUsecase;
 import io.reactivex.disposables.CompositeDisposable;
 import io.reactivex.observers.DisposableObserver;
 import timber.log.Timber;
 
 public class SyncService extends JobService
 {
-
     @Inject
     GetCountriesUsecase getCountriesUsecase;
+
     @Inject
     PreferencesUtil preferencesUtil;
+
     @Inject
     EventEmitter eventEmitter;
-    private CompositeDisposable disposable = new CompositeDisposable(  );
+
+    private CompositeDisposable disposable = new CompositeDisposable( );
 
     public static void startService (Context context)
     {
@@ -85,8 +86,7 @@ public class SyncService extends JobService
         if ( disposable != null )
             disposable.clear( );
 
-        disposable.add( getCountriesUsecase
-                .withPolicy( new Policies( Policies.NETWORK ) ).execute( )
+        disposable.add( getCountriesUsecase.execute( )
                 .subscribeWith( new DisposableObserver<List<Country>>( )
                 {
                     @Override

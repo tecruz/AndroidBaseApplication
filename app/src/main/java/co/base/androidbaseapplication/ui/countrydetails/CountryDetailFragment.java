@@ -9,7 +9,7 @@ import android.webkit.WebViewClient;
 
 import butterknife.BindView;
 import co.base.androidbaseapplication.R;
-import co.base.androidbaseapplication.injection.component.ActivityComponent;
+import co.base.androidbaseapplication.di.component.ActivityComponent;
 import co.base.androidbaseapplication.ui.base.BaseFragment;
 
 public class CountryDetailFragment extends BaseFragment

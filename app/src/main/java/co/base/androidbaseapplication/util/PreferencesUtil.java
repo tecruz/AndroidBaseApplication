@@ -7,7 +7,7 @@ import javax.inject.Inject;
 import javax.inject.Singleton;
 
 import co.base.androidbaseapplication.Config;
-import co.base.androidbaseapplication.injection.ApplicationContext;
+import co.base.androidbaseapplication.di.ApplicationContext;
 
 @Singleton
 public class PreferencesUtil

@@ -26,7 +26,7 @@ import javax.inject.Inject;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import co.base.androidbaseapplication.R;
-import co.base.androidbaseapplication.injection.ApplicationContext;
+import co.base.androidbaseapplication.di.ApplicationContext;
 import co.base.androidbaseapplication.ui.entity.Country;
 import co.base.androidbaseapplication.util.SvgDecoder;
 import co.base.androidbaseapplication.util.SvgDrawableTranscoder;

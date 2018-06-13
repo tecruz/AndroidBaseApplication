@@ -1,33 +1,30 @@
 apply plugin: 'com.android.application'
-apply from: '../config/quality/quality.gradle'
-apply plugin: 'realm-android'
 apply plugin: 'jacoco-android'
 
 android {
-    compileSdkVersion 27
-    buildToolsVersion '27.0.3'
+    compileSdkVersion rootProject.ext.targetSdkVersion
+    buildToolsVersion rootProject.ext.buildToolsVersion
 
     defaultConfig {
         applicationId "co.base.androidbaseapplication"
-        minSdkVersion 15
-        targetSdkVersion 27
+        minSdkVersion rootProject.ext.minSdkVersion
+        targetSdkVersion rootProject.ext.targetSdkVersion
         versionCode 1
         versionName "1.0"
-        testInstrumentationRunner 'android.support.test.runner.AndroidJUnitRunner'
+        multiDexEnabled true
+        testInstrumentationRunner rootProject.ext.testInstrumentationRunner
     }
 
     buildTypes {
 
         debug {
             testCoverageEnabled true
-            resValue "string", "API_BASE_URL", "https://restcountries.eu/rest/v2/"
             resValue "string", "IMAGE_BASE_URL", "https://restcountries.eu/data/%s.svg"
             resValue "string", "COUNTRY_INFO_URL", "http://country.io/%s"
         }
 
         release {
             testCoverageEnabled true
-            resValue "string", "API_BASE_URL", "https://restcountries.eu/rest/v2/"
             resValue "string", "IMAGE_BASE_URL", "https://restcountries.eu/data/%s.svg"
             resValue "string", "COUNTRY_INFO_URL", "http://country.io/%s"
 
@@ -50,69 +47,48 @@ android {
 }
 
 dependencies {
-    final ANDROID_SUPPORT_ANNOTATIONS_VERSION = '27.1.1'
-    final ANDROID_SVG_VERSION = '1.2.1'
-    final BUTTER_KNIFE_VERSION = '8.5.1'
-    final CIRCLE_IMAGEVIEW_VERSION = '2.1.0'
-    final CONSTRAINT_LAYOUT_VERSION = '1.1.0'
-    final DAGGER2_VERSION = '2.10'
-    final ESPRESSO_VERSION = '2.2.2'
-    final FIREBASE_JOB_DISPATCHER_VERSION = '0.8.5'
-    final GLIDE_VERSION = '3.7.0'
-    final JUNIT_VERSION = '4.12'
-    final LEAK_CANARY_VERSION = '1.5.4'
-    final OKHTTP_LOGGING_INTERCEPTOR_VERSION = '3.6.0'
-    final PERMESSIONS_DISPATCHER_VERSION = '2.3.2'
-    final POWER_MOCK_VERSION = '1.6.6'
-    final RETROFIT_VERSION = '2.2.0'
-    final RXANDROID_VERSION = '2.0.1'
-    final RXJAVA_VERSION = '2.0.8'
-    final SUPPORT_LIBRARY_VERSION = '27.1.1'
-    final TIMBER_VERSION = '4.5.1'
-
     // Dagger dependencies
-    implementation "com.google.dagger:dagger:$DAGGER2_VERSION"
-    annotationProcessor "com.google.dagger:dagger-compiler:$DAGGER2_VERSION"
+    implementation rootProject.ext.dagger2
+    annotationProcessor rootProject.ext.dagger2Compiler
 
-    implementation "com.squareup.retrofit2:retrofit:$RETROFIT_VERSION"
-    implementation "com.squareup.retrofit2:converter-gson:$RETROFIT_VERSION"
-    implementation "com.squareup.retrofit2:adapter-rxjava2:$RETROFIT_VERSION"
+    implementation rootProject.ext.retrofit
+    implementation rootProject.ext.retrofitConverter
+    implementation rootProject.ext.retrofitAdapter
 
-    debugImplementation "com.squareup.leakcanary:leakcanary-android:$LEAK_CANARY_VERSION"
-    releaseImplementation "com.squareup.leakcanary:leakcanary-android-no-op:$LEAK_CANARY_VERSION"
-    testImplementation "com.squareup.leakcanary:leakcanary-android-no-op:$LEAK_CANARY_VERSION"
+    debugImplementation rootProject.ext.leakCanaryDebug
+    releaseImplementation rootProject.ext.leakCanaryRelease
+    testImplementation rootProject.ext.leakCanaryTest
 
-    implementation "com.android.support:appcompat-v7:$SUPPORT_LIBRARY_VERSION"
-    implementation "com.android.support:recyclerview-v7:$SUPPORT_LIBRARY_VERSION"
-    implementation "com.android.support:cardview-v7:$SUPPORT_LIBRARY_VERSION"
-    implementation "com.android.support:support-v4:$SUPPORT_LIBRARY_VERSION"
-    implementation "com.android.support:design:$SUPPORT_LIBRARY_VERSION"
+    implementation rootProject.ext.supportV7
+    implementation rootProject.ext.supportRecyclerView
+    implementation rootProject.ext.supportCardView
+    implementation rootProject.ext.supportV4
+    implementation rootProject.ext.supportDesign
 
-    implementation "com.squareup.okhttp3:logging-interceptor:$OKHTTP_LOGGING_INTERCEPTOR_VERSION"
-    implementation "io.reactivex.rxjava2:rxandroid:$RXANDROID_VERSION"
-    implementation "io.reactivex.rxjava2:rxjava:$RXJAVA_VERSION"
-    implementation "com.jakewharton.timber:timber:$TIMBER_VERSION"
+    implementation rootProject.ext.okHttpLoggingInterceptor
+    implementation rootProject.ext.rxAndroid
+    implementation rootProject.ext.rxJava
+    implementation rootProject.ext.timber
 
-    implementation "com.jakewharton:butterknife:$BUTTER_KNIFE_VERSION"
-    annotationProcessor "com.jakewharton:butterknife-compiler:$BUTTER_KNIFE_VERSION"
+    implementation rootProject.ext.butterKnife
+    annotationProcessor rootProject.ext.butterKnifeCompiler
 
-    implementation "de.hdodenhof:circleimageview:$CIRCLE_IMAGEVIEW_VERSION"
-    implementation "com.github.bumptech.glide:glide:$GLIDE_VERSION"
-    implementation "com.android.support.constraint:constraint-layout:$CONSTRAINT_LAYOUT_VERSION"
-    implementation "com.firebase:firebase-jobdispatcher:$FIREBASE_JOB_DISPATCHER_VERSION"
-    implementation "com.caverock:androidsvg:$ANDROID_SVG_VERSION"
+    implementation rootProject.ext.circleImageView
+    implementation rootProject.ext.glide
+    implementation rootProject.ext.constraintLayout
+    implementation rootProject.ext.firebaseJobDispatcher
+    implementation rootProject.ext.androidSvg
 
     //permissions
-    implementation "com.github.hotchemi:permissionsdispatcher:$PERMESSIONS_DISPATCHER_VERSION"
-    annotationProcessor "com.github.hotchemi:permissionsdispatcher-processor:$PERMESSIONS_DISPATCHER_VERSION"
+    implementation rootProject.ext.permissionsDispatcher
+    annotationProcessor rootProject.ext.permissionsDispatcherProcessor
 
     //Testing
-    testImplementation "junit:junit:$JUNIT_VERSION"
+    testImplementation rootProject.ext.jUnit
+    testImplementation rootProject.ext.mockito
+    androidTestImplementation rootProject.ext.espresso
+    androidTestImplementation rootProject.ext.supportAnnotations
 
-    testImplementation "org.powermock:powermock-module-junit4:$POWER_MOCK_VERSION"
-    testImplementation "org.powermock:powermock-module-junit4-rule:$POWER_MOCK_VERSION"
-    testImplementation "org.powermock:powermock-api-mockito:$POWER_MOCK_VERSION"
-
-    androidTestImplementation "com.android.support.test.espresso:espresso-core:$ESPRESSO_VERSION"
-    androidTestImplementation "com.android.support:support-annotations:$ANDROID_SUPPORT_ANNOTATIONS_VERSION"
+    implementation project(':data')
+    implementation project(':domain')
 }

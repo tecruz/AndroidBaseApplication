@@ -3,9 +3,9 @@ package co.base.androidbaseapplication.util;
 import android.content.Context;
 
 import co.base.androidbaseapplication.R;
-import co.base.androidbaseapplication.data.exception.RetrofitException;
+import co.base.data.exception.RetrofitException;
 
-import static co.base.androidbaseapplication.data.exception.RetrofitException.NO_INTERNET_CONNECTION;
+import static co.base.data.exception.RetrofitException.NO_INTERNET_CONNECTION;
 
 /**
  * Factory used to create error messages from an Exception as a condition.
