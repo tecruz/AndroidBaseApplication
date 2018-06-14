@@ -19,7 +19,7 @@ Libraries and tools included:
 - [Timber](https://github.com/JakeWharton/timber)
 - [Glide](https://github.com/bumptech/glide)
 - [LeakCanary](https://github.com/square/leakcanary)
-- [Checkstyle](http://checkstyle.sourceforge.net/), [PMD](https://pmd.github.io/) and [Findbugs](http://findbugs.sourceforge.net/) for code analysis
+- [Codacy](https://www.codacy.com/) for code analysis
 
 ### The check task
 
