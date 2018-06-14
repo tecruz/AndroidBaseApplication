@@ -1,9 +1,7 @@
 package co.base.domain.domain;
 
 import org.junit.Before;
-import org.junit.Rule;
 import org.junit.Test;
-import org.junit.rules.ExpectedException;
 import org.junit.runner.RunWith;
 import org.mockito.Mock;
 import org.mockito.runners.MockitoJUnitRunner;
@@ -32,9 +30,6 @@ public class UsecaseTest
 
     private TestDisposableObserver<Object> testObserver;
     private CompositeDisposable disposable = new CompositeDisposable( );
-
-    @Rule
-    public ExpectedException expectedException = ExpectedException.none( );
 
     @Before
     public void setUp ()

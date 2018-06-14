@@ -3,6 +3,7 @@ package co.base.androidbaseapplication.ui.countrydetails;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.v4.app.Fragment;
 import android.support.v7.app.ActionBar;
 import android.view.View;
 import android.widget.ProgressBar;
@@ -12,10 +13,15 @@ import javax.inject.Inject;
 import butterknife.BindView;
 import co.base.androidbaseapplication.R;
 import co.base.androidbaseapplication.ui.base.BaseActivity;
+import dagger.android.AndroidInjector;
+import dagger.android.DispatchingAndroidInjector;
+import dagger.android.support.HasSupportFragmentInjector;
 
 public class CountryDetailActivity extends BaseActivity implements CountryDetailMvpView,
-        CountryDetailFragment.OnCountryDetailsFragmentInteractionListener
+        CountryDetailFragment.OnCountryDetailsFragmentInteractionListener, HasSupportFragmentInjector
 {
+    @Inject
+    DispatchingAndroidInjector<Fragment> fragmentDispatchingAndroidInjector;
 
     private static final String INSTANCE_EXTRA_PARAM_COUNTRY_CODE
             = "STATE_PARAM_COUNTRY_CODE";
@@ -37,7 +43,6 @@ public class CountryDetailActivity extends BaseActivity implements CountryDetail
     protected void onCreate (Bundle savedInstanceState)
     {
         super.onCreate( savedInstanceState );
-        getActivityComponent( ).inject( this );
         setContentView( R.layout.activity_country_detail );
         setupToolBar( );
 
@@ -103,5 +108,11 @@ public class CountryDetailActivity extends BaseActivity implements CountryDetail
     public void showLoading ()
     {
         showLoadingView( );
+    }
+
+    @Override
+    public AndroidInjector<Fragment> supportFragmentInjector ()
+    {
+        return fragmentDispatchingAndroidInjector;
     }
 }

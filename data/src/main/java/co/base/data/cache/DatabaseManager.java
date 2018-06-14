@@ -1,7 +1,6 @@
 package co.base.data.cache;
 
 import android.app.Application;
-import android.content.Context;
 
 import java.util.Collection;
 import java.util.List;

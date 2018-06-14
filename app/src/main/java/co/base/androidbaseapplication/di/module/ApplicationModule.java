@@ -3,10 +3,7 @@ package co.base.androidbaseapplication.di.module;
 import android.app.Application;
 import android.content.Context;
 
-import javax.inject.Singleton;
-
-import co.base.androidbaseapplication.di.ApplicationContext;
-import co.base.androidbaseapplication.di.UIThread;
+import co.base.androidbaseapplication.UIThread;
 import co.base.data.JobExecutor;
 import co.base.data.cache.CountryCache;
 import co.base.data.cache.CountryCacheImpl;
@@ -14,60 +11,27 @@ import co.base.data.repository.CountryDataRepository;
 import co.base.domain.executor.PostExecutionThread;
 import co.base.domain.executor.ThreadExecutor;
 import co.base.domain.repository.CountryRepository;
+import dagger.Binds;
 import dagger.Module;
-import dagger.Provides;
 
 /**
  * Provide application-level dependencies.
  */
 @Module
-public class ApplicationModule
+public abstract class ApplicationModule
 {
-    protected final Application application;
+    @Binds
+    abstract Context provideContext (Application context);
 
-    public ApplicationModule (Application application)
-    {
-        this.application = application;
-    }
+    @Binds
+    abstract CountryCache provideCountryCache (CountryCacheImpl countryCache);
 
-    @Provides
-    Application provideApplication ()
-    {
-        return application;
-    }
+    @Binds
+    abstract CountryRepository provideCountryRepository (CountryDataRepository countryDataRepository);
 
-    @Provides
-    @ApplicationContext
-    Context provideContext ()
-    {
-        return application;
-    }
+    @Binds
+    abstract PostExecutionThread providePostExecutionThread (UIThread uiThread);
 
-    @Provides
-    @Singleton
-    CountryCache provideCountryCache (CountryCacheImpl countryCache)
-    {
-        return countryCache;
-    }
-
-    @Provides
-    @Singleton
-    CountryRepository provideCountryRepository (CountryDataRepository countryDataRepository)
-    {
-        return countryDataRepository;
-    }
-
-    @Provides
-    @Singleton
-    PostExecutionThread providePostExecutionThread (UIThread uiThread)
-    {
-        return uiThread;
-    }
-
-    @Provides
-    @Singleton
-    ThreadExecutor provideThreadExecutor (JobExecutor jobExecutor)
-    {
-        return jobExecutor;
-    }
+    @Binds
+    abstract ThreadExecutor provideThreadExecutor (JobExecutor jobExecutor);
 }

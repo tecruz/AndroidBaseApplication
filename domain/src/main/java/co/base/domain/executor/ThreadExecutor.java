@@ -1,7 +1,5 @@
 package co.base.domain.executor;
 
-import java.util.concurrent.Executor;
-
 import io.reactivex.Scheduler;
 
 /**

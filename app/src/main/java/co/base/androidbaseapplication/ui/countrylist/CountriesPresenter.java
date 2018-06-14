@@ -11,7 +11,6 @@ import java.util.List;
 import javax.inject.Inject;
 
 import co.base.androidbaseapplication.events.Events;
-import co.base.androidbaseapplication.di.ApplicationContext;
 import co.base.androidbaseapplication.mapper.CountryItemMapper;
 import co.base.androidbaseapplication.ui.base.BasePresenter;
 import co.base.domain.Country;
@@ -30,7 +29,7 @@ public class CountriesPresenter extends BasePresenter<CountriesMvpView>
 
     @Inject
     public CountriesPresenter (GetCountriesUsecase countriesUsecase,
-                               @ApplicationContext Context context)
+                               Context context)
     {
         this.countriesUsecase = countriesUsecase;
         this.context = context;

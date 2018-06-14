@@ -1,19 +1,28 @@
 package co.base.androidbaseapplication;
 
+import android.app.Activity;
 import android.app.Application;
-import android.content.Context;
+import android.app.Service;
 
 import com.squareup.leakcanary.LeakCanary;
 
-import co.base.androidbaseapplication.di.component.ApplicationComponent;
-import co.base.androidbaseapplication.di.component.DaggerApplicationComponent;
-import co.base.androidbaseapplication.di.module.ApplicationModule;
+import javax.inject.Inject;
+
+import co.base.androidbaseapplication.di.DaggerApplicationComponent;
+import dagger.android.AndroidInjector;
+import dagger.android.DispatchingAndroidInjector;
+import dagger.android.HasActivityInjector;
+import dagger.android.HasServiceInjector;
 import timber.log.Timber;
 
-public class AndroidBaseApplication extends Application
+public class AndroidBaseApplication extends Application implements HasActivityInjector, HasServiceInjector
 {
 
-    ApplicationComponent applicationComponent;
+    @Inject
+    DispatchingAndroidInjector<Activity> activityDispatchingAndroidInjector;
+
+    @Inject
+    DispatchingAndroidInjector<Service> serviceDispatchingAndroidInjector;
 
     @Override
     public void onCreate ()
@@ -26,21 +35,23 @@ public class AndroidBaseApplication extends Application
             LeakCanary.install( this );
         }
 
+        DaggerApplicationComponent
+                .builder( )
+                .application( this )
+                .build( )
+                .inject( this );
+
     }
 
-    public static AndroidBaseApplication get (Context context)
+    @Override
+    public AndroidInjector<Activity> activityInjector ()
     {
-        return ( AndroidBaseApplication ) context.getApplicationContext( );
+        return activityDispatchingAndroidInjector;
     }
 
-    public ApplicationComponent getComponent ()
+    @Override
+    public AndroidInjector<Service> serviceInjector ()
     {
-        if ( applicationComponent == null )
-        {
-            applicationComponent = DaggerApplicationComponent.builder( )
-                    .applicationModule( new ApplicationModule( this ) )
-                    .build( );
-        }
-        return applicationComponent;
+        return serviceDispatchingAndroidInjector;
     }
 }

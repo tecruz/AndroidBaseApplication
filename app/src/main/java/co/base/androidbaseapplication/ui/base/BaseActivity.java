@@ -16,17 +16,14 @@ import javax.inject.Inject;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
-import co.base.androidbaseapplication.AndroidBaseApplication;
 import co.base.androidbaseapplication.R;
-import co.base.androidbaseapplication.di.component.ActivityComponent;
-import co.base.androidbaseapplication.di.component.DaggerActivityComponent;
 import co.base.androidbaseapplication.ui.navigation.Navigator;
 import co.base.androidbaseapplication.ui.custom.NavigationDrawerFragment;
+import dagger.android.AndroidInjection;
 
 public class BaseActivity extends AppCompatActivity
 {
 
-    private ActivityComponent activityComponent;
     private NavigationDrawerFragment navigationDrawerFragment;
 
     @BindView(R.id.my_toolbar)
@@ -42,6 +39,7 @@ public class BaseActivity extends AppCompatActivity
     @Override
     protected void onCreate (Bundle savedInstanceState)
     {
+        AndroidInjection.inject( this );
         super.onCreate( savedInstanceState );
     }
 
@@ -92,17 +90,6 @@ public class BaseActivity extends AppCompatActivity
         }
     }
 
-
-    public ActivityComponent getActivityComponent ()
-    {
-        if ( activityComponent == null )
-        {
-            activityComponent = DaggerActivityComponent.builder( )
-                    .applicationComponent( AndroidBaseApplication.get( this ).getComponent( ) )
-                    .build( );
-        }
-        return activityComponent;
-    }
 
     /**
      * Adds a {@link Fragment} to this activity's layout.

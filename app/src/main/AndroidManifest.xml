@@ -31,9 +31,6 @@
             </intent-filter>
         </service>
 
-        <meta-data android:name="co.base.androidbaseapplication.util.GlideConfiguration"
-            android:value="GlideModule"/>
-
     </application>
 
 </manifest>

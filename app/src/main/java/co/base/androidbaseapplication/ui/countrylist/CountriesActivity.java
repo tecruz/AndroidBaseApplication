@@ -35,7 +35,6 @@ public class CountriesActivity extends BaseActivity implements CountriesMvpView,
     @Inject
     CountriesPresenter countriesPresenter;
 
-    @Inject
     CountriesAdapter countriesAdapter;
 
     @Inject
@@ -66,13 +65,13 @@ public class CountriesActivity extends BaseActivity implements CountriesMvpView,
     protected void onCreate (Bundle savedInstanceState)
     {
         super.onCreate( savedInstanceState );
-        getActivityComponent( ).inject( this );
         setContentView( R.layout.activity_main );
         setupToolBar( );
         setupDrawer( );
 
         swipeRefreshLayout.setOnRefreshListener( onRefreshListener );
 
+        countriesAdapter = new CountriesAdapter( this );
         countriesAdapter.setOnItemClickListener( mOnItemClickListener );
 
         recyclerView.setAdapter( countriesAdapter );

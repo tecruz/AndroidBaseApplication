@@ -5,13 +5,14 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
-import org.powermock.modules.junit4.PowerMockRunner;
+import org.mockito.runners.MockitoJUnitRunner;
 
 import java.util.ArrayList;
 import java.util.List;
 
-import co.base.androidbaseapplication.domain.GetCountriesUsecase;
-import co.base.androidbaseapplication.ui.entity.Country;
+import co.base.androidbaseapplication.mapper.CountryItemMapper;
+import co.base.domain.Country;
+import co.base.domain.GetCountriesUsecase;
 import io.reactivex.Observable;
 import io.reactivex.ObservableEmitter;
 import io.reactivex.ObservableOnSubscribe;
@@ -20,7 +21,7 @@ import io.reactivex.annotations.NonNull;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
-@RunWith(PowerMockRunner.class)
+@RunWith(MockitoJUnitRunner.class)
 public class CountriesPresenterTest
 {
     @InjectMocks
@@ -91,7 +92,7 @@ public class CountriesPresenterTest
         verify( countriesView ).showLoading( );
         verify( countriesUsecase ).execute( );
 
-        verify( countriesView ).showCountries( testCountriesList );
+        verify( countriesView ).showCountries( CountryItemMapper.transform( testCountriesList ) );
         verify( countriesView ).hideLoading( );
     }
 

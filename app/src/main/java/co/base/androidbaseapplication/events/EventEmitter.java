@@ -7,8 +7,6 @@ import android.support.v4.content.LocalBroadcastManager;
 import javax.inject.Inject;
 import javax.inject.Singleton;
 
-import co.base.androidbaseapplication.di.ApplicationContext;
-
 @Singleton
 public class EventEmitter
 {
@@ -16,7 +14,7 @@ public class EventEmitter
     private LocalBroadcastManager localBroadcastManager;
 
     @Inject
-    public EventEmitter (@ApplicationContext Context context)
+    public EventEmitter (Context context)
     {
         localBroadcastManager = LocalBroadcastManager.getInstance( context );
     }

@@ -9,7 +9,6 @@ import android.webkit.WebViewClient;
 
 import butterknife.BindView;
 import co.base.androidbaseapplication.R;
-import co.base.androidbaseapplication.di.component.ActivityComponent;
 import co.base.androidbaseapplication.ui.base.BaseFragment;
 
 public class CountryDetailFragment extends BaseFragment
@@ -36,12 +35,6 @@ public class CountryDetailFragment extends BaseFragment
         args.putString( INSTANCE_EXTRA_PARAM_COUNTRY_NAME, countryName );
         countryDetailFragment.setArguments( args );
         return countryDetailFragment;
-    }
-
-    @Override
-    protected void injectDependencies (ActivityComponent component)
-    {
-        component.inject( this );
     }
 
     @Override

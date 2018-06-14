@@ -10,34 +10,26 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-import com.bumptech.glide.GenericRequestBuilder;
-import com.bumptech.glide.Glide;
-import com.bumptech.glide.load.engine.DiskCacheStrategy;
-import com.bumptech.glide.load.model.StreamEncoder;
-import com.bumptech.glide.load.resource.file.FileToStreamDecoder;
-import com.caverock.androidsvg.SVG;
+import com.bumptech.glide.RequestBuilder;
 
-import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.List;
-
-import javax.inject.Inject;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import co.base.androidbaseapplication.R;
-import co.base.androidbaseapplication.di.ApplicationContext;
 import co.base.androidbaseapplication.ui.entity.Country;
-import co.base.androidbaseapplication.util.SvgDecoder;
-import co.base.androidbaseapplication.util.SvgDrawableTranscoder;
-import co.base.androidbaseapplication.util.SvgSoftwareLayerSetter;
+import co.base.androidbaseapplication.util.GlideApp;
+import co.base.androidbaseapplication.util.svg.SvgSoftwareLayerSetter;
+
+import static com.bumptech.glide.load.resource.drawable.DrawableTransitionOptions.withCrossFade;
 
 public class CountriesAdapter extends RecyclerView.Adapter<CountriesAdapter.CountryViewHolder>
 {
 
     private Context context;
     private List<Country> countryList;
-    private GenericRequestBuilder<Uri, InputStream, SVG, PictureDrawable> requestBuilder;
+    private RequestBuilder<PictureDrawable> requestBuilder;
 
     public interface OnItemClickListener
     {
@@ -46,23 +38,16 @@ public class CountriesAdapter extends RecyclerView.Adapter<CountriesAdapter.Coun
 
     private OnItemClickListener mOnItemClickListener;
 
-    @Inject
-    public CountriesAdapter (@ApplicationContext Context applicationContext)
+    public CountriesAdapter (Context context)
     {
         countryList = new ArrayList<>( );
-        context = applicationContext;
-        requestBuilder = Glide.with( context )
-                .using( Glide.buildStreamModelLoader( Uri.class, context ), InputStream.class )
-                .from( Uri.class )
-                .as( SVG.class )
-                .transcode( new SvgDrawableTranscoder( ), PictureDrawable.class )
-                .sourceEncoder( new StreamEncoder( ) )
-                .cacheDecoder( new FileToStreamDecoder<SVG>( new SvgDecoder( ) ) )
-                .decoder( new SvgDecoder( ) )
+        this.context = context;
+        requestBuilder = GlideApp.with( this.context )
+                .as( PictureDrawable.class )
                 .placeholder( R.mipmap.ic_launcher )
                 .error( android.R.drawable.stat_notify_error )
-                .animate( android.R.anim.fade_in )
-                .listener( new SvgSoftwareLayerSetter<Uri>( ) );
+                .transition( withCrossFade( ) )
+                .listener( new SvgSoftwareLayerSetter( ) );
     }
 
     public void setCountries (List<Country> countries)
@@ -101,9 +86,7 @@ public class CountriesAdapter extends RecyclerView.Adapter<CountriesAdapter.Coun
         Uri uri = Uri.parse( context.getString( R.string.IMAGE_BASE_URL,
                 country.getFlagCountryCode( ).toLowerCase( ) ) );
 
-        requestBuilder.diskCacheStrategy( DiskCacheStrategy.SOURCE )
-                .load( uri )
-                .into( holder.flagView );
+        requestBuilder.load( uri ).into( holder.flagView );
 
         holder.itemView.setOnClickListener( new View.OnClickListener( )
         {

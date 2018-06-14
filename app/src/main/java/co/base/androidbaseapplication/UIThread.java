@@ -1,4 +1,4 @@
-package co.base.androidbaseapplication.di;
+package co.base.androidbaseapplication;
 
 import javax.inject.Inject;
 import javax.inject.Singleton;

@@ -3,17 +3,19 @@ ext {
     minSdkVersion = 15
     buildToolsVersion = "27.0.3"
     targetSdkVersion = 27
+    sourceCompatibilityVersion = JavaVersion.VERSION_1_7
+    targetCompatibilityVersion = JavaVersion.VERSION_1_7
     testInstrumentationRunner = "android.support.test.runner.AndroidJUnitRunner"
 
     final ANDROID_SUPPORT_ANNOTATIONS_VERSION = '27.1.1'
     final ANDROID_SVG_VERSION = '1.2.1'
-    final BUTTER_KNIFE_VERSION = '8.5.1'
-    final CIRCLE_IMAGEVIEW_VERSION = '2.1.0'
+    final BUTTER_KNIFE_VERSION = '8.8.1'
+    final CIRCLE_IMAGEVIEW_VERSION = '2.2.0'
     final CONSTRAINT_LAYOUT_VERSION = '1.1.0'
-    final DAGGER2_VERSION = '2.10'
+    final DAGGER2_VERSION = '2.16'
     final ESPRESSO_VERSION = '2.2.2'
     final FIREBASE_JOB_DISPATCHER_VERSION = '0.8.5'
-    final GLIDE_VERSION = '3.7.0'
+    final GLIDE_VERSION = '4.7.1'
     final JUNIT_VERSION = '4.12'
     final LEAK_CANARY_VERSION = '1.5.4'
     final MOCKITO_VERSION = '1.10.19'
@@ -26,7 +28,9 @@ ext {
     final TIMBER_VERSION = '4.5.1'
 
     dagger2 = "com.google.dagger:dagger:$DAGGER2_VERSION"
-    dagger2Compiler = "com.google.dagger:dagger-compiler:$DAGGER2_VERSION"
+    daggerCompiler = "com.google.dagger:dagger-compiler:$DAGGER2_VERSION"
+    daggerSupport = "com.google.dagger:dagger-android-support:$DAGGER2_VERSION"
+    daggerProcessor = "com.google.dagger:dagger-android-processor:$DAGGER2_VERSION"
 
     retrofit = "com.squareup.retrofit2:retrofit:$RETROFIT_VERSION"
     retrofitConverter = "com.squareup.retrofit2:converter-gson:$RETROFIT_VERSION"
@@ -52,6 +56,7 @@ ext {
 
     circleImageView = "de.hdodenhof:circleimageview:$CIRCLE_IMAGEVIEW_VERSION"
     glide = "com.github.bumptech.glide:glide:$GLIDE_VERSION"
+    glideCompiler = "com.github.bumptech.glide:compiler:$GLIDE_VERSION"
     constraintLayout = "com.android.support.constraint:constraint-layout:$CONSTRAINT_LAYOUT_VERSION"
     firebaseJobDispatcher = "com.firebase:firebase-jobdispatcher:$FIREBASE_JOB_DISPATCHER_VERSION"
     androidSvg = "com.caverock:androidsvg:$ANDROID_SVG_VERSION"

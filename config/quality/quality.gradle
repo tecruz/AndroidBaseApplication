@@ -21,11 +21,8 @@ dependencies {
 def qualityConfigDir = "$project.rootDir/config/quality";
 def reportsDir = "$project.buildDir/reports"
 
-println("QualityDir: " + "$qualityConfigDir");
-println("ReportsDir: " + "$reportsDir");
-
 task checkstyle(type: Checkstyle, group: 'Verification', description: 'Runs code style checks') {
-    configFile file("$qualityConfigDir/checkstyle/checkstyle-config.xml")
+    configFile file("$qualityConfigDir/checkstyle/checkstyle.xml")
     source 'src'
     include '**/*.java'
 
@@ -48,7 +45,7 @@ task findbugs(type: FindBugs,
     ignoreFailures = false
     effort = "max"
     reportLevel = "high"
-    excludeFilter = new File("$qualityConfigDir/findbugs/android-exclude-filter.xml")
+    excludeFilter = new File("$qualityConfigDir/findbugs/findbugs.xml")
     classes = (file("$project.buildDir/intermediates/classes/debug").exists()
             ? fileTree(dir: "$project.buildDir/intermediates/classes/debug")
             : fileTree(dir: "$project.buildDir/classes"))
@@ -78,7 +75,7 @@ tasks.withType(FindBugs) {
 
 
 task pmd(type: Pmd, group: 'Verification', description: 'Inspect sourcecode for bugs') {
-    ruleSetFiles = files("$qualityConfigDir/pmd/pmd-ruleset.xml")
+    ruleSetFiles = files("$qualityConfigDir/pmd/pmd.xml")
     ignoreFailures = false
     ruleSets = []
 
@@ -102,6 +99,6 @@ afterEvaluate { Project project ->
     if (project.name == "domain") {
         check.dependsOn 'checkstyle', 'pmd', 'findbugs', 'test', 'jacocoTestReport'
     } else {
-        check.dependsOn 'checkstyle', 'pmd', 'findbugs', 'test', 'connectedAndroidTest', 'jacocoTestReport', 'connectedCheck'
+        check.dependsOn 'checkstyle', 'pmd', 'findbugs', 'test',  'connectedAndroidTest', 'jacocoTestReport', 'connectedCheck'
     }
 }

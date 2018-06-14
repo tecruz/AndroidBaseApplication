@@ -49,7 +49,9 @@ android {
 dependencies {
     // Dagger dependencies
     implementation rootProject.ext.dagger2
-    annotationProcessor rootProject.ext.dagger2Compiler
+    annotationProcessor rootProject.ext.daggerCompiler
+    implementation rootProject.ext.daggerSupport
+    annotationProcessor rootProject.ext.daggerProcessor
 
     implementation rootProject.ext.retrofit
     implementation rootProject.ext.retrofitConverter
@@ -75,6 +77,7 @@ dependencies {
 
     implementation rootProject.ext.circleImageView
     implementation rootProject.ext.glide
+    annotationProcessor rootProject.ext.glideCompiler
     implementation rootProject.ext.constraintLayout
     implementation rootProject.ext.firebaseJobDispatcher
     implementation rootProject.ext.androidSvg

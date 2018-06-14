@@ -16,7 +16,6 @@ import java.util.List;
 
 import javax.inject.Inject;
 
-import co.base.androidbaseapplication.AndroidBaseApplication;
 import co.base.androidbaseapplication.events.EventEmitter;
 import co.base.androidbaseapplication.events.Events;
 import co.base.androidbaseapplication.util.ErrorMessageFactory;
@@ -25,6 +24,7 @@ import co.base.androidbaseapplication.util.PreferencesUtil;
 import co.base.data.exception.RetrofitException;
 import co.base.domain.Country;
 import co.base.domain.GetCountriesUsecase;
+import dagger.android.AndroidInjection;
 import io.reactivex.disposables.CompositeDisposable;
 import io.reactivex.observers.DisposableObserver;
 import timber.log.Timber;
@@ -74,8 +74,8 @@ public class SyncService extends JobService
     @Override
     public void onCreate ()
     {
+        AndroidInjection.inject( this );
         super.onCreate( );
-        AndroidBaseApplication.get( this ).getComponent( ).inject( this );
     }
 
     @Override

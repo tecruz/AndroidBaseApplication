@@ -7,7 +7,6 @@ import javax.inject.Inject;
 import javax.inject.Singleton;
 
 import co.base.androidbaseapplication.Config;
-import co.base.androidbaseapplication.di.ApplicationContext;
 
 @Singleton
 public class PreferencesUtil
@@ -18,7 +17,7 @@ public class PreferencesUtil
     private final SharedPreferences sharedPreferences;
 
     @Inject
-    public PreferencesUtil (@ApplicationContext Context context)
+    public PreferencesUtil (Context context)
     {
         sharedPreferences = context.getSharedPreferences( PREF_FILE_NAME, Context.MODE_PRIVATE );
     }
