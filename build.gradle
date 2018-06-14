@@ -20,11 +20,27 @@ allprojects {
     }
 }
 
+task runDomainTests(dependsOn: [':domain:test', ':domain:jacocoTestReport']) {
+    description 'Run tests for the domain layer.'
+}
+
+task runDataTests(dependsOn: [':data:cleanTestDebugUnitTest', ':data:testDebugUnitTest', 'data:connectedAndroidTest', ':data:jacocoTestReport']) {
+    description 'Run tests for the data layer.'
+}
+
+task runAllTests(dependsOn: ['runDomainTests',
+                             'runDataTests',
+                             'app:cleanTestDebugUnitTest',
+                             'app:testDebugUnitTest',
+                             ':app:connectedAndroidTest',':app:jacocoTestReport']) {
+
+    description 'Run application tests.'
+}
+
 task clean(type: Delete) {
     delete rootProject.buildDir
 }
 
-subprojects {
-    apply from: rootProject.file("config/quality/quality.gradle")
-}
+apply plugin: 'android-reporting'
+
 

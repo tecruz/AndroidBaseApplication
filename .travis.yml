@@ -29,7 +29,7 @@ before_script:
   - adb shell input keyevent 82
 
 script:
-  - ./gradlew check
+  - ./gradlew runAllTests
   
 after_success:
   - codecov

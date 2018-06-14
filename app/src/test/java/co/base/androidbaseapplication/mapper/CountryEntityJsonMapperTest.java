@@ -59,8 +59,8 @@ public class CountryEntityJsonMapperTest
         Collection<co.base.androidbaseapplication.ui.entity.Country> userCollection
                 = CountryItemMapper.transform( countryEntityList );
 
-        assertThat( userCollection.toArray( )[0], is( instanceOf( Country.class ) ) );
-        assertThat( userCollection.toArray( )[1], is( instanceOf( Country.class ) ) );
+        assertThat( userCollection.toArray( )[0], is( instanceOf( co.base.androidbaseapplication.ui.entity.Country.class ) ) );
+        assertThat( userCollection.toArray( )[1], is( instanceOf( co.base.androidbaseapplication.ui.entity.Country.class ) ) );
         assertThat( userCollection.size( ), is( 2 ) );
     }
 

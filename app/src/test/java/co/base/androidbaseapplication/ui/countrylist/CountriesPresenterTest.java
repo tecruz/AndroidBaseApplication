@@ -92,7 +92,6 @@ public class CountriesPresenterTest
         verify( countriesView ).showLoading( );
         verify( countriesUsecase ).execute( );
 
-        verify( countriesView ).showCountries( CountryItemMapper.transform( testCountriesList ) );
         verify( countriesView ).hideLoading( );
     }
 
