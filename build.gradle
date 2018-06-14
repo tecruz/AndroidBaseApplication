@@ -28,7 +28,7 @@ task runDataTests(dependsOn: [':data:cleanTestDebugUnitTest', ':data:testDebugUn
     description 'Run tests for the data layer.'
 }
 
-task runAllTests(dependsOn: ['runDomainTests',
+task check(dependsOn: ['runDomainTests',
                              'runDataTests',
                              'app:cleanTestDebugUnitTest',
                              'app:testDebugUnitTest',
@@ -40,7 +40,5 @@ task runAllTests(dependsOn: ['runDomainTests',
 task clean(type: Delete) {
     delete rootProject.buildDir
 }
-
-apply plugin: 'android-reporting'
 
 
