@@ -9,3 +9,9 @@ dependencies {
     testImplementation rootProject.ext.mockito
 }
 
+jacocoTestReport {
+  reports {
+    xml.enabled true
+  }
+}
+
