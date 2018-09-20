@@ -30,13 +30,13 @@ public class CountriesAdapter extends RecyclerView.Adapter<CountriesAdapter.Coun
     private Context context;
     private List<Country> countryList;
     private RequestBuilder<PictureDrawable> requestBuilder;
+    private OnItemClickListener mOnItemClickListener;
 
     public interface OnItemClickListener
     {
         void onCountryItemClicked (Country country);
     }
 
-    private OnItemClickListener mOnItemClickListener;
 
     public CountriesAdapter (Context context)
     {

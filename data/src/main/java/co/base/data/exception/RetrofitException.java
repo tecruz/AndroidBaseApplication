@@ -17,6 +17,11 @@ import retrofit2.Retrofit;
  */
 public class RetrofitException extends RuntimeException
 {
+    private final String url;
+    private final Response response;
+    private final int kind;
+    private final Retrofit retrofit;
+
     /**
      * An {@link IOException} occurred while communicating to the server.
      */
@@ -43,11 +48,6 @@ public class RetrofitException extends RuntimeException
     public @interface Kind
     {
     }
-
-    private final String url;
-    private final Response response;
-    private final int kind;
-    private final Retrofit retrofit;
 
     RetrofitException (String message, String url, Response response, @Kind int kind,
                        Throwable exception, Retrofit retrofit)
