@@ -17,31 +17,6 @@ import retrofit2.Retrofit;
  */
 public class RetrofitException extends RuntimeException
 {
-    public static RetrofitException httpError (String url, Response response, Retrofit retrofit)
-    {
-        String message = response.code( ) + " " + response.message( );
-        return new RetrofitException( message, url, response, HTTP, null, retrofit );
-    }
-
-    public static RetrofitException networkError (IOException exception)
-    {
-        return new RetrofitException( exception.getMessage( ), null, null,
-                NETWORK, exception, null );
-    }
-
-    public static RetrofitException noInternetConnection (NoInternetConnectionException exception)
-    {
-        return new RetrofitException( exception.getMessage( ), null, null,
-                NO_INTERNET_CONNECTION, exception, null );
-    }
-
-    public static RetrofitException unexpectedError (Throwable exception)
-    {
-        return new RetrofitException( exception.getMessage( ), null, null,
-                UNEXPECTED, exception, null );
-    }
-
-
     /**
      * An {@link IOException} occurred while communicating to the server.
      */
@@ -132,5 +107,29 @@ public class RetrofitException extends RuntimeException
         Converter<ResponseBody, T> converter = retrofit.responseBodyConverter( type,
                 new Annotation[0] );
         return converter.convert( response.errorBody( ) );
+    }
+
+    public static RetrofitException httpError (String url, Response response, Retrofit retrofit)
+    {
+        String message = response.code( ) + " " + response.message( );
+        return new RetrofitException( message, url, response, HTTP, null, retrofit );
+    }
+
+    public static RetrofitException networkError (IOException exception)
+    {
+        return new RetrofitException( exception.getMessage( ), null, null,
+                NETWORK, exception, null );
+    }
+
+    public static RetrofitException noInternetConnection (NoInternetConnectionException exception)
+    {
+        return new RetrofitException( exception.getMessage( ), null, null,
+                NO_INTERNET_CONNECTION, exception, null );
+    }
+
+    public static RetrofitException unexpectedError (Throwable exception)
+    {
+        return new RetrofitException( exception.getMessage( ), null, null,
+                UNEXPECTED, exception, null );
     }
 }

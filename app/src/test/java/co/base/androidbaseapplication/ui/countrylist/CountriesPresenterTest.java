@@ -10,7 +10,6 @@ import org.mockito.runners.MockitoJUnitRunner;
 import java.util.ArrayList;
 import java.util.List;
 
-import co.base.androidbaseapplication.mapper.CountryItemMapper;
 import co.base.domain.Country;
 import co.base.domain.GetCountriesUsecase;
 import io.reactivex.Observable;

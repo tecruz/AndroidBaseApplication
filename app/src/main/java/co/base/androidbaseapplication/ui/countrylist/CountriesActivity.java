@@ -35,8 +35,6 @@ public class CountriesActivity extends BaseActivity implements CountriesMvpView,
     @Inject
     CountriesPresenter countriesPresenter;
 
-    CountriesAdapter countriesAdapter;
-
     @Inject
     PreferencesUtil preferencesUtil;
 
@@ -51,6 +49,8 @@ public class CountriesActivity extends BaseActivity implements CountriesMvpView,
 
     @BindView(R.id.empty_countries_label)
     TextView emptyCountriesLabel;
+
+    private CountriesAdapter countriesAdapter;
 
     /**
      * Return an Intent to start this Activity.

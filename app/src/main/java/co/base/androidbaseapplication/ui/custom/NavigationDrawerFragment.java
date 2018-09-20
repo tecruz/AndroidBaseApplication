@@ -17,7 +17,6 @@ import co.base.androidbaseapplication.R;
 public class NavigationDrawerFragment extends Fragment
 {
 
-    private DrawerLayout drawerLayout;
     private NavigationView navigationViewDrawer;
 
 
@@ -29,11 +28,8 @@ public class NavigationDrawerFragment extends Fragment
         return navigationViewDrawer;
     }
 
-    public void setUp (int fragmentId, DrawerLayout drawerLayout)
+    public void setUp ()
     {
-
-        this.drawerLayout = drawerLayout;
-        // Setup drawer view
         setupDrawerContent( );
     }
 
@@ -53,9 +49,6 @@ public class NavigationDrawerFragment extends Fragment
 
     public void selectDrawerItem (MenuItem menuItem)
     {
-        // Create a new fragment and specify the fragment to show based on nav item clicked
-        Fragment fragment = null;
-        Class fragmentClass;
         switch ( menuItem.getItemId( ) )
         {
             case R.id.nav_github:
@@ -66,23 +59,6 @@ public class NavigationDrawerFragment extends Fragment
             default:
                 break;
         }
-
-        /*try {
-            fragment = (Fragment) fragmentClass.newInstance();
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-
-        // Insert the fragment by replacing any existing fragment
-        FragmentManager fragmentManager = getSupportFragmentManager();
-        fragmentManager.beginTransaction().replace(R.id.flContent, fragment).commit();*/
-
-        // Highlight the selected item has been done by NavigationView
-        //menuItem.setChecked(true);
-        // Set action bar title
-        //setTitle(menuItem.getTitle());
-        // Close the navigation drawer
-        //drawerLayout.closeDrawer(GravityCompat.START);
     }
 
 }

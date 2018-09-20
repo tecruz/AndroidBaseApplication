@@ -23,9 +23,6 @@ import dagger.android.AndroidInjection;
 
 public class BaseActivity extends AppCompatActivity
 {
-
-    private NavigationDrawerFragment navigationDrawerFragment;
-
     @BindView(R.id.my_toolbar)
     protected Toolbar toolbar;
 
@@ -116,11 +113,10 @@ public class BaseActivity extends AppCompatActivity
 
     protected void setupDrawer ()
     {
-        navigationDrawerFragment = ( NavigationDrawerFragment )
+        NavigationDrawerFragment navigationDrawerFragment = ( NavigationDrawerFragment )
                 getSupportFragmentManager( ).findFragmentById( R.id.navigation_drawer );
 
-        navigationDrawerFragment.setUp( R.id.navigation_drawer,
-                ( DrawerLayout ) findViewById( R.id.drawer_layout ) );
+        navigationDrawerFragment.setUp( );
 
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
                 this, ( DrawerLayout ) findViewById( R.id.drawer_layout ),

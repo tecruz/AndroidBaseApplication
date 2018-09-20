@@ -58,13 +58,13 @@ public class RestApiImpl implements RestApi
             HttpLoggingInterceptor loggingInterceptor = new HttpLoggingInterceptor( );
             loggingInterceptor.setLevel( HttpLoggingInterceptor.Level.BODY );
 
-            client = new OkHttpClient.Builder( ).addInterceptor( new NetInterceptor( context, "" ) )
+            client = new OkHttpClient.Builder( ).addInterceptor( new NetInterceptor( context ) )
                     .addInterceptor( loggingInterceptor ).build( );
 
         } else
         {
             client = new OkHttpClient.Builder( )
-                    .addInterceptor( new NetInterceptor( context, "" ) ).build( );
+                    .addInterceptor( new NetInterceptor( context ) ).build( );
         }
 
         Type token = new TypeToken<RealmList<RealmDouble>>( )

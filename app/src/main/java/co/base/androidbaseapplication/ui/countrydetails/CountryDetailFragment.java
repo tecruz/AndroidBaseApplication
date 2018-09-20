@@ -17,8 +17,6 @@ public class CountryDetailFragment extends BaseFragment
     private static final String INSTANCE_EXTRA_PARAM_COUNTRY_NAME
             = "STATE_PARAM_COUNTRY_NAME";
 
-    private String countryName;
-
     private OnCountryDetailsFragmentInteractionListener listener;
 
     @BindView(R.id.webView)
@@ -47,7 +45,7 @@ public class CountryDetailFragment extends BaseFragment
     public void onViewCreated (View view, @Nullable Bundle savedInstanceState)
     {
         super.onViewCreated( view, savedInstanceState );
-        this.countryName = getArguments( ).getString( INSTANCE_EXTRA_PARAM_COUNTRY_NAME );
+        String countryName = getArguments( ).getString( INSTANCE_EXTRA_PARAM_COUNTRY_NAME );
         countryDetailsView.setWebViewClient( new WebViewClient( ) );
         countryDetailsView.getSettings( ).setJavaScriptEnabled( true );
         listener.showLoading( );

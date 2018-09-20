@@ -14,19 +14,16 @@ import okhttp3.Response;
  */
 public class NetInterceptor implements Interceptor
 {
-    private final String authToken;
     private Context context;
 
-    public NetInterceptor (Context context, String authToken)
+    public NetInterceptor (Context context)
     {
-        this.authToken = authToken;
         this.context = context;
     }
 
     @Override
     public Response intercept (Chain chain) throws IOException
     {
-        //TODO Custom http request with token
         if ( !NetworkUtil.isNetworkConnected( context ) )
         {
             throw new NoInternetConnectionException( );

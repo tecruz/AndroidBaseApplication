@@ -102,11 +102,6 @@ public class SyncService extends JobService
                     @Override
                     public void onError (Throwable e)
                     {
-                        /*try {
-                            error.getErrorBodyAs(ErrorResponse.class);
-                        } catch (IOException e1) {
-                            e1.printStackTrace();
-                        }*/
                         RetrofitException error = ( RetrofitException ) e;
                         Timber.i( ErrorMessageFactory.create( getApplicationContext( ),
                                 error.getKind( ) ) );
