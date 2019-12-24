@@ -1,13 +1,13 @@
 ext {
     // Android
     minSdkVersion = 15
-    buildToolsVersion = "27.0.3"
-    targetSdkVersion = 27
+    buildToolsVersion = "28.0.3"
+    targetSdkVersion = 28
     sourceCompatibilityVersion = JavaVersion.VERSION_1_7
     targetCompatibilityVersion = JavaVersion.VERSION_1_7
     testInstrumentationRunner = "android.support.test.runner.AndroidJUnitRunner"
 
-    final ANDROID_SUPPORT_ANNOTATIONS_VERSION = '27.1.1'
+    final ANDROID_SUPPORT_ANNOTATIONS_VERSION = '28.0.0'
     final ANDROID_SVG_VERSION = '1.2.1'
     final BUTTER_KNIFE_VERSION = '8.8.1'
     final CIRCLE_IMAGEVIEW_VERSION = '2.2.0'
@@ -20,11 +20,11 @@ ext {
     final LEAK_CANARY_VERSION = '1.5.4'
     final MOCKITO_VERSION = '1.10.19'
     final OKHTTP_LOGGING_INTERCEPTOR_VERSION = '3.6.0'
-    final PERMESSIONS_DISPATCHER_VERSION = '2.3.2'
+    final PERMISSIONS_DISPATCHER_VERSION = '2.3.2'
     final RETROFIT_VERSION = '2.2.0'
     final RXANDROID_VERSION = '2.0.1'
     final RXJAVA_VERSION = '2.0.8'
-    final SUPPORT_LIBRARY_VERSION = '27.1.1'
+    final SUPPORT_LIBRARY_VERSION = '28.0.0'
     final TIMBER_VERSION = '4.5.1'
 
     dagger2 = "com.google.dagger:dagger:$DAGGER2_VERSION"
@@ -62,8 +62,8 @@ ext {
     androidSvg = "com.caverock:androidsvg:$ANDROID_SVG_VERSION"
 
     //permissions
-    permissionsDispatcher = "com.github.hotchemi:permissionsdispatcher:$PERMESSIONS_DISPATCHER_VERSION"
-    permissionsDispatcherProcessor = "com.github.hotchemi:permissionsdispatcher-processor:$PERMESSIONS_DISPATCHER_VERSION"
+    permissionsDispatcher = "com.github.hotchemi:permissionsdispatcher:$PERMISSIONS_DISPATCHER_VERSION"
+    permissionsDispatcherProcessor = "com.github.hotchemi:permissionsdispatcher-processor:$PERMISSIONS_DISPATCHER_VERSION"
 
     //Testing
     jUnit = "junit:junit:$JUNIT_VERSION"
