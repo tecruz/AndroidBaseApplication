@@ -20,6 +20,7 @@ ext {
     final LEAK_CANARY_VERSION = '1.5.4'
     final MOCKITO_VERSION = '1.10.19'
     final OKHTTP_LOGGING_INTERCEPTOR_VERSION = '3.6.0'
+    final OKHTTP_MOCK_WEB_SERVER_VERSION = '3.6.0'
     final PERMISSIONS_DISPATCHER_VERSION = '2.3.2'
     final RETROFIT_VERSION = '2.2.0'
     final RXANDROID_VERSION = '2.0.1'
@@ -35,6 +36,7 @@ ext {
     retrofit = "com.squareup.retrofit2:retrofit:$RETROFIT_VERSION"
     retrofitConverter = "com.squareup.retrofit2:converter-gson:$RETROFIT_VERSION"
     retrofitAdapter = "com.squareup.retrofit2:adapter-rxjava2:$RETROFIT_VERSION"
+    retrofitMock = "com.squareup.retrofit2:retrofit-mock:$RETROFIT_VERSION"
 
     leakCanaryDebug = "com.squareup.leakcanary:leakcanary-android:$LEAK_CANARY_VERSION"
     leakCanaryRelease = "com.squareup.leakcanary:leakcanary-android-no-op:$LEAK_CANARY_VERSION"
@@ -70,4 +72,5 @@ ext {
     mockito = "org.mockito:mockito-core:$MOCKITO_VERSION"
     espresso = "com.android.support.test.espresso:espresso-core:$ESPRESSO_VERSION"
     supportAnnotations = "com.android.support:support-annotations:$ANDROID_SUPPORT_ANNOTATIONS_VERSION"
+    mockWebServer = "com.squareup.okhttp3:mockwebserver:$OKHTTP_MOCK_WEB_SERVER_VERSION"
 }
