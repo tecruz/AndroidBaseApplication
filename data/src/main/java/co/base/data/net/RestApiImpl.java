@@ -2,6 +2,7 @@ package co.base.data.net;
 
 import android.app.Application;
 import android.content.Context;
+import android.support.annotation.VisibleForTesting;
 
 import com.google.gson.ExclusionStrategy;
 import com.google.gson.FieldAttributes;
@@ -126,5 +127,10 @@ public class RestApiImpl implements RestApi
     public Observable<List<CountryEntity>> getCountries ()
     {
         return restApi.getCountries( );
+    }
+
+    @VisibleForTesting
+    public RestApi getRestApi(){
+        return restApi;
     }
 }

@@ -33,13 +33,6 @@ public class CloudCountryDataStore implements CountryDataStore
     @Override
     public Observable<List<CountryEntity>> countryEntityList ()
     {
-        return restApi.getCountries( ).doOnNext( new Consumer<List<CountryEntity>>( )
-        {
-            @Override
-            public void accept (@NonNull List<CountryEntity> countryEntities) throws Exception
-            {
-                countryCache.put( countryEntities );
-            }
-        } );
+        return restApi.getCountries( ).doOnNext(countryEntities -> countryCache.put( countryEntities ));
     }
 }
