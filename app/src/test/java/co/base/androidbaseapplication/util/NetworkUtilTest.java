@@ -1,4 +1,4 @@
-package co.base.data.util;
+package co.base.androidbaseapplication.util;
 
 import android.app.Application;
 import android.content.Context;
@@ -10,6 +10,7 @@ import org.junit.runner.RunWith;
 import org.mockito.Mock;
 import org.mockito.runners.MockitoJUnitRunner;
 
+import co.base.data.util.NetworkUtil;
 import okhttp3.ResponseBody;
 import retrofit2.HttpException;
 import retrofit2.Response;

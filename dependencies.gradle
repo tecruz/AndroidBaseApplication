@@ -71,6 +71,7 @@ ext {
     jUnit = "junit:junit:$JUNIT_VERSION"
     mockito = "org.mockito:mockito-core:$MOCKITO_VERSION"
     espresso = "com.android.support.test.espresso:espresso-core:$ESPRESSO_VERSION"
+    espressoContrib = "com.android.support.test.espresso:espresso-contrib:$ESPRESSO_VERSION"
     supportAnnotations = "com.android.support:support-annotations:$ANDROID_SUPPORT_ANNOTATIONS_VERSION"
     mockWebServer = "com.squareup.okhttp3:mockwebserver:$OKHTTP_MOCK_WEB_SERVER_VERSION"
 }

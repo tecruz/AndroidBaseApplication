@@ -94,6 +94,7 @@ dependencies {
     testImplementation rootProject.ext.jUnit
     testImplementation rootProject.ext.mockito
     androidTestImplementation rootProject.ext.espresso
+    androidTestImplementation rootProject.ext.espressoContrib
     androidTestImplementation rootProject.ext.supportAnnotations
 
     implementation project(':data')
