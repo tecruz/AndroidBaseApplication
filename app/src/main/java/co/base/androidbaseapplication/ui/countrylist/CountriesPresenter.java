@@ -46,7 +46,7 @@ public class CountriesPresenter extends BasePresenter<CountriesMvpView>
     public void detachView ()
     {
         super.detachView( );
-        if ( disposables != null ) disposables.clear( );
+        disposables.clear( );
     }
 
     @Override

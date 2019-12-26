@@ -28,7 +28,7 @@ public class ErrorMessageFactory
      */
     public static String create (Context context, @RetrofitException.Kind int exceptionKind)
     {
-        String message = context.getString( R.string.dialog_error_title );
+        String message;
 
         if ( exceptionKind == NO_INTERNET_CONNECTION )
         {
