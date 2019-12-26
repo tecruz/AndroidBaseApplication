@@ -46,7 +46,7 @@ public class JobExecutorTest {
     }
 
     @Before
-    public void setup(){
+    public void setUp(){
         jobExecutor = new JobExecutor();
     }
 

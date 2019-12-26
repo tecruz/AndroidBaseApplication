@@ -6,8 +6,6 @@ import co.base.data.cache.CountryCache;
 import co.base.data.entity.CountryEntity;
 import co.base.data.net.RestApi;
 import io.reactivex.Observable;
-import io.reactivex.annotations.NonNull;
-import io.reactivex.functions.Consumer;
 
 /**
  * {@link CountryDataStore} implementation based on connections to the api (Cloud).
@@ -33,6 +31,6 @@ public class CloudCountryDataStore implements CountryDataStore
     @Override
     public Observable<List<CountryEntity>> countryEntityList ()
     {
-        return restApi.getCountries( ).doOnNext(countryEntities -> countryCache.put( countryEntities ));
+        return restApi.getCountries( ).doOnNext(countryCache::put);
     }
 }

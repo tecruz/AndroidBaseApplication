@@ -15,8 +15,6 @@ import java.util.List;
 import co.base.data.entity.CountryEntity;
 import co.base.data.util.PreferencesUtil;
 
-import static co.base.data.Config.EXPIRATION_TIME;
-import static org.mockito.Matchers.any;
 import static org.mockito.Matchers.eq;
 import static org.mockito.Mockito.never;
 import static org.mockito.Mockito.verify;
@@ -36,7 +34,7 @@ public class CountryCacheImplTest {
     private Context context;
 
     @Mock
-    PreferencesUtil preferencesUtil;
+    private PreferencesUtil preferencesUtil;
 
     @Before
     public void setUp(){

@@ -48,7 +48,7 @@ public class UIThreadTest {
     }
 
     @Before
-    public void setup(){
+    public void setUp(){
         uiThread = new UIThread();
     }
 

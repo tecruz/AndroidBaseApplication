@@ -12,7 +12,6 @@ import org.mockito.runners.MockitoJUnitRunner;
 import co.base.data.R;
 
 import static junit.framework.TestCase.assertNotNull;
-import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
 @RunWith(MockitoJUnitRunner.class)
