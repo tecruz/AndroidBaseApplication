@@ -43,6 +43,11 @@ android {
     packagingOptions {
         exclude 'META-INF/rxjava.properties'
     }
+
+    compileOptions {
+        sourceCompatibility = 1.8
+        targetCompatibility = 1.8
+    }
 }
 
 dependencies {
@@ -89,6 +94,7 @@ dependencies {
     testImplementation rootProject.ext.jUnit
     testImplementation rootProject.ext.mockito
     androidTestImplementation rootProject.ext.espresso
+    androidTestImplementation rootProject.ext.espressoContrib
     androidTestImplementation rootProject.ext.supportAnnotations
 
     implementation project(':data')

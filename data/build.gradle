@@ -28,6 +28,10 @@ android {
         }
     }
 
+    compileOptions {
+        sourceCompatibility = 1.8
+        targetCompatibility = 1.8
+    }
 }
 
 dependencies {
@@ -41,4 +45,9 @@ dependencies {
     implementation rootProject.ext.supportAnnotations
 
     implementation project(':domain')
+
+    testImplementation rootProject.ext.jUnit
+    testImplementation rootProject.ext.mockito
+    testImplementation rootProject.ext.mockWebServer
+    testImplementation rootProject.ext.retrofitMock
 }

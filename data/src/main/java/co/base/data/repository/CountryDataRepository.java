@@ -12,7 +12,6 @@ import co.base.data.repository.datasource.CountryDataStoreFactory;
 import co.base.domain.Country;
 import co.base.domain.repository.CountryRepository;
 import io.reactivex.Observable;
-import io.reactivex.annotations.NonNull;
 import io.reactivex.functions.Function;
 
 /**
@@ -48,17 +47,9 @@ public class CountryDataRepository implements CountryRepository
 
         countryDataStore = countryDataStoreFactory.create( );
 
-        return countryDataStore.countryEntityList( ).concatMap( new Function<List<CountryEntity>,
-                Observable<List<Country>>>( )
-        {
-            @Override
-            public Observable<List<Country>> apply (@NonNull List<CountryEntity> countries)
-                    throws Exception
-            {
-                List<Country> countryList = CountryItemMapper.transform( countries );
-                return Observable.just( countryList );
-            }
-
-        } );
+        return countryDataStore.countryEntityList( ).concatMap((Function<List<CountryEntity>, Observable<List<Country>>>) countries -> {
+            List<Country> countryList = CountryItemMapper.transform( countries );
+            return Observable.just( countryList );
+        });
     }
 }

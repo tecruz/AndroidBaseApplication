@@ -2,6 +2,7 @@ package co.base.data.net;
 
 import android.app.Application;
 import android.content.Context;
+import android.support.annotation.VisibleForTesting;
 
 import com.google.gson.ExclusionStrategy;
 import com.google.gson.FieldAttributes;
@@ -44,7 +45,7 @@ public class RestApiImpl implements RestApi
     /**
      * Constructor of the class
      *
-     * @param context Application context
+     * @param application Application context
      */
     @Inject
     public RestApiImpl (Application application)
@@ -67,10 +68,7 @@ public class RestApiImpl implements RestApi
                     .addInterceptor( new NetInterceptor( context ) ).build( );
         }
 
-        Type token = new TypeToken<RealmList<RealmDouble>>( )
-        {
-        }
-                .getType( );
+        Type token = new TypeToken<RealmList<RealmDouble>>( ) {}.getType( );
 
         Gson gson = new GsonBuilder( )
                 .setExclusionStrategies( new ExclusionStrategy( )
@@ -86,8 +84,7 @@ public class RestApiImpl implements RestApi
                     {
                         return false;
                     }
-                } )
-                .registerTypeAdapter( token, new TypeAdapter<RealmList<RealmDouble>>( )
+                } ).registerTypeAdapter( token, new TypeAdapter<RealmList<RealmDouble>>( )
                 {
 
                     @Override
@@ -109,8 +106,7 @@ public class RestApiImpl implements RestApi
                         in.endArray( );
                         return list;
                     }
-                } )
-                .create( );
+                } ).create( );
 
         Retrofit retrofit = new Retrofit.Builder( )
                 .baseUrl( context.getString( R.string.API_BASE_URL ) )
@@ -131,5 +127,10 @@ public class RestApiImpl implements RestApi
     public Observable<List<CountryEntity>> getCountries ()
     {
         return restApi.getCountries( );
+    }
+
+    @VisibleForTesting
+    public RestApi getRestApi(){
+        return restApi;
     }
 }
